@@ -9,9 +9,11 @@ export interface NavBarProps {
 }
 
 const DEFAULT_LINKS = [
-  { label: 'Work', href: '#work' },
   { label: 'About', href: '#about' },
-  { label: 'Writing', href: '#writing' },
+  { label: 'Journey', href: '#journey' },
+  { label: 'Tech Stack', href: '#tech-stack' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Contact', href: '#contact' },
 ] as const;
 
 export function NavBar({ links = DEFAULT_LINKS }: NavBarProps) {
