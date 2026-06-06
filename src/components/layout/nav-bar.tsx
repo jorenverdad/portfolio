@@ -20,8 +20,8 @@ export interface NavBarProps {
 const DEFAULT_LINKS: ReadonlyArray<NavBarLink> = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
-  { label: 'Service', href: '#service' },
   { label: 'Project', href: '#projects' },
+  { label: 'Service', href: '#service' },
   { label: 'Testimonial', href: '#testimonial' },
   { label: 'Contact', href: '#contact' },
 ] as const;
@@ -145,15 +145,13 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
   }, [hoveredIndex, activeSection, links, resizeKey]);
 
   return (
-    <header className={`fixed top-0 inset-x-0 z-50 flex justify-center pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${className ?? ''}`}>
+    <header className={`fixed top-0 inset-x-0 z-50 flex justify-center pointer-events-none ${className ?? ''}`}>
       <div className={`pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center bg-bg-surface/65 backdrop-blur-xl backdrop-saturate-150 border border-edge-subtle ${
         isScrolled 
-          ? 'w-[calc(100%-2rem)] max-w-5xl mt-4 h-16 rounded-full shadow-lg shadow-black/10 px-6 md:px-8' 
+          ? 'w-[calc(100%-2rem)] xl:w-[1024px] mt-4 h-16 rounded-full shadow-lg shadow-black/10 px-6 md:px-8' 
           : 'w-full h-20 rounded-none border-t-transparent border-x-transparent px-6'
       }`}>
-        <div className={`w-full flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isScrolled ? 'max-w-full' : 'container mx-auto'
-        }`}>
+        <div className="w-full flex items-center justify-between container mx-auto">
           <Link href="/" className="group font-heading text-2xl font-bold tracking-tight text-foreground transition-opacity hover:opacity-90">
             Joren<span className="inline-block text-brand-500 transition-transform duration-300 ease-out group-hover:scale-130 group-hover:rotate-12 group-hover:translate-x-0.5">.</span>
           </Link>
@@ -203,10 +201,11 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
               href="https://github.com/jorenverdad"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 h-10 px-4 rounded-full border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 hover:text-foreground text-muted-foreground text-sm font-medium transition-all duration-300 group shadow-sm hover:shadow-[0_0_15px_rgba(224,32,32,0.1)] active:scale-95"
+              className="relative overflow-hidden flex items-center gap-2 h-10 px-4 rounded-full border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-brand-500 text-sm font-medium transition-all duration-300 group shadow-sm hover:shadow-[0_0_15px_rgba(224,32,32,0.05)] active:scale-95"
             >
-              <FaGithub className="size-4.5 transition-transform duration-300 group-hover:scale-115 group-hover:rotate-6 text-foreground" />
-              <span>GitHub</span>
+              <div className="absolute inset-0 rounded-full bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
+              <FaGithub className="relative z-10 size-4.5 transition-all duration-300 group-hover:scale-115 group-hover:rotate-6 text-foreground group-hover:text-brand-500" />
+              <span className="relative z-10 text-foreground group-hover:text-brand-500 transition-colors duration-300">GitHub</span>
             </a>
             <button
               type="button"
@@ -279,10 +278,11 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                   href="https://github.com/jorenverdad"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 hover:text-foreground text-muted-foreground text-base font-medium transition-all duration-300 group"
+                  className="relative overflow-hidden flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-brand-500 text-base font-medium transition-all duration-300 group"
                 >
-                  <FaGithub className="size-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 text-foreground" />
-                  <span>jorenverdad</span>
+                  <div className="absolute inset-0 rounded-xl bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
+                  <FaGithub className="relative z-10 size-5 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 text-muted-foreground group-hover:text-brand-500" />
+                  <span className="relative z-10 text-muted-foreground group-hover:text-brand-500 transition-colors duration-300">jorenverdad</span>
                 </a>
                 <button
                   type="button"
