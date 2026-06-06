@@ -61,6 +61,21 @@ export function AboutSection({ className }: AboutSectionProps) {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
+        {/* Section Label */}
+        <motion.div 
+          variants={itemVariants}
+          className="flex items-center gap-3.5 mb-10 md:mb-14 select-none"
+        >
+          <span className="font-mono text-xs md:text-sm font-bold text-brand-500 tracking-widest bg-brand-500/10 px-2.5 py-1 rounded-md border border-brand-500/20">
+            01
+          </span>
+          <span className="font-mono text-xs md:text-sm font-medium text-muted-foreground/30">/</span>
+          <span className="font-mono text-xs md:text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
+            About
+          </span>
+          <div className="h-px flex-1 bg-gradient-to-r from-edge-subtle/50 via-edge-subtle/10 to-transparent ml-4" />
+        </motion.div>
+
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
           
           {/* Header Typography - Spans 8 cols */}
