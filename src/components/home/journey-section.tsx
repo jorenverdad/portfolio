@@ -1,3 +1,5 @@
+import { GridPattern } from '@/components/ui/grid-pattern';
+
 export interface JourneyMilestone {
   readonly year: string;
   readonly title: string;
@@ -28,8 +30,9 @@ const MILESTONES: ReadonlyArray<JourneyMilestone> = [
 
 export function JourneySection() {
   return (
-    <section id="journey" className="py-32 bg-bg-void relative border-t border-edge-subtle">
-      <div className="container mx-auto px-6 max-w-4xl">
+    <section id="journey" className="py-32 bg-bg-void relative border-t border-edge-subtle overflow-hidden">
+      <GridPattern className="opacity-[0.08]" />
+      <div className="container mx-auto px-6 max-w-4xl relative z-10">
         <div className="mb-16 text-center">
           <h2 className="font-heading text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             The Journey

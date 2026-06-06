@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { GridPattern } from '@/components/ui/grid-pattern';
 
 interface Project {
   readonly id: string;
@@ -35,8 +36,9 @@ const PROJECTS: ReadonlyArray<Project> = [
 
 export function ProjectsSection() {
   return (
-    <section id="projects" className="py-32 bg-bg-void relative border-t border-edge-subtle">
-      <div className="container mx-auto px-6">
+    <section id="projects" className="py-32 bg-bg-void relative border-t border-edge-subtle overflow-hidden">
+      <GridPattern className="opacity-[0.08]" />
+      <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
             <h2 className="font-heading text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">

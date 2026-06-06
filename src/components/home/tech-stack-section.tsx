@@ -1,4 +1,5 @@
 import React from 'react';
+import { GridPattern } from '@/components/ui/grid-pattern';
 
 interface TechCategory {
   readonly id: string;
@@ -34,8 +35,9 @@ const CATEGORIES: ReadonlyArray<TechCategory> = [
 
 export function TechStackSection() {
   return (
-    <section id="tech-stack" className="py-32 bg-bg-base relative">
-      <div className="container mx-auto px-6">
+    <section id="tech-stack" className="py-32 bg-bg-base relative overflow-hidden">
+      <GridPattern className="opacity-10 [mask-image:radial-gradient(ellipse_100%_100%_at_50%_50%,#000_20%,transparent_100%)]" />
+      <div className="container mx-auto px-6 relative z-10">
         <div className="mb-16">
           <h2 className="font-heading text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
             Tech Stack
