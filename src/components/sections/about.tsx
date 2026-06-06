@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { GridPattern } from '@/components/ui/grid-pattern';
+import { GitHubStatsCard } from '@/components/sections/github-stats';
 import ProfileImg from '@/assets/imgs/profile.jpg';
 
 export interface AboutSectionProps {
@@ -35,7 +36,7 @@ export function AboutSection({ className }: AboutSectionProps) {
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 70,
         damping: 20,
       },
@@ -196,6 +197,11 @@ export function AboutSection({ className }: AboutSectionProps) {
                 For me, a successful project isn't just one that works—it's one that loads instantly, scales gracefully, and leaves a profound impression on the user.
               </p>
             </div>
+          </motion.div>
+
+          {/* Bento Box: GitHub Stats - Spans 4 cols */}
+          <motion.div variants={itemVariants} className="md:col-span-4">
+            <GitHubStatsCard />
           </motion.div>
 
         </div>
