@@ -176,7 +176,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
             {links.map((link, idx) => {
               const isActive = link.href.replace('#', '') === activeSection;
               return (
-                <Link 
+                <a 
                   key={link.label} 
                   href={link.href}
                   ref={(el) => {
@@ -190,7 +190,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                   }`}
                 >
                   {link.label}
-                </Link>
+                </a>
               );
             })}
           </nav>
@@ -247,7 +247,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                   {links.map((link, idx) => {
                     const isActive = link.href.replace('#', '') === activeSection;
                     return (
-                      <Link 
+                      <a 
                         key={link.label} 
                         href={link.href} 
                         onClick={() => setOpen(false)}
@@ -265,7 +265,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                         }}
                       >
                         {link.label}
-                      </Link>
+                      </a>
                     );
                   })}
                 </nav>
