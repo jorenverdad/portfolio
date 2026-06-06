@@ -1,12 +1,13 @@
 import { NavBar } from '@/components/layout/nav-bar';
 import { Footer } from '@/components/layout/footer';
-import { HeroSection } from '@/components/home/hero-section';
-import { AboutSection } from '@/components/home/about-section';
-import { JourneySection } from '@/components/home/journey-section';
-import { TechStackSection } from '@/components/home/tech-stack-section';
-import { ServicesSection } from '@/components/home/services-section';
-import { ProjectsSection } from '@/components/home/projects-section';
-import { TestimonialsSection } from '@/components/home/testimonials-section';
+import { HeroSection } from '@/components/sections/hero';
+import { AboutSection } from '@/components/sections/about';
+import { JourneySection } from '@/components/sections/journey';
+import { TechStackSection } from '@/components/sections/tech-stack';
+import { ProjectsSection } from '@/components/sections/projects';
+import { ServicesSection } from '@/components/sections/services';
+import { TestimonialsSection } from '@/components/sections/testimonials';
+import { ScrollReveal } from '@/components/ui/scroll-reveal';
 
 export default function Home() {
   return (
@@ -16,12 +17,30 @@ export default function Home() {
         <div id="home">
           <HeroSection />
         </div>
-        <AboutSection />
-        <JourneySection />
-        <TechStackSection />
-        <ProjectsSection />
-        <ServicesSection />
-        <TestimonialsSection />
+        
+        <ScrollReveal>
+          <AboutSection />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <JourneySection />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <TechStackSection />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <ProjectsSection />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <ServicesSection />
+        </ScrollReveal>
+        
+        <ScrollReveal>
+          <TestimonialsSection />
+        </ScrollReveal>
       </main>
       <Footer />
     </>

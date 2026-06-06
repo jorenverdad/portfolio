@@ -1,7 +1,17 @@
 import React from 'react';
-import { GridPattern } from '@/components/ui/grid-pattern';
 
-const SERVICES = [
+export interface Service {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+}
+
+export interface ServicesProps {
+  readonly className?: string;
+  readonly services?: ReadonlyArray<Service>;
+}
+
+const DEFAULT_SERVICES: ReadonlyArray<Service> = [
   {
     id: '01',
     title: 'Frontend Architecture',
@@ -19,10 +29,10 @@ const SERVICES = [
   },
 ];
 
-export function ServicesSection() {
+export function ServicesSection({ className, services = DEFAULT_SERVICES }: ServicesProps) {
   return (
-    <section id="service" className="py-32 relative bg-bg-base overflow-hidden border-t border-edge-subtle">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-500/10 via-transparent to-transparent opacity-50 z-0" />
+    <section id="service" className={`py-32 relative bg-bg-base overflow-hidden border-t border-edge-subtle ${className ?? ''}`}>
+      <div className="absolute inset-0 bg-gradient-to-tr from-brand-500/10 via-transparent to-transparent opacity-50 z-0" />
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
@@ -38,7 +48,7 @@ export function ServicesSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {SERVICES.map((service, index) => (
+          {services.map((service) => (
             <div 
               key={service.id}
               className="group relative bg-bg-surface/30 backdrop-blur-md border border-edge-subtle rounded-3xl p-10 overflow-hidden hover:border-brand-500/50 transition-colors duration-500"

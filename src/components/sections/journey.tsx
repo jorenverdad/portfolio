@@ -7,7 +7,12 @@ export interface JourneyMilestone {
   readonly description: string;
 }
 
-const MILESTONES: ReadonlyArray<JourneyMilestone> = [
+export interface JourneyProps {
+  readonly className?: string;
+  readonly milestones?: ReadonlyArray<JourneyMilestone>;
+}
+
+const DEFAULT_MILESTONES: ReadonlyArray<JourneyMilestone> = [
   {
     year: '2025 - Present',
     title: 'Senior Frontend Engineer',
@@ -28,9 +33,9 @@ const MILESTONES: ReadonlyArray<JourneyMilestone> = [
   }
 ] as const;
 
-export function JourneySection() {
+export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: JourneyProps) {
   return (
-    <section id="journey" className="py-32 bg-bg-void relative border-t border-edge-subtle overflow-hidden">
+    <section id="journey" className={`py-32 bg-bg-void relative border-t border-edge-subtle overflow-hidden ${className ?? ''}`}>
       <GridPattern className="opacity-[0.08]" />
       <div className="container mx-auto px-6 max-w-4xl relative z-10">
         <div className="mb-16 text-center">
@@ -41,7 +46,7 @@ export function JourneySection() {
         </div>
 
         <div className="relative border-l border-edge-subtle ml-3 md:ml-6 space-y-12 pb-8">
-          {MILESTONES.map((milestone, index) => (
+          {milestones.map((milestone, index) => (
             <div key={index} className="relative pl-10 md:pl-16">
               {/* Timeline Dot */}
               <div className="absolute -left-1.5 md:-left-[7px] top-1.5 size-3 md:size-[14px] rounded-full bg-bg-void border-2 border-brand-500 shadow-[0_0_10px_rgba(224,32,32,0.6)]" />

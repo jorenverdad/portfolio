@@ -1,8 +1,12 @@
 import { GridPattern } from '@/components/ui/grid-pattern';
 
-export function AboutSection() {
+export interface AboutSectionProps {
+  readonly className?: string;
+}
+
+export function AboutSection({ className }: AboutSectionProps) {
   return (
-    <section id="about" className="py-32 relative bg-bg-base overflow-hidden">
+    <section id="about" className={`py-32 relative bg-bg-base overflow-hidden ${className ?? ''}`}>
       <GridPattern className="opacity-15 [mask-image:radial-gradient(ellipse_100%_100%_at_50%_50%,#000_20%,transparent_100%)]" />
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 items-center">
