@@ -199,8 +199,8 @@ export function AboutSection({ className }: AboutSectionProps) {
             </div>
           </motion.div>
 
-          {/* Bento Box: GitHub Stats - Spans 4 cols */}
-          <motion.div variants={itemVariants} className="md:col-span-4">
+          {/* GitHub Stats - Spans 12 cols, not bento */}
+          <motion.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-8">
             <GitHubStatsCard />
           </motion.div>
 
