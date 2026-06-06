@@ -102,18 +102,61 @@ export function AboutSection({ className }: AboutSectionProps) {
           {/* Bento Box: Stats/Details - Spans 4 cols */}
           <motion.div 
             variants={itemVariants}
-            className="md:col-span-4 rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md p-8 md:p-10 flex flex-col justify-between relative group shadow-2xl"
+            className="md:col-span-4 rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md p-8 md:p-10 flex flex-col justify-between relative group shadow-2xl overflow-hidden"
           >
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-warm-500 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            {/* Background glowing orb for depth */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-brand-500/10 rounded-full blur-[60px] group-hover:bg-brand-500/20 transition-colors duration-700 pointer-events-none" />
+
             <div className="relative z-10">
-              <p className="text-sm font-mono text-muted-foreground uppercase tracking-widest mb-3">Core Expertise</p>
-              <h3 className="text-3xl font-bold text-foreground tracking-tight">Frontend Architecture</h3>
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-sm font-mono text-muted-foreground uppercase tracking-widest flex items-center gap-2.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-500 opacity-60"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                  </span>
+                  Core Expertise
+                </p>
+                <div className="p-2 rounded-full bg-bg-base/50 border border-edge-subtle group-hover:border-brand-500/30 group-hover:bg-brand-500/10 transition-all duration-500">
+                  <svg className="w-4 h-4 text-muted-foreground group-hover:text-brand-500 transition-colors duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </div>
+              </div>
+              
+              <h3 className="text-3xl font-bold text-foreground tracking-tight mb-4">Frontend Architecture</h3>
+              
+              <p className="text-sm text-muted-foreground leading-relaxed font-light mb-6 group-hover:text-foreground/90 transition-colors duration-300">
+                Building resilient, component-driven systems. I obsess over type safety, performance budgets, and creating fluid experiences that scale elegantly.
+              </p>
+
+              {/* Abstract Component Tree Visualization */}
+              <div className="flex flex-col gap-2.5 opacity-60 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-x-1">
+                <div className="h-1.5 w-10 bg-brand-500/80 rounded-full" />
+                <div className="flex gap-2 ml-4">
+                   <div className="h-1.5 w-16 bg-warm-500/80 rounded-full" />
+                   <div className="h-1.5 w-8 bg-brand-500/40 rounded-full" />
+                </div>
+                <div className="flex gap-2 ml-8">
+                   <div className="h-1.5 w-12 bg-muted-foreground/40 rounded-full group-hover:bg-muted-foreground/60 transition-colors" />
+                   <div className="h-1.5 w-6 bg-warm-500/40 rounded-full" />
+                   <div className="h-1.5 w-4 bg-brand-500/40 rounded-full" />
+                </div>
+                <div className="flex gap-2 ml-4">
+                   <div className="h-1.5 w-10 bg-muted-foreground/30 rounded-full group-hover:bg-muted-foreground/50 transition-colors" />
+                </div>
+              </div>
             </div>
-            <div className="mt-12 relative z-10">
-              <p className="text-sm font-mono text-muted-foreground uppercase tracking-widest mb-4">Tech Arsenal</p>
+
+            <div className="mt-10 relative z-10">
+              <p className="text-sm font-mono text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
+                Tech Arsenal
+                <span className="flex-1 h-px bg-edge-subtle group-hover:bg-edge-subtle/80 transition-colors"></span>
+              </p>
               <div className="flex flex-wrap gap-2.5">
                 {['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'React 19'].map((tech) => (
-                  <span key={tech} className="px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-full border border-edge-subtle bg-bg-base/90 text-foreground hover:bg-brand-500 hover:text-white transition-colors duration-300 cursor-default shadow-sm">
+                  <span key={tech} className="px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-full border border-edge-subtle bg-bg-base/90 text-foreground hover:bg-brand-500 hover:text-white transition-colors duration-300 cursor-default shadow-sm hover:shadow-brand-500/20">
                     {tech}
                   </span>
                 ))}
