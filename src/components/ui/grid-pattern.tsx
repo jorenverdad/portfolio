@@ -1,7 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-interface GridPatternProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface GridPatternProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 

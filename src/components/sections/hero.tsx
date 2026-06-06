@@ -2,9 +2,13 @@ import { HeroInteractive } from './hero-interactive';
 import { Button } from '@/components/ui/button';
 import { GridPattern } from '@/components/ui/grid-pattern';
 
-export function HeroSection() {
+export interface HeroProps {
+  readonly className?: string;
+}
+
+export function HeroSection({ className }: HeroProps) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-void pt-20">
+    <section className={`relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-void pt-20 ${className ?? ''}`}>
       {/* Background Grid Pattern */}
       <GridPattern className="opacity-30 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)]" />
       

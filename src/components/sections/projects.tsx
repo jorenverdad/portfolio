@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { GridPattern } from '@/components/ui/grid-pattern';
 
-interface Project {
+export interface Project {
   readonly id: string;
   readonly title: string;
   readonly category: string;
@@ -10,7 +10,12 @@ interface Project {
   readonly link?: string;
 }
 
-const PROJECTS: ReadonlyArray<Project> = [
+export interface ProjectsProps {
+  readonly className?: string;
+  readonly projects?: ReadonlyArray<Project>;
+}
+
+const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
   {
     id: 'proj-1',
     title: 'E-Commerce Platform Reimagined',
@@ -34,9 +39,9 @@ const PROJECTS: ReadonlyArray<Project> = [
   },
 ] as const;
 
-export function ProjectsSection() {
+export function ProjectsSection({ className, projects = DEFAULT_PROJECTS }: ProjectsProps) {
   return (
-    <section id="projects" className="py-32 bg-bg-void relative border-t border-edge-subtle overflow-hidden">
+    <section id="projects" className={`py-32 bg-bg-void relative border-t border-edge-subtle overflow-hidden ${className ?? ''}`}>
       <GridPattern className="opacity-[0.08]" />
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -54,7 +59,7 @@ export function ProjectsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(300px,auto)]">
-          {PROJECTS.map((project) => (
+          {projects.map((project) => (
             <div 
               key={project.id} 
               className={`group relative overflow-hidden rounded-3xl bg-bg-surface border border-edge-subtle flex flex-col justify-end p-8 transition-transform duration-500 hover:-translate-y-2 ${project.span}`}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { GridPattern } from '@/components/ui/grid-pattern';
 
-interface TechCategory {
+export interface TechCategory {
   readonly id: string;
   readonly title: string;
   readonly description: string;
@@ -9,7 +9,12 @@ interface TechCategory {
   readonly tools: ReadonlyArray<string>;
 }
 
-const CATEGORIES: ReadonlyArray<TechCategory> = [
+export interface TechStackProps {
+  readonly className?: string;
+  readonly categories?: ReadonlyArray<TechCategory>;
+}
+
+const DEFAULT_CATEGORIES: ReadonlyArray<TechCategory> = [
   {
     id: 'frontend',
     title: 'Frontend Architecture',
@@ -33,9 +38,9 @@ const CATEGORIES: ReadonlyArray<TechCategory> = [
   },
 ] as const;
 
-export function TechStackSection() {
+export function TechStackSection({ className, categories = DEFAULT_CATEGORIES }: TechStackProps) {
   return (
-    <section id="tech-stack" className="py-32 bg-bg-base relative overflow-hidden">
+    <section id="tech-stack" className={`py-32 bg-bg-base relative overflow-hidden ${className ?? ''}`}>
       <GridPattern className="opacity-10 [mask-image:radial-gradient(ellipse_100%_100%_at_50%_50%,#000_20%,transparent_100%)]" />
       <div className="container mx-auto px-6 relative z-10">
         <div className="mb-16">
@@ -48,7 +53,7 @@ export function TechStackSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(180px,auto)]">
-          {CATEGORIES.map((category) => (
+          {categories.map((category) => (
             <div 
               key={category.id} 
               className={`group relative overflow-hidden rounded-3xl border border-edge-default bg-bg-surface p-8 transition-colors hover:border-edge-strong ${category.span}`}

@@ -1,6 +1,17 @@
 import React from 'react';
 
-const TESTIMONIALS = [
+export interface Testimonial {
+  readonly quote: string;
+  readonly author: string;
+  readonly role: string;
+}
+
+export interface TestimonialsProps {
+  readonly className?: string;
+  readonly testimonials?: ReadonlyArray<Testimonial>;
+}
+
+const DEFAULT_TESTIMONIALS: ReadonlyArray<Testimonial> = [
   {
     quote: "Joren's ability to translate complex design requirements into flawless, performant code is unmatched. The attention to micro-interactions completely elevated our product.",
     author: "Sarah Jenkins",
@@ -13,9 +24,9 @@ const TESTIMONIALS = [
   },
 ];
 
-export function TestimonialsSection() {
+export function TestimonialsSection({ className, testimonials = DEFAULT_TESTIMONIALS }: TestimonialsProps) {
   return (
-    <section id="testimonial" className="py-32 relative bg-bg-void overflow-hidden">
+    <section id="testimonial" className={`py-32 relative bg-bg-void overflow-hidden ${className ?? ''}`}>
       {/* Decorative blurred blobs */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[400px] h-[400px] bg-warm-500/10 rounded-full blur-[100px] pointer-events-none" />
@@ -26,7 +37,7 @@ export function TestimonialsSection() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {TESTIMONIALS.map((testimonial, idx) => (
+          {testimonials.map((testimonial, idx) => (
             <div 
               key={idx} 
               className="relative p-10 md:p-12 rounded-[2rem] bg-bg-surface border border-edge-subtle hover:border-edge-default transition-colors"
