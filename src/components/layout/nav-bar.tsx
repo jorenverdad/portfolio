@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Dialog } from '@base-ui/react/dialog';
 import { Menu, X } from 'lucide-react';
@@ -25,6 +25,19 @@ const DEFAULT_LINKS: ReadonlyArray<NavBarLink> = [
   { label: 'Testimonial', href: '#testimonial' },
   { label: 'Contact', href: '#contact' },
 ] as const;
+
+/**
+ * Scrolls to a section by ID and keeps the URL clean (no hash fragment).
+ */
+function scrollToSection(sectionId: string, e?: React.MouseEvent): void {
+  e?.preventDefault();
+  const target = document.getElementById(sectionId);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+  // Replace the URL to remove any hash, keeping it clean at "/"
+  window.history.replaceState(null, '', window.location.pathname);
+}
 
 export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
   const [open, setOpen] = useState(false);
@@ -178,7 +191,8 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
               return (
                 <a 
                   key={link.label} 
-                  href={link.href}
+                  href={`/${link.href}`}
+                  onClick={(e) => scrollToSection(link.href.replace('#', ''), e)}
                   ref={(el) => {
                     linkRefs.current[idx] = el;
                   }}
@@ -249,8 +263,11 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                     return (
                       <a 
                         key={link.label} 
-                        href={link.href} 
-                        onClick={() => setOpen(false)}
+                        href={`/${link.href}`}
+                        onClick={(e) => {
+                          scrollToSection(link.href.replace('#', ''), e);
+                          setOpen(false);
+                        }}
                         className={`text-lg font-medium transition-all duration-500 ease-out transform ${
                           isActive 
                             ? 'text-brand-500' 
