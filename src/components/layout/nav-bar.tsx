@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Dialog } from '@base-ui/react/dialog';
 import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { FaGithub } from 'react-icons/fa';
+import { FiSun, FiMoon } from 'react-icons/fi';
 
 export interface NavBarLink {
   readonly label: string;
@@ -49,13 +50,27 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
         </nav>
         
         {/* Desktop Actions */}
-        <div className="hidden md:flex items-center gap-4">
-          <Button variant="outline" className="border-edge-default hover:bg-bg-elevated transition-colors duration-200">
-            Contact Me
-          </Button>
-          <Button className="shadow-[0_0_20px_rgba(224,32,32,0.25)] transition-transform duration-200 hover:scale-[1.02]">
-            View My Work
-          </Button>
+        <div className="hidden md:flex items-center gap-3">
+          <a
+            href="https://github.com/jorenverdad"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 h-10 px-4 rounded-full border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 hover:text-foreground text-muted-foreground text-sm font-medium transition-all duration-300 group shadow-sm hover:shadow-[0_0_15px_rgba(224,32,32,0.1)] active:scale-95"
+          >
+            <FaGithub className="size-4.5 transition-transform duration-300 group-hover:scale-115 group-hover:rotate-6 text-foreground" />
+            <span>GitHub</span>
+          </a>
+          <button
+            type="button"
+            aria-label="Toggle dark mode"
+            className="h-10 w-10 rounded-full flex items-center justify-center border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-foreground transition-all duration-300 active:scale-95 cursor-pointer relative overflow-hidden group shadow-sm"
+          >
+            <div className="absolute inset-0 rounded-full bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
+            <div className="relative h-5 w-5 flex flex-col items-center justify-center transition-transform duration-500 group-hover:rotate-90">
+              <FiMoon className="size-4.5 absolute transition-all duration-300 opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-50 text-foreground" />
+              <FiSun className="size-4.5 absolute transition-all duration-300 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-brand-500" />
+            </div>
+          </button>
         </div>
 
         {/* Mobile Menu Trigger */}
@@ -94,13 +109,27 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                 </nav>
               </div>
 
-              <div className="flex flex-col gap-4 mt-12">
-                <Button variant="outline" className="w-full h-12 border-edge-default hover:bg-bg-elevated transition-colors duration-200">
-                  Contact Me
-                </Button>
-                <Button className="w-full h-12 shadow-[0_0_20px_rgba(224,32,32,0.25)] transition-transform duration-200 hover:scale-[1.02]">
-                  View My Work
-                </Button>
+              <div className="flex items-center gap-3 mt-12">
+                <a
+                  href="https://github.com/jorenverdad"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 hover:text-foreground text-muted-foreground text-base font-medium transition-all duration-300 group"
+                >
+                  <FaGithub className="size-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 text-foreground" />
+                  <span>jorenverdad</span>
+                </a>
+                <button
+                  type="button"
+                  aria-label="Toggle dark mode"
+                  className="h-12 w-12 rounded-xl flex items-center justify-center border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-foreground transition-all duration-300 active:scale-95 cursor-pointer relative overflow-hidden group"
+                >
+                  <div className="absolute inset-0 rounded-xl bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
+                  <div className="relative h-5 w-5 flex flex-col items-center justify-center transition-transform duration-500 group-hover:rotate-90">
+                    <FiMoon className="size-5 absolute transition-all duration-300 opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-50 text-foreground" />
+                    <FiSun className="size-5 absolute transition-all duration-300 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-brand-500" />
+                  </div>
+                </button>
               </div>
             </Dialog.Popup>
           </Dialog.Portal>
