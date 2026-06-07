@@ -7,6 +7,7 @@ import {
   useTransform,
   animate,
   useInView,
+  type Variants,
 } from 'framer-motion';
 import { FolderGit2, Users, Star, GitCommit } from 'lucide-react';
 import type { GitHubStats } from '@/lib/github';
@@ -98,7 +99,7 @@ export function GitHubStatsCard() {
     };
   }, []);
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -106,7 +107,7 @@ export function GitHubStatsCard() {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
@@ -149,7 +150,12 @@ export function GitHubStatsCard() {
         <div className="flex-1 w-full grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
           {STAT_ITEMS.map((item, index) => {
              const Icon = item.icon;
-             const value = stats?.[item.key] ?? 0;
+             const value = stats
+               ? (item.key === 'publicRepos' ? stats.publicRepos :
+                  item.key === 'followers' ? stats.followers :
+                  item.key === 'totalStars' ? stats.totalStars :
+                  item.key === 'totalCommits' ? stats.totalCommits : 0)
+               : 0;
 
              return (
                <motion.div 
