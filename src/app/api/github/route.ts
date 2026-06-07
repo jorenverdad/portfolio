@@ -1,21 +1,20 @@
 import { NextResponse } from 'next/server';
-import { cacheLife, cacheTag } from 'next/cache';
+import { unstable_cache } from 'next/cache';
 import { fetchGitHubStats } from '@/lib/github';
 import type { GitHubStats } from '@/lib/github';
 
 const GITHUB_USERNAME = 'jorenverdad';
 
-/**
- * Cached data layer — `"use cache"` works here because the return
- * value is a plain object, not a NextResponse class instance.
- */
-async function getCachedStats(): Promise<GitHubStats> {
-  'use cache';
-  cacheLife('hours');
-  cacheTag('github-stats');
-
-  return fetchGitHubStats(GITHUB_USERNAME);
-}
+const getCachedStats = unstable_cache(
+  async (): Promise<GitHubStats> => {
+    return fetchGitHubStats(GITHUB_USERNAME);
+  },
+  ['github-stats'],
+  {
+    tags: ['github-stats'],
+    revalidate: 3600,
+  }
+);
 
 export async function GET() {
   const stats = await getCachedStats();
