@@ -70,34 +70,20 @@ function AnimatedCounter({
 }
 
 // ---------------------------------------------------------------------------
+// Props
+// ---------------------------------------------------------------------------
+
+interface GitHubStatsCardProps {
+  readonly stats: GitHubStats;
+}
+
+// ---------------------------------------------------------------------------
 // Main Component
 // ---------------------------------------------------------------------------
 
-export function GitHubStatsCard() {
-  const [stats, setStats] = useState<GitHubStats | null>(null);
-  const [error, setError] = useState(false);
+export function GitHubStatsCard({ stats }: GitHubStatsCardProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-50px' });
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      try {
-        const res = await fetch('/api/github');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data: GitHubStats = await res.json();
-        if (!cancelled) setStats(data);
-      } catch {
-        if (!cancelled) setError(true);
-      }
-    }
-
-    void load();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -150,12 +136,7 @@ export function GitHubStatsCard() {
         <div className="flex-1 w-full grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
           {STAT_ITEMS.map((item, index) => {
              const Icon = item.icon;
-             const value = stats
-               ? (item.key === 'publicRepos' ? stats.publicRepos :
-                  item.key === 'followers' ? stats.followers :
-                  item.key === 'totalStars' ? stats.totalStars :
-                  item.key === 'totalCommits' ? stats.totalCommits : 0)
-               : 0;
+             const value = stats[item.key];
 
              return (
                <motion.div 
@@ -172,15 +153,7 @@ export function GitHubStatsCard() {
                     <Icon className="w-5 h-5" />
                  </div>
                  
-                 {error && !stats ? (
-                    <span className="font-heading text-5xl md:text-7xl lg:text-8xl font-light text-muted-foreground/20 tracking-tighter">--</span>
-                 ) : !stats ? (
-                    <div className="h-[60px] md:h-[80px] lg:h-[100px] flex items-center">
-                      <div className="h-12 w-24 bg-muted-foreground/10 animate-pulse rounded-md" />
-                    </div>
-                 ) : (
-                    <AnimatedCounter value={value} isInView={isInView} />
-                 )}
+                 <AnimatedCounter value={value} isInView={isInView} />
                  
                  <span className="text-[10px] md:text-xs font-mono text-muted-foreground uppercase tracking-widest mt-1 group-hover/stat:text-foreground transition-colors duration-500">
                    {item.label}

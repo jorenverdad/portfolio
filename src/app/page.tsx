@@ -8,8 +8,11 @@ import { ProjectsSection } from '@/components/sections/projects';
 import { ServicesSection } from '@/components/sections/services';
 import { TestimonialsSection } from '@/components/sections/testimonials';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
+import { fetchGitHubStats } from '@/lib/github';
 
-export default function Home() {
+export default async function Home() {
+  const githubStats = await fetchGitHubStats();
+
   return (
     <>
       <NavBar />
@@ -19,7 +22,7 @@ export default function Home() {
         </div>
         
         <ScrollReveal>
-          <AboutSection />
+          <AboutSection stats={githubStats} />
         </ScrollReveal>
         
         <ScrollReveal>
