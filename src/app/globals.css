@@ -53,6 +53,13 @@
   --color-brand-500: oklch(0.56 0.215 25);
   --color-edge-subtle: oklch(0.15 0.025 17);
   --color-warm-500: oklch(0.62 0.17 45);
+
+  --animate-marquee-right: marquee-right 40s linear infinite;
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
 }
 
 :root {

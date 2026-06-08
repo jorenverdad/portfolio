@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { GridPattern } from '@/components/ui/grid-pattern';
 import { GitHubStatsCard } from '@/components/sections/github-stats';
+import { SkillsMarquee } from '@/components/sections/skills-marquee';
 import ProfileImg from '@/assets/imgs/profile.jpg';
 import type { GitHubStats } from '@/lib/github';
 
@@ -204,6 +205,11 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
           {/* GitHub Stats - Spans 12 cols, not bento */}
           <motion.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-8">
             <GitHubStatsCard stats={stats} />
+          </motion.div>
+
+          {/* Infinite Skills Marquee - Spans 12 cols */}
+          <motion.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-12">
+            <SkillsMarquee />
           </motion.div>
 
         </div>
