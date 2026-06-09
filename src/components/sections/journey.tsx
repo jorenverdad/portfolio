@@ -314,7 +314,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
                     className="relative scroll-mt-28 group"
                   >
                     {/* Concentric Circle Node */}
-                    <div className="absolute -left-[45px] md:-left-[85px] top-4 select-none pointer-events-none flex items-center justify-center size-9 md:size-[52px]">
+                    <div className="absolute -left-[45px] md:-left-[73px] top-4 select-none pointer-events-none flex items-center justify-center size-9 md:size-[52px]">
                       {/* Outer spinning dash ring when active */}
                       <AnimatePresence>
                         {isActive && (
