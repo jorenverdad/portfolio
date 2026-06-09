@@ -80,41 +80,163 @@ const DEFAULT_MILESTONES: ReadonlyArray<JourneyMilestone> = [
 
 function TelemetryRadar() {
   return (
-    <div className="relative w-32 h-32 mx-auto flex items-center justify-center select-none opacity-80">
-      <svg className="w-full h-full text-brand-500/20" viewBox="0 0 100 100">
-        {/* Concentric circles */}
-        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 2" />
+    <div className="relative w-36 h-36 mx-auto flex items-center justify-center select-none">
+      {/* Inject custom CSS keyframes directly inside the component */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes radar-spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes radar-blip-1 {
+          0%, 8% { opacity: 0.15; transform: translate(-50%, -50%) scale(0.9); }
+          11% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); filter: drop-shadow(0 0 6px oklch(0.56 0.215 25)); }
+          16% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.0); }
+          40% { opacity: 0.15; transform: translate(-50%, -50%) scale(0.9); }
+          100% { opacity: 0.15; }
+        }
+        @keyframes radar-blip-2 {
+          0%, 63% { opacity: 0.1; transform: translate(-50%, -50%) scale(0.9); }
+          66% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); filter: drop-shadow(0 0 6px oklch(0.56 0.215 25)); }
+          71% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.0); }
+          95% { opacity: 0.1; transform: translate(-50%, -50%) scale(0.9); }
+          100% { opacity: 0.1; }
+        }
+        @keyframes radar-blip-3 {
+          0%, 81% { opacity: 0.1; transform: translate(-50%, -50%) scale(0.9); }
+          84% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); filter: drop-shadow(0 0 6px oklch(0.56 0.215 25)); }
+          89% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.0); }
+          10% { opacity: 0.1; transform: translate(-50%, -50%) scale(0.9); }
+          100% { opacity: 0.1; }
+        }
+        @keyframes hud-lock {
+          0%, 100% { border-color: rgba(224, 32, 32, 0.4); transform: scale(1); }
+          50% { border-color: rgba(224, 32, 32, 0.8); transform: scale(1.08); }
+        }
+        @keyframes ping-ring {
+          0% { transform: scale(0.5); opacity: 1; }
+          100% { transform: scale(2.2); opacity: 0; }
+        }
+      `}} />
+
+      {/* Rotating Conic Sweep Overlay */}
+      <div 
+        className="absolute inset-[2%] rounded-full overflow-hidden pointer-events-none" 
+        style={{
+          background: 'conic-gradient(from 0deg, transparent 0%, transparent 50%, oklch(0.56 0.215 25 / 0.02) 60%, oklch(0.56 0.215 25 / 0.1) 85%, oklch(0.56 0.215 25 / 0.22) 100%)',
+          animation: 'radar-spin 6s linear infinite',
+          transformOrigin: 'center center'
+        }}
+      >
+        {/* Leading edge glow line */}
+        <div className="absolute top-0 left-[calc(50%-1px)] w-[1.5px] h-[50%] bg-gradient-to-t from-brand-500/30 to-brand-500 shadow-[0_0_8px_oklch(0.56_0.215_25)]" />
+      </div>
+
+      {/* Grid SVG Layer */}
+      <svg className="w-full h-full text-brand-500/15 pointer-events-none z-10" viewBox="0 0 100 100">
+        {/* Fine angle markings (outer ticks) */}
+        <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.25" strokeDasharray="0.5 2" />
+        
+        {/* Concentric grid rings */}
+        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="0.75" strokeDasharray="3 3" />
         <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" strokeWidth="0.5" />
-        <circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4" />
+        <circle cx="50" cy="50" r="18" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1.5 1.5" />
+        <circle cx="50" cy="50" r="6" fill="none" stroke="currentColor" strokeWidth="0.25" />
         
         {/* Crosshairs */}
-        <line x1="50" y1="5" x2="50" y2="95" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1 3" />
-        <line x1="5" y1="50" x2="95" y2="50" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1 3" />
+        <line x1="50" y1="2" x2="50" y2="98" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1 2" />
+        <line x1="2" y1="50" x2="98" y2="50" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1 2" />
         
-        {/* Rotating Sweeper */}
-        <motion.g
-          animate={{ rotate: 360 }}
-          transition={{ duration: 6, ease: 'linear', repeat: Infinity }}
-          style={{ originX: '50px', originY: '50px' }}
-        >
-          <line x1="50" y1="50" x2="50" y2="5" stroke="oklch(0.56 0.215 25)" strokeWidth="1.5" strokeLinecap="round" />
-          <path
-            d="M 50 50 L 50 5 A 45 45 0 0 1 81.8 18.2 Z"
-            fill="url(#radar-sweep)"
-            opacity="0.15"
-          />
-        </motion.g>
-        
-        <defs>
-          <linearGradient id="radar-sweep" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="oklch(0.56 0.215 25)" stopOpacity="1" />
-            <stop offset="100%" stopColor="oklch(0.56 0.215 25)" stopOpacity="0" />
-          </linearGradient>
-        </defs>
+        {/* Grid coordinate helper lines (faint) */}
+        <circle cx="50" cy="50" r="42" fill="none" stroke="oklch(0.56 0.215 25 / 0.05)" strokeWidth="4" />
+
+        {/* HUD degree indicators */}
+        <text x="50" y="9" textAnchor="middle" dominantBaseline="middle" className="fill-brand-500/40 font-mono text-[3.5px] font-bold">00</text>
+        <text x="91" y="50.7" textAnchor="middle" dominantBaseline="middle" className="fill-brand-500/40 font-mono text-[3.5px] font-bold">09</text>
+        <text x="50" y="92.5" textAnchor="middle" dominantBaseline="middle" className="fill-brand-500/40 font-mono text-[3.5px] font-bold">18</text>
+        <text x="9" y="50.7" textAnchor="middle" dominantBaseline="middle" className="fill-brand-500/40 font-mono text-[3.5px] font-bold">27</text>
       </svg>
-      {/* Blinking center dot */}
+
+      {/* Target Blip 1 (Top-Right, ~39deg) */}
+      <div 
+        className="absolute z-20 pointer-events-none"
+        style={{
+          top: '25%',
+          left: '70%',
+          animation: 'radar-blip-1 6s linear infinite'
+        }}
+      >
+        {/* Blip Core */}
+        <div className="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_8px_oklch(0.56_0.215_25)]" />
+        {/* Sonar Ping Ring */}
+        <div 
+          className="absolute inset-[-6px] rounded-full border border-brand-500/40"
+          style={{
+            animation: 'ping-ring 2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite',
+            animationDelay: '0.65s'
+          }}
+        />
+        {/* Target Reticle / Tracking Box */}
+        <div 
+          className="absolute -top-1.5 -left-1.5 w-[18px] h-[18px] border border-brand-500/40 rounded-sm"
+          style={{
+            animation: 'hud-lock 3s ease-in-out infinite'
+          }}
+        >
+          {/* Tracking text */}
+          <span className="absolute -bottom-3.5 left-[-4px] font-mono text-[5px] text-brand-400/80 bg-bg-void/90 px-0.5 border border-brand-500/20 rounded-sm scale-90 origin-left">
+            TRK-2025
+          </span>
+        </div>
+      </div>
+
+      {/* Target Blip 2 (Bottom-Left, ~239deg) */}
+      <div 
+        className="absolute z-20 pointer-events-none"
+        style={{
+          top: '65%',
+          left: '25%',
+          animation: 'radar-blip-2 6s linear infinite'
+        }}
+      >
+        {/* Blip Core */}
+        <div className="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_8px_oklch(0.56_0.215_25)]" />
+        {/* Sonar Ping Ring */}
+        <div 
+          className="absolute inset-[-6px] rounded-full border border-brand-500/30"
+          style={{
+            animation: 'ping-ring 2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite',
+            animationDelay: '4.0s'
+          }}
+        />
+        <span className="absolute -top-3 left-[-6px] font-mono text-[5px] text-muted-foreground/40 scale-75 origin-bottom">
+          NODE_B
+        </span>
+      </div>
+
+      {/* Target Blip 3 (Top-Left, ~304deg) */}
+      <div 
+        className="absolute z-20 pointer-events-none"
+        style={{
+          top: '40%',
+          left: '35%',
+          animation: 'radar-blip-3 6s linear infinite'
+        }}
+      >
+        {/* Blip Core */}
+        <div className="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_8px_oklch(0.56_0.215_25)]" />
+        {/* Sonar Ping Ring */}
+        <div 
+          className="absolute inset-[-6px] rounded-full border border-brand-500/30"
+          style={{
+            animation: 'ping-ring 2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite',
+            animationDelay: '5.06s'
+          }}
+        />
+      </div>
+
+      {/* Center Origin Dot */}
       <div className="absolute w-2 h-2 rounded-full bg-brand-500 shadow-[0_0_8px_rgba(224,32,32,0.6)] animate-ping" />
-      <div className="absolute w-1.5 h-1.5 rounded-full bg-brand-500" />
+      <div className="absolute w-1.5 h-1.5 rounded-full bg-brand-500 z-30" />
     </div>
   );
 }
