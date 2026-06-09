@@ -300,7 +300,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
   };
 
   return (
-    <section id="journey" className={`py-24 md:py-32 bg-bg-void relative border-t border-edge-subtle overflow-hidden ${className ?? ''}`}>
+    <section id="journey" className={`py-24 md:py-32 bg-bg-void relative border-t border-edge-subtle overflow-clip ${className ?? ''}`}>
       {/* Background glowing rings */}
       <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
         <div className="absolute top-[40%] left-[60%] w-[60%] h-[60%] rounded-full bg-brand-500/10 blur-[130px]" />
@@ -311,18 +311,6 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
 
       <div className="container mx-auto px-6 md:px-8 max-w-7xl relative z-10">
         
-        {/* Section Label */}
-        <div className="flex items-center gap-3.5 mb-14 md:mb-20 select-none">
-          <span className="font-mono text-xs md:text-sm font-bold text-brand-500 tracking-widest bg-brand-500/10 px-2.5 py-1 rounded-md border border-brand-500/20">
-            02
-          </span>
-          <span className="font-mono text-xs md:text-sm font-medium text-muted-foreground/30">/</span>
-          <span className="font-mono text-xs md:text-sm font-bold uppercase tracking-[0.25em] text-muted-foreground">
-            Experience
-          </span>
-          <div className="h-px flex-1 bg-gradient-to-r from-edge-subtle/50 via-edge-subtle/10 to-transparent ml-4" />
-        </div>
-
         {/* 12-Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           
