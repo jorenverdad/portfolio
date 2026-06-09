@@ -8,6 +8,38 @@ import { GitHubStatsCard } from '@/components/sections/github-stats';
 import { SkillsMarquee } from '@/components/sections/skills-marquee';
 import ProfileImg from '@/assets/imgs/profile.jpg';
 import type { GitHubStats } from '@/lib/github';
+function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
+  const letters = Array.from(text);
+  return (
+    <motion.span
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={{
+        hidden: {},
+        visible: {
+          transition: {
+            delayChildren: delay,
+            staggerChildren: 0.04,
+          },
+        },
+      }}
+    >
+      {letters.map((char, index) => (
+        <motion.span
+          key={index}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1 },
+          }}
+          transition={{ duration: 0.01 }}
+        >
+          {char}
+        </motion.span>
+      ))}
+    </motion.span>
+  );
+}
 
 export interface AboutSectionProps {
   readonly className?: string;
@@ -121,65 +153,130 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
           {/* Bento Box: Stats/Details - Spans 4 cols */}
           <motion.div 
             variants={itemVariants}
-            className="md:col-span-4 rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md p-8 md:p-10 flex flex-col justify-between relative group shadow-2xl overflow-hidden"
+            className="md:col-span-4 rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md flex flex-col justify-start relative group shadow-2xl overflow-hidden min-h-[460px]"
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-warm-500 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
-            
             {/* Background glowing orb for depth */}
             <div className="absolute -top-24 -right-24 w-48 h-48 bg-brand-500/10 rounded-full blur-[60px] group-hover:bg-brand-500/20 transition-colors duration-700 pointer-events-none" />
 
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-sm font-mono text-muted-foreground uppercase tracking-widest flex items-center gap-2.5">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-500 opacity-60"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
-                  </span>
-                  Core Expertise
-                </p>
-                <div className="p-2 rounded-full bg-bg-base/50 border border-edge-subtle group-hover:border-brand-500/30 group-hover:bg-brand-500/10 transition-all duration-500">
-                  <svg className="w-4 h-4 text-muted-foreground group-hover:text-brand-500 transition-colors duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                </div>
+            {/* Header bar */}
+            <div className="flex items-center justify-between border-b border-edge-subtle/30 px-6 py-4 bg-bg-surface/10 select-none relative z-10">
+              <div className="flex items-center gap-1.5 group/dots">
+                <span className="w-3 h-3 rounded-full bg-[#ff5f56] flex items-center justify-center text-[7px] text-[#4c0002] font-semibold cursor-pointer relative">
+                  <span className="absolute opacity-0 group-hover/dots:opacity-100 transition-opacity duration-150 select-none">×</span>
+                </span>
+                <span className="w-3 h-3 rounded-full bg-[#ffbd2e] flex items-center justify-center text-[7px] text-[#5c3e00] font-semibold cursor-pointer relative">
+                  <span className="absolute opacity-0 group-hover/dots:opacity-100 transition-opacity duration-150 select-none">−</span>
+                </span>
+                <span className="w-3 h-3 rounded-full bg-[#27c93f] flex items-center justify-center text-[7px] text-[#006504] font-semibold cursor-pointer relative">
+                  <span className="absolute opacity-0 group-hover/dots:opacity-100 transition-opacity duration-150 select-none">+</span>
+                </span>
               </div>
-              
-              <h3 className="text-3xl font-bold text-foreground tracking-tight mb-4">Frontend Architecture</h3>
-              
-              <p className="text-sm text-muted-foreground leading-relaxed font-light mb-6 group-hover:text-foreground/90 transition-colors duration-300">
-                Building resilient, component-driven systems. I obsess over type safety, performance budgets, and creating fluid experiences that scale elegantly.
-              </p>
-
-              {/* Abstract Component Tree Visualization */}
-              <div className="flex flex-col gap-2.5 opacity-60 group-hover:opacity-100 transition-all duration-500 transform group-hover:translate-x-1">
-                <div className="h-1.5 w-10 bg-brand-500/80 rounded-full" />
-                <div className="flex gap-2 ml-4">
-                   <div className="h-1.5 w-16 bg-warm-500/80 rounded-full" />
-                   <div className="h-1.5 w-8 bg-brand-500/40 rounded-full" />
-                </div>
-                <div className="flex gap-2 ml-8">
-                   <div className="h-1.5 w-12 bg-muted-foreground/40 rounded-full group-hover:bg-muted-foreground/60 transition-colors" />
-                   <div className="h-1.5 w-6 bg-warm-500/40 rounded-full" />
-                   <div className="h-1.5 w-4 bg-brand-500/40 rounded-full" />
-                </div>
-                <div className="flex gap-2 ml-4">
-                   <div className="h-1.5 w-10 bg-muted-foreground/30 rounded-full group-hover:bg-muted-foreground/50 transition-colors" />
-                </div>
+              <div className="font-mono text-xs text-muted-foreground/60 flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-muted-foreground/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                expertise.ts
               </div>
+              <div className="w-12"></div>
             </div>
 
-            <div className="mt-10 relative z-10">
-              <p className="text-sm font-mono text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
-                Tech Arsenal
-                <span className="flex-1 h-px bg-edge-subtle group-hover:bg-edge-subtle/80 transition-colors"></span>
-              </p>
-              <div className="flex flex-wrap gap-2.5">
-                {['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'React 19'].map((tech) => (
-                  <span key={tech} className="px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-full border border-edge-subtle bg-bg-base/90 text-foreground hover:bg-brand-500 hover:text-white transition-colors duration-300 cursor-default shadow-sm hover:shadow-brand-500/20">
-                    {tech}
+            {/* Terminal Body */}
+            <div className="p-6 md:p-8 font-mono text-xs md:text-sm text-left flex-1 flex flex-col gap-5 relative z-10">
+              {/* Command 1: cat expertise.ts */}
+              <div className="space-y-2">
+                <div className="flex items-center flex-wrap font-mono">
+                  <span className="text-emerald-400 font-semibold">joren</span><span className="text-zinc-500">@</span><span className="text-brand-400">portfolio</span><span className="text-zinc-500">:</span><span className="text-blue-400">~/expertise</span><span className="text-zinc-500">$</span>
+                  <span className="text-foreground font-medium ml-2">
+                    <TypewriterText text="cat expertise.ts" delay={0.2} />
                   </span>
-                ))}
+                </div>
+
+                {/* Output 1: TypeSafe code block */}
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.9, duration: 0.4, ease: 'easeOut' }}
+                  className="pl-4 border-l-2 border-brand-500/20 text-muted-foreground/80 space-y-1 my-1"
+                >
+                  <div>
+                    <span className="text-purple-400 font-semibold">const</span>{' '}
+                    <span className="text-blue-400">expertise</span>{' '}
+                    <span className="text-purple-400">=</span>{' '}
+                    <span className="text-yellow-400">{'{'}</span>
+                  </div>
+                  <div className="pl-4">
+                    <span className="text-red-400">title</span>
+                    <span className="text-muted-foreground/60">:</span>{' '}
+                    <span className="text-emerald-400">"Frontend Architecture"</span>
+                    <span className="text-muted-foreground/60">,</span>
+                  </div>
+                  <div className="pl-4">
+                    <span className="text-red-400">focus</span>
+                    <span className="text-muted-foreground/60">:</span>{' '}
+                    <span className="text-emerald-400">"component-driven systems"</span>
+                    <span className="text-muted-foreground/60">,</span>
+                  </div>
+                  <div className="pl-4">
+                    <span className="text-red-400">obsessesOver</span>
+                    <span className="text-muted-foreground/60">:</span>{' '}
+                    <span className="text-purple-400">[</span>
+                    <span className="text-emerald-400">"type-safety"</span>
+                    <span className="text-muted-foreground/60">,</span>{' '}
+                    <span className="text-emerald-400">"perf-budgets"</span>
+                    <span className="text-muted-foreground/60">,</span>{' '}
+                    <span className="text-emerald-400">"fluid-motion"</span>
+                    <span className="text-purple-400">]</span>
+                  </div>
+                  <div>
+                    <span className="text-yellow-400">{'}'}</span>
+                    <span className="text-muted-foreground/60">;</span>
+                  </div>
+                </motion.div>
               </div>
+
+              {/* Command 2: list arsenal */}
+              <div className="space-y-3 pt-1">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 1.5 }}
+                  className="flex items-center flex-wrap font-mono"
+                >
+                  <span className="text-emerald-400 font-semibold">joren</span><span className="text-zinc-500">@</span><span className="text-brand-400">portfolio</span><span className="text-zinc-500">:</span><span className="text-blue-400">~/expertise</span><span className="text-zinc-500">$</span>
+                  <span className="text-foreground font-medium ml-2">
+                    <TypewriterText text="npx list-arsenal" delay={1.6} />
+                  </span>
+                </motion.div>
+
+                {/* Output 2: Badge pills */}
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 2.3, duration: 0.4, ease: 'easeOut' }}
+                  className="pl-4 flex flex-wrap gap-2.5"
+                >
+                  {['Next.js', 'TypeScript', 'Tailwind', 'Motion', 'React 19'].map((tech) => (
+                    <span key={tech} className="px-2.5 py-1 font-mono text-[10px] md:text-xs rounded border border-brand-500/20 bg-brand-500/5 text-brand-400 hover:bg-brand-500/10 hover:border-brand-500/40 hover:text-brand-300 hover:shadow-[0_0_12px_rgba(224,32,32,0.1)] transition-all duration-300 cursor-default select-none">
+                      {tech}
+                    </span>
+                  ))}
+                </motion.div>
+              </div>
+
+              {/* Blinking prompt */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 2.8 }}
+                className="flex items-center pt-1 mt-auto font-mono"
+              >
+                <span className="text-emerald-400 font-semibold">joren</span><span className="text-zinc-500">@</span><span className="text-brand-400">portfolio</span><span className="text-zinc-500">:</span><span className="text-blue-400">~/expertise</span><span className="text-zinc-500">$</span>
+                <span className="w-1.5 h-3.5 bg-brand-500 animate-pulse inline-block ml-2" />
+              </motion.div>
             </div>
           </motion.div>
 
