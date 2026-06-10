@@ -6,7 +6,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { GridPattern } from '@/components/ui/grid-pattern';
 import { GitHubStatsCard } from '@/components/sections/github-stats';
 import { SkillsMarquee } from '@/components/sections/skills-marquee';
-import ProfileImg from '@/assets/imgs/profile.jpg';
+import ProfileImg from '@/assets/imgs/profile.png';
 import type { GitHubStats } from '@/lib/github';
 function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
   const letters = Array.from(text);
@@ -143,9 +143,10 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                 src={ProfileImg} 
                 alt="Joren" 
                 fill 
-                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out scale-[1.03] group-hover:scale-100"
+                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out scale-[1.03] group-hover:scale-100 pointer-events-none select-none"
                 sizes="(max-width: 768px) 100vw, 33vw"
                 priority
+                draggable={false}
               />
             </motion.div>
           </motion.div>
