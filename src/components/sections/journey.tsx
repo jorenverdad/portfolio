@@ -29,23 +29,9 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
   const [activeTab, setActiveTab] = useState<SubSectionTab>('experience');
   const [[tabIndex, direction], setTabState] = useState<readonly [number, number]>([0, 0]);
 
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [activeEduIndex, setActiveEduIndex] = useState<number>(0);
-  const [activeCertIndex, setActiveCertIndex] = useState<number>(0);
-  const [activeActIndex, setActiveActIndex] = useState<number>(0);
-
   const sectionRef = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const milestoneRefs = useRef<Array<HTMLDivElement | null>>([]);
   
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-
-  // Scroll Progress Tracker for Experience Timeline Line
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start center', 'end center']
-  });
-  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   // Section scroll progress for HUD Menu visibility
   const { scrollYProgress: sectionProgress } = useScroll({
@@ -56,55 +42,6 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
   useMotionValueEvent(sectionProgress, "change", (latest) => {
     setIsMenuVisible(latest > 0 && latest < 1);
   });
-
-  // Milestones Intersection Observer (for tracking which milestone card is focused in view)
-  useEffect(() => {
-    if (activeTab !== 'experience') return;
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '-25% 0px -45% 0px',
-      threshold: 0.1,
-    };
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          const index = parseInt(id.replace('milestone-', ''), 10);
-          if (!isNaN(index)) {
-            setActiveIndex(index);
-          }
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    milestoneRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [milestones, activeTab]);
-
-  const scrollToMilestone = (index: number) => {
-    const element = document.getElementById(`milestone-${index}`);
-    if (element) {
-      const offset = 120;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-      setActiveIndex(index);
-    }
-  };
 
   const tabs: readonly SubSectionTab[] = ['experience', 'education', 'certifications', 'activities'] as const;
 
@@ -169,7 +106,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
       
       <GridPattern className="opacity-[0.06]" />
 
-      <div ref={containerRef} className="container mx-auto px-6 md:px-8 max-w-7xl relative z-10 min-h-[60vh]">
+      <div className="container mx-auto px-6 md:px-8 max-w-7xl relative z-10 min-h-[60vh]">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={activeTab}
@@ -186,30 +123,17 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
           >
             {activeTab === 'experience' && (
               <ExperienceView
-                activeIndex={activeIndex}
                 milestones={milestones}
-                scrollToMilestone={scrollToMilestone}
-                scaleY={scaleY}
-                milestoneRefs={milestoneRefs}
               />
             )}
             {activeTab === 'education' && (
-              <EducationView 
-                activeEduIndex={activeEduIndex}
-                setActiveEduIndex={setActiveEduIndex}
-              />
+              <EducationView />
             )}
             {activeTab === 'certifications' && (
-              <CertificationsView
-                activeCertIndex={activeCertIndex}
-                setActiveCertIndex={setActiveCertIndex}
-              />
+              <CertificationsView />
             )}
             {activeTab === 'activities' && (
-              <ActivitiesView
-                activeActIndex={activeActIndex}
-                setActiveActIndex={setActiveActIndex}
-              />
+              <ActivitiesView />
             )}
           </motion.div>
         </AnimatePresence>

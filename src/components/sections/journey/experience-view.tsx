@@ -1,27 +1,75 @@
 'use client';
 
-import type { MutableRefObject } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import type { MotionValue } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { ChevronRight, Briefcase, MapPin } from 'lucide-react';
 import { TelemetryRadar } from './telemetry';
 import { JourneyMilestone } from './types';
+import { DEFAULT_MILESTONES } from './constants';
 
 export interface ExperienceViewProps {
-  readonly activeIndex: number;
-  readonly milestones: ReadonlyArray<JourneyMilestone>;
-  readonly scrollToMilestone: (index: number) => void;
-  readonly scaleY: MotionValue<number>;
-  readonly milestoneRefs: MutableRefObject<Array<HTMLDivElement | null>>;
+  readonly milestones?: ReadonlyArray<JourneyMilestone>;
 }
 
 export function ExperienceView({ 
-  activeIndex, 
-  milestones, 
-  scrollToMilestone, 
-  scaleY, 
-  milestoneRefs 
+  milestones = DEFAULT_MILESTONES 
 }: ExperienceViewProps) {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const milestoneRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const timelineRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start center', 'end center']
+  });
+  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-25% 0px -45% 0px',
+      threshold: 0.1,
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          const index = parseInt(id.replace('milestone-', ''), 10);
+          if (!isNaN(index)) {
+            setActiveIndex(index);
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    milestoneRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [milestones]);
+
+  const scrollToMilestone = (index: number) => {
+    setActiveIndex(index);
+    const element = document.getElementById(`milestone-${index}`);
+    if (element) {
+      const offset = 120;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
       {/* Sticky Telemetry Console (4-cols) */}
@@ -96,7 +144,7 @@ export function ExperienceView({
       </div>
 
       {/* Timeline Cards (8-cols) */}
-      <div className="lg:col-span-8 relative">
+      <div ref={timelineRef} className="lg:col-span-8 relative">
         <div className="absolute left-3 md:left-8 top-3 bottom-3 w-[2px] bg-edge-subtle/40 pointer-events-none z-0">
           <motion.div
             style={{ scaleY }}

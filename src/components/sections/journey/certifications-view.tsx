@@ -1,22 +1,58 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { ChevronRight, Award, ShieldCheck } from 'lucide-react';
 import { CertificationsTelemetryDashboard } from './telemetry';
 import { CERTIFICATION_ITEMS } from './constants';
 import { CertificationItem } from './types';
 
 export interface CertificationsViewProps {
-  readonly activeCertIndex: number;
-  readonly setActiveCertIndex: (idx: number) => void;
   readonly items?: ReadonlyArray<CertificationItem>;
 }
 
 export function CertificationsView({ 
-  activeCertIndex, 
-  setActiveCertIndex, 
   items = CERTIFICATION_ITEMS 
 }: CertificationsViewProps) {
+  const [activeCertIndex, setActiveCertIndex] = useState<number>(0);
+  const certificationsRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const timelineRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start center', 'end center']
+  });
+  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-25% 0px -45% 0px',
+      threshold: 0.1,
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          const index = parseInt(id.replace('certification-', ''), 10);
+          if (!isNaN(index)) {
+            setActiveCertIndex(index);
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    certificationsRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [items]);
+
   const scrollToCert = (index: number) => {
     setActiveCertIndex(index);
     const element = document.getElementById(`certification-${index}`);
@@ -104,9 +140,12 @@ export function CertificationsView({
       </div>
 
       {/* Right Content Credentials List (8-cols) */}
-      <div className="lg:col-span-8 relative">
+      <div ref={timelineRef} className="lg:col-span-8 relative">
         <div className="absolute left-3 md:left-8 top-3 bottom-3 w-[2px] bg-edge-subtle/40 pointer-events-none z-0">
-          <div className="w-full h-full bg-brand-500/20 origin-top" />
+          <motion.div
+            style={{ scaleY }}
+            className="w-full h-full bg-gradient-to-b from-brand-500 via-warm-500 to-brand-500 origin-top shadow-[0_0_12px_rgba(224,32,32,0.4)]"
+          />
         </div>
 
         <div className="space-y-12 md:space-y-16 pl-10 md:pl-20 relative z-10">
@@ -116,9 +155,27 @@ export function CertificationsView({
               <div
                 key={index}
                 id={`certification-${index}`}
+                ref={(el) => {
+                  certificationsRefs.current[index] = el;
+                }}
                 className="relative scroll-mt-28 group"
               >
                 <div className="absolute -left-[45px] md:-left-[73px] top-4 select-none pointer-events-none flex items-center justify-center size-9 md:size-[52px]">
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.svg
+                        initial={{ scale: 0.6, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1, rotate: 360 }}
+                        exit={{ scale: 0.6, opacity: 0 }}
+                        transition={{ rotate: { duration: 8, ease: 'linear', repeat: Infinity }, default: { duration: 0.3 } }}
+                        className="absolute size-9 md:size-[48px] text-brand-500/40"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="10 8" />
+                      </motion.svg>
+                    )}
+                  </AnimatePresence>
+                  
                   <div className={`absolute rounded-full transition-all duration-500 ${
                     isActive 
                       ? 'size-6 md:size-8 bg-brand-500/20 shadow-[0_0_15px_rgba(224,32,32,0.5)] scale-110' 
