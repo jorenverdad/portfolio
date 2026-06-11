@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValueEvent } from 'framer-motion';
 import { GridPattern } from '@/components/ui/grid-pattern';
 import { Briefcase, GraduationCap, Award, Activity } from 'lucide-react';
 
@@ -47,60 +47,15 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
   });
   const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-  // Left Column Observer for showing/hiding the floating HUD menu (detects sticky left column visibility)
-  useEffect(() => {
-    let activeObserver: IntersectionObserver | null = null;
-    let currentObservedEl: Element | null = null;
+  // Section scroll progress for HUD Menu visibility
+  const { scrollYProgress: sectionProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start 10%', 'end 90%']
+  });
 
-    const setupObserver = () => {
-      const leftCol = sectionRef.current?.querySelector('.journey-left-column');
-      if (leftCol === currentObservedEl) return;
-
-      if (activeObserver && currentObservedEl) {
-        activeObserver.unobserve(currentObservedEl);
-      }
-
-      if (leftCol) {
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            setIsMenuVisible(entry?.isIntersecting ?? false);
-          },
-          {
-            root: null,
-            rootMargin: '-8% 0px -8% 0px',
-            threshold: 0.01
-          }
-        );
-        observer.observe(leftCol);
-        activeObserver = observer;
-        currentObservedEl = leftCol;
-      } else {
-        setIsMenuVisible(false);
-      }
-    };
-
-    // Initial setup
-    setupObserver();
-
-    // Observe child views dynamic mounts/unmounts (for active tab switches)
-    const mutationObserver = new MutationObserver(() => {
-      setupObserver();
-    });
-
-    if (sectionRef.current) {
-      mutationObserver.observe(sectionRef.current, {
-        childList: true,
-        subtree: true
-      });
-    }
-
-    return () => {
-      mutationObserver.disconnect();
-      if (activeObserver && currentObservedEl) {
-        activeObserver.unobserve(currentObservedEl);
-      }
-    };
-  }, []);
+  useMotionValueEvent(sectionProgress, "change", (latest) => {
+    setIsMenuVisible(latest > 0 && latest < 1);
+  });
 
   // Milestones Intersection Observer (for tracking which milestone card is focused in view)
   useEffect(() => {
