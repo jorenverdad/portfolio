@@ -25,7 +25,7 @@ export function ExperienceView({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
       {/* Sticky Telemetry Console (4-cols) */}
-      <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit flex flex-col gap-6">
+      <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit flex flex-col gap-6 journey-left-column">
         <div>
           <h2 className="font-heading text-4xl md:text-5xl font-bold tracking-tight text-foreground uppercase mb-4">
             The <span className="text-brand-500">Chronology.</span>

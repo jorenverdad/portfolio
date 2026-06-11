@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { GridPattern } from '@/components/ui/grid-pattern';
 import { Briefcase, GraduationCap, Award, Activity } from 'lucide-react';
@@ -46,27 +47,57 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
   });
   const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
-  // Section Observer for showing/hiding the floating HUD menu
+  // Left Column Observer for showing/hiding the floating HUD menu (detects sticky left column visibility)
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsMenuVisible(entry?.isIntersecting ?? false);
-      },
-      {
-        root: null,
-        rootMargin: '-10% 0px -10% 0px',
-        threshold: 0.05
-      }
-    );
+    let activeObserver: IntersectionObserver | null = null;
+    let currentObservedEl: Element | null = null;
 
-    const currentSection = sectionRef.current;
-    if (currentSection) {
-      observer.observe(currentSection);
+    const setupObserver = () => {
+      const leftCol = sectionRef.current?.querySelector('.journey-left-column');
+      if (leftCol === currentObservedEl) return;
+
+      if (activeObserver && currentObservedEl) {
+        activeObserver.unobserve(currentObservedEl);
+      }
+
+      if (leftCol) {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            setIsMenuVisible(entry?.isIntersecting ?? false);
+          },
+          {
+            root: null,
+            rootMargin: '-8% 0px -8% 0px',
+            threshold: 0.01
+          }
+        );
+        observer.observe(leftCol);
+        activeObserver = observer;
+        currentObservedEl = leftCol;
+      } else {
+        setIsMenuVisible(false);
+      }
+    };
+
+    // Initial setup
+    setupObserver();
+
+    // Observe child views dynamic mounts/unmounts (for active tab switches)
+    const mutationObserver = new MutationObserver(() => {
+      setupObserver();
+    });
+
+    if (sectionRef.current) {
+      mutationObserver.observe(sectionRef.current, {
+        childList: true,
+        subtree: true
+      });
     }
 
     return () => {
-      if (currentSection) {
-        observer.unobserve(currentSection);
+      mutationObserver.disconnect();
+      if (activeObserver && currentObservedEl) {
+        activeObserver.unobserve(currentObservedEl);
       }
     };
   }, []);
@@ -169,6 +200,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
   ] as const;
 
   return (
+    <>
     <section 
       id="journey" 
       ref={sectionRef}
@@ -227,97 +259,115 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
           </motion.div>
         </AnimatePresence>
       </div>
-
-      {/* ============================================================================
-          Responsive Floating HUD Menus
-          ============================================================================ */}
-
-      {/* Desktop HUD Sidebar (Visible md and up) */}
-      <AnimatePresence>
-        {isMenuVisible && (
-          <motion.div
-            initial={{ opacity: 0, x: 50, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 50, scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 25 }}
-            className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col items-center gap-4 bg-bg-surface/40 backdrop-blur-xl border border-edge-subtle/80 px-3 py-6 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.5)] select-none"
-          >
-            <div className="w-1.5 h-1.5 rounded-full bg-brand-500/40 animate-pulse mb-1" />
-            
-            {MENU_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => switchTab(item.id)}
-                  aria-label={`Switch to ${item.label}`}
-                  className="group relative w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeHUDTabDesktop"
-                      className="absolute inset-0 rounded-full bg-brand-500/15 border border-brand-500/30 shadow-[0_0_15px_rgba(224,32,32,0.15)]"
-                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                  
-                  <Icon className={`size-5 relative z-10 transition-transform duration-300 group-hover:scale-110 ${isActive ? 'text-brand-400' : 'text-muted-foreground/60 group-hover:text-foreground'}`} />
-                  
-                  <div className="absolute right-14 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                    <div className="bg-bg-surface border border-edge-subtle/80 text-foreground font-mono text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-md whitespace-nowrap shadow-lg">
-                      <span className="text-brand-500 mr-1.5">//</span>{item.label}
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-            
-            <div className="w-1.5 h-1.5 rounded-full bg-brand-500/40 animate-pulse mt-1" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Mobile HUD Dock (Visible below md) */}
-      <AnimatePresence>
-        {isMenuVisible && (
-          <motion.div
-            initial={{ opacity: 0, y: 50, x: '-50%', scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, x: '-50%', scale: 1 }}
-            exit={{ opacity: 0, y: 50, x: '-50%', scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 25 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex md:hidden items-center gap-3 bg-bg-surface/75 backdrop-blur-xl border border-edge-subtle/80 px-4 py-2.5 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.5)] select-none max-w-[95vw]"
-          >
-            {MENU_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => switchTab(item.id)}
-                  aria-label={`Switch to ${item.label}`}
-                  className="group relative px-3 py-2 rounded-full flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeHUDTabMobile"
-                      className="absolute inset-0 rounded-full bg-brand-500/10 border border-brand-500/20 shadow-[0_0_12px_rgba(224,32,32,0.1)]"
-                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                  
-                  <Icon className={`size-4.5 relative z-10 ${isActive ? 'text-brand-400' : 'text-muted-foreground/60'}`} />
-                  {isActive && (
-                    <span className="relative z-10 font-mono text-[9px] font-bold uppercase tracking-wider text-brand-400 whitespace-nowrap">
-                      {item.label}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
+
+    {/* ============================================================================
+        Responsive Floating HUD Menus — portaled to document.body to escape
+        ScrollReveal transform ancestor that breaks fixed positioning
+        ============================================================================ */}
+
+    {typeof document !== 'undefined' && createPortal(
+      <>
+    {/* Desktop HUD Sidebar (Visible xl and up) */}
+    <AnimatePresence>
+      {isMenuVisible && (
+        <motion.div
+          initial={{ opacity: 0, x: 30, scale: 0.95 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          exit={{ 
+            opacity: 0, 
+            x: 20, 
+            scale: 0.95, 
+            transition: { duration: 0.5, ease: 'easeInOut' } 
+          }}
+          transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+          className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden xl:flex flex-col items-center gap-4 bg-bg-surface/40 backdrop-blur-xl border border-edge-subtle/80 px-3 py-6 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.5)] select-none"
+        >
+          <div className="w-1.5 h-1.5 rounded-full bg-brand-500/40 animate-pulse mb-1" />
+          
+          {MENU_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => switchTab(item.id)}
+                aria-label={`Switch to ${item.label}`}
+                className="group relative w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeHUDTabDesktop"
+                    className="absolute inset-0 rounded-full bg-brand-500/15 border border-brand-500/30 shadow-[0_0_15px_rgba(224,32,32,0.15)]"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
+                
+                <Icon className={`size-5 relative z-10 transition-transform duration-300 group-hover:scale-110 ${isActive ? 'text-brand-400' : 'text-muted-foreground/60 group-hover:text-foreground'}`} />
+                
+                <div className="absolute right-14 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                  <div className="bg-bg-surface border border-edge-subtle/80 text-foreground font-mono text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-md whitespace-nowrap shadow-lg">
+                    <span className="text-brand-500 mr-1.5">//</span>{item.label}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+          
+          <div className="w-1.5 h-1.5 rounded-full bg-brand-500/40 animate-pulse mt-1" />
+        </motion.div>
+      )}
+    </AnimatePresence>
+
+    {/* Mobile HUD Dock (Visible below xl) */}
+    <AnimatePresence>
+      {isMenuVisible && (
+        <motion.div
+          initial={{ opacity: 0, y: 30, x: '-50%', scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, x: '-50%', scale: 1 }}
+          exit={{ 
+            opacity: 0, 
+            y: 20, 
+            scale: 0.95, 
+            transition: { duration: 0.5, ease: 'easeInOut' } 
+          }}
+          transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex xl:hidden items-center gap-3 bg-bg-surface/75 backdrop-blur-xl border border-edge-subtle/80 px-4 py-2.5 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.5)] select-none max-w-[95vw]"
+        >
+          {MENU_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => switchTab(item.id)}
+                aria-label={`Switch to ${item.label}`}
+                className="group relative px-3 py-2 rounded-full flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeHUDTabMobile"
+                    className="absolute inset-0 rounded-full bg-brand-500/10 border border-brand-500/20 shadow-[0_0_12px_rgba(224,32,32,0.1)]"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
+                
+                <Icon className={`size-4.5 relative z-10 ${isActive ? 'text-brand-400' : 'text-muted-foreground/60'}`} />
+                {isActive && (
+                  <span className="relative z-10 font-mono text-[9px] font-bold uppercase tracking-wider text-brand-400 whitespace-nowrap">
+                    {item.label}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </motion.div>
+      )}
+    </AnimatePresence>
+      </>,
+      document.body
+    )}
+    </>
   );
 }
+
