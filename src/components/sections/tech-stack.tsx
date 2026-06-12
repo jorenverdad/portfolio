@@ -81,7 +81,7 @@ export function TechStackSection({ className }: { className?: string }) {
   });
 
   const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const ySpring = useSpring(y1, { stiffness: 60, damping: 25 });
+  const ySpring = useSpring(y1, { stiffness: 10, damping: 100 });
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -221,7 +221,7 @@ export function TechStackSection({ className }: { className?: string }) {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-100px" }}
-            className="grid gap-2 md:gap-3 lg:gap-4 pointer-events-auto p-4 md:p-12 w-max"
+            className="grid gap-2 md:gap-3 lg:gap-4 pointer-events-auto w-max"
             style={{ 
               gridTemplateColumns: `repeat(${gridData.cols}, max-content)`,
               gridTemplateRows: `repeat(${gridData.rows}, max-content)`,
