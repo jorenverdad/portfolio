@@ -2,60 +2,59 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import {
-  SiReact,
-  SiNextdotjs,
-  SiTypescript,
-  SiTailwindcss,
-  SiFramer,
-  SiNodedotjs,
-  SiPostgresql,
-  SiPrisma,
-  SiGit,
-  SiVercel,
-  SiDocker,
-  SiEslint,
-  SiPrettier,
-  SiFigma,
-} from 'react-icons/si';
-import type { IconBaseProps } from 'react-icons';
-
-// Zustand doesn't have a Simple Icons entry in react-icons.
-// Using a custom bear SVG based on the official Zustand logo.
-function ZustandIcon(props: IconBaseProps) {
-  return (
-    <svg
-      stroke="currentColor"
-      fill="currentColor"
-      strokeWidth="0"
-      viewBox="0 0 24 24"
-      height="1em"
-      width="1em"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3-5.5C17 9.02 14.76 8 12 8s-5 1.02-5 2.5c0 .53.31 1.02.84 1.42C8.62 10.78 10.18 10 12 10s3.38.78 4.16 1.92c.53-.4.84-.89.84-1.42z" />
-    </svg>
-  );
-}
+import { SiPrettier } from 'react-icons/si';
 
 // The tech stack list. Adding to this array will automatically re-center the cluster!
+// Organized by Frontend, Backend, Tools/DevOps, and OS categories.
 const TECH_STACK = [
-  { name: 'React', icon: SiReact, color: '#61DAFB' },
-  { name: 'Next.js', icon: SiNextdotjs, color: '#000000', darkColor: '#FFFFFF' },
-  { name: 'TypeScript', icon: SiTypescript, color: '#3178C6' },
-  { name: 'Tailwind CSS', icon: SiTailwindcss, color: '#06B6D4' },
-  { name: 'Framer Motion', icon: SiFramer, color: '#0055FF' },
-  { name: 'Zustand', icon: ZustandIcon, color: '#443E38', darkColor: '#F4F4F5' },
-  { name: 'Node.js', icon: SiNodedotjs, color: '#339933' },
-  { name: 'PostgreSQL', icon: SiPostgresql, color: '#4169E1' },
-  { name: 'Prisma', icon: SiPrisma, color: '#2D3748', darkColor: '#FFFFFF' },
-  { name: 'Figma', icon: SiFigma, color: '#F24E1E' },
-  { name: 'Git', icon: SiGit, color: '#F05032' },
-  { name: 'Vercel', icon: SiVercel, color: '#000000', darkColor: '#FFFFFF' },
-  { name: 'Docker', icon: SiDocker, color: '#2496ED' },
-  { name: 'ESLint', icon: SiEslint, color: '#4B32C3' },
-  { name: 'Prettier', icon: SiPrettier, color: '#F7B93E' },
+  // ==========================================
+  // FRONTEND / MOBILE / UI
+  // ==========================================
+  { name: 'HTML5', iconClass: 'devicon-html5-plain', color: '#E34F26', category: 'Frontend' },
+  { name: 'CSS3', iconClass: 'devicon-css3-plain', color: '#1572B6', category: 'Frontend' },
+  { name: 'JavaScript', iconClass: 'devicon-javascript-plain', color: '#F7DF1E', category: 'Frontend' },
+  { name: 'TypeScript', iconClass: 'devicon-typescript-plain', color: '#3178C6', category: 'Frontend' },
+  { name: 'React', iconClass: 'devicon-react-original', color: '#61DAFB', category: 'Frontend' },
+  { name: 'Next.js', iconClass: 'devicon-nextjs-plain', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend' },
+  { name: 'Vue.js', iconClass: 'devicon-vuejs-plain', color: '#4FC08D', category: 'Frontend' },
+  { name: 'React Native', iconClass: 'devicon-react-original', color: '#61DAFB', category: 'Frontend' },
+  { name: 'Capacitor', iconClass: 'devicon-capacitor-plain', color: '#119EFF', category: 'Frontend' },
+  { name: 'Tailwind CSS', iconClass: 'devicon-tailwindcss-original', color: '#06B6D4', category: 'Frontend' },
+  { name: 'Bootstrap', iconClass: 'devicon-bootstrap-plain', color: '#7952B3', category: 'Frontend' },
+  { name: 'Framer Motion', iconClass: 'devicon-framermotion-original', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend' },
+  { name: 'Zustand', iconClass: 'devicon-zustand-plain', color: '#443E38', darkColor: '#F4F4F5', category: 'Frontend' },
+  { name: 'Vite', iconClass: 'devicon-vite-plain', color: '#646CFF', category: 'Frontend' },
+  { name: 'Figma', iconClass: 'devicon-figma-plain', color: '#F24E1E', category: 'Frontend' },
+
+  // ==========================================
+  // BACKEND / DATABASE / CLOUD
+  // ==========================================
+  { name: 'Node.js', iconClass: 'devicon-nodejs-plain', color: '#339933', category: 'Backend' },
+  { name: 'Python', iconClass: 'devicon-python-plain', color: '#3776AB', category: 'Backend' },
+  { name: 'Django', iconClass: 'devicon-django-plain', color: '#092E20', darkColor: '#44B78B', category: 'Backend' },
+  { name: 'Laravel', iconClass: 'devicon-laravel-original', color: '#FF2D20', category: 'Backend' },
+  { name: 'PostgreSQL', iconClass: 'devicon-postgresql-plain', color: '#4169E1', category: 'Backend' },
+  { name: 'Supabase', iconClass: 'devicon-supabase-plain', color: '#3ECF8E', category: 'Backend' },
+  { name: 'Firebase', iconClass: 'devicon-firebase-plain', color: '#FFCA28', category: 'Backend' },
+  { name: 'Prisma', iconClass: 'devicon-prisma-original', color: '#2D3748', darkColor: '#FFFFFF', category: 'Backend' },
+
+  // ==========================================
+  // DEV TOOLS / TESTING / CI-CD
+  // ==========================================
+  { name: 'Git', iconClass: 'devicon-git-plain', color: '#F05032', category: 'Tools' },
+  { name: 'Vercel', iconClass: 'devicon-vercel-original', color: '#000000', darkColor: '#FFFFFF', category: 'Tools' },
+  { name: 'Docker', iconClass: 'devicon-docker-plain', color: '#2496ED', category: 'Tools' },
+  { name: 'Postman', iconClass: 'devicon-postman-plain', color: '#FF6C37', category: 'Tools' },
+  { name: 'Playwright', iconClass: 'devicon-playwright-plain', color: '#2EAD33', category: 'Tools' },
+  { name: 'ESLint', iconClass: 'devicon-eslint-plain', color: '#4B32C3', category: 'Tools' },
+  { name: 'Prettier', icon: SiPrettier, color: '#F7B93E', category: 'Tools' },
+
+  // ==========================================
+  // OPERATING SYSTEMS
+  // ==========================================
+  { name: 'Windows', iconClass: 'devicon-windows8-original', color: '#0078D4', category: 'OS' },
+  { name: 'Linux', iconClass: 'devicon-linux-plain', color: '#FCC624', category: 'OS' },
+  { name: 'Kali Linux', iconClass: 'devicon-kalilinux-original', color: '#557C94', category: 'OS' },
 ];
 
 interface CellInfo {
@@ -231,8 +230,12 @@ function Cell({ cell }: { cell: CellInfo }) {
         hover:border-white/[0.2] dark:hover:border-white/[0.2]"
     >
       {/* Icon — uses darkColor in dark mode so dark-logoed brands remain visible */}
-      <div className="relative z-10 text-2xl md:text-[28px] transition-transform duration-300 group-hover:scale-110">
-        <tech.icon style={{ color: tech.darkColor ?? tech.color }} />
+      <div className="relative z-10 text-2xl md:text-[28px] flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+        {tech.iconClass ? (
+          <i className={tech.iconClass} style={{ color: tech.darkColor ?? tech.color }} />
+        ) : tech.icon ? (
+          <tech.icon style={{ color: tech.darkColor ?? tech.color }} />
+        ) : null}
       </div>
 
       {/* Tooltip */}

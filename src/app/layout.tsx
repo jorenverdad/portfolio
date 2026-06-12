@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, DM_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "devicon/devicon.min.css";
 
 const fontHeading = Outfit({
   variable: "--font-outfit",
