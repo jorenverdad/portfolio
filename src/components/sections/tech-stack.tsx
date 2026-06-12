@@ -4,8 +4,6 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, Variants } from 'framer-motion';
 import StackIcon from 'tech-stack-icons';
 
-// The tech stack list. Adding to this array will automatically re-center the cluster!
-// Organized by Frontend, Backend, Tools/DevOps, and OS categories.
 const TECH_STACK = [
   // ==========================================
   // FRONTEND / MOBILE / UI
@@ -187,10 +185,8 @@ export function TechStackSection({ className }: { className?: string }) {
       ref={containerRef}
       className={`py-32 md:py-48 bg-bg-base relative overflow-hidden flex flex-col items-center justify-center ${className ?? ''}`}
     >
-      {/* Dynamic ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-500/10 dark:bg-brand-500/10 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="container mx-auto px-6 relative z-30 mb-2">
+      <div className="container mx-auto px-6 relative z-30 mb-0">
         <div className="mb-8 text-center flex flex-col items-center">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -219,27 +215,64 @@ export function TechStackSection({ className }: { className?: string }) {
         style={{ y: ySpring }}
         className="w-full flex justify-center items-center relative z-20 pointer-events-none overflow-visible"
       >
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid gap-2 md:gap-3 lg:gap-4 pointer-events-auto p-4 md:p-12 w-max"
-          style={{ 
-            gridTemplateColumns: `repeat(${gridData.cols}, max-content)`,
-            gridTemplateRows: `repeat(${gridData.rows}, max-content)`,
-            maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)',
-            WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)',
-          }}
-        >
-          {gridData.cells.map((cell) => (
-            <Cell 
-              key={cell.index} 
-              cell={cell} 
-              isDark={isDark}
-            />
-          ))}
-        </motion.div>
+        <div className="relative">
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            className="grid gap-2 md:gap-3 lg:gap-4 pointer-events-auto p-4 md:p-12 w-max"
+            style={{ 
+              gridTemplateColumns: `repeat(${gridData.cols}, max-content)`,
+              gridTemplateRows: `repeat(${gridData.rows}, max-content)`,
+            }}
+          >
+            {gridData.cells.map((cell) => (
+              <Cell 
+                key={cell.index} 
+                cell={cell} 
+                isDark={isDark}
+              />
+            ))}
+          </motion.div>
+
+          {/* Gradient fade overlays — blend grid edges into the background */}
+          {/* Radial vignette: large soft ellipse, transparent center → bg color edges */}
+          <div 
+            className="absolute inset-0 pointer-events-none z-10"
+            style={{
+              background: 'radial-gradient(ellipse 55% 60% at 50% 50%, transparent 0%, oklch(0.095 0.018 17 / 0.0) 20%, oklch(0.095 0.018 17 / 0.45) 50%, oklch(0.095 0.018 17 / 0.85) 70%, oklch(0.095 0.018 17) 90%)',
+            }}
+          />
+          {/* Left edge fade */}
+          <div 
+            className="absolute inset-y-0 left-0 w-[25%] pointer-events-none z-10"
+            style={{
+              background: 'linear-gradient(to right, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)',
+            }}
+          />
+          {/* Right edge fade */}
+          <div 
+            className="absolute inset-y-0 right-0 w-[25%] pointer-events-none z-10"
+            style={{
+              background: 'linear-gradient(to left, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)',
+            }}
+          />
+          {/* Top edge fade */}
+          <div 
+            className="absolute inset-x-0 top-0 h-[30%] pointer-events-none z-10"
+            style={{
+              background: 'linear-gradient(to bottom, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)',
+            }}
+          />
+          {/* Bottom edge fade */}
+          <div 
+            className="absolute inset-x-0 bottom-0 h-[30%] pointer-events-none z-10"
+            style={{
+              background: 'linear-gradient(to top, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)',
+            }}
+          />
+        </div>
       </motion.div>
     </section>
   );
