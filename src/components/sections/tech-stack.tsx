@@ -114,8 +114,9 @@ export function TechStackSection({ className }: { className?: string }) {
 
     // Assign tech stacks to the closest cells
     TECH_STACK.forEach((tech, i) => {
-      if (i < sortedCells.length) {
-        sortedCells[i].tech = tech;
+      const cell = sortedCells[i];
+      if (cell) {
+        cell.tech = tech;
       }
     });
 
@@ -192,9 +193,9 @@ export function TechStackSection({ className }: { className?: string }) {
 }
 
 function Cell({ cell }: { cell: CellInfo }) {
-  const isFilled = !!cell.tech;
+  const tech = cell.tech;
 
-  if (!isFilled) {
+  if (!tech) {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -205,8 +206,6 @@ function Cell({ cell }: { cell: CellInfo }) {
       />
     );
   }
-
-  const { tech } = cell;
 
   return (
     <motion.div
