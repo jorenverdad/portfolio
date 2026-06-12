@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { SiPrettier } from 'react-icons/si';
+import StackIcon from 'tech-stack-icons';
+import { SiShadcnui } from 'react-icons/si';
 
 // The tech stack list. Adding to this array will automatically re-center the cluster!
 // Organized by Frontend, Backend, Tools/DevOps, and OS categories.
@@ -10,50 +11,54 @@ const TECH_STACK = [
   // ==========================================
   // FRONTEND / MOBILE / UI
   // ==========================================
-  { name: 'HTML5', iconClass: 'devicon-html5-plain', color: '#E34F26', category: 'Frontend' },
-  { name: 'CSS3', iconClass: 'devicon-css3-plain', color: '#1572B6', category: 'Frontend' },
-  { name: 'JavaScript', iconClass: 'devicon-javascript-plain', color: '#F7DF1E', category: 'Frontend' },
-  { name: 'TypeScript', iconClass: 'devicon-typescript-plain', color: '#3178C6', category: 'Frontend' },
-  { name: 'React', iconClass: 'devicon-react-original', color: '#61DAFB', category: 'Frontend' },
-  { name: 'Next.js', iconClass: 'devicon-nextjs-plain', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend' },
-  { name: 'Vue.js', iconClass: 'devicon-vuejs-plain', color: '#4FC08D', category: 'Frontend' },
-  { name: 'React Native', iconClass: 'devicon-react-original', color: '#61DAFB', category: 'Frontend' },
-  { name: 'Capacitor', iconClass: 'devicon-capacitor-plain', color: '#119EFF', category: 'Frontend' },
-  { name: 'Tailwind CSS', iconClass: 'devicon-tailwindcss-original', color: '#06B6D4', category: 'Frontend' },
-  { name: 'Bootstrap', iconClass: 'devicon-bootstrap-plain', color: '#7952B3', category: 'Frontend' },
-  { name: 'Framer Motion', iconClass: 'devicon-framermotion-original', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend' },
-  { name: 'Zustand', iconClass: 'devicon-zustand-plain', color: '#443E38', darkColor: '#F4F4F5', category: 'Frontend' },
-  { name: 'Vite', iconClass: 'devicon-vite-plain', color: '#646CFF', category: 'Frontend' },
-  { name: 'Figma', iconClass: 'devicon-figma-plain', color: '#F24E1E', category: 'Frontend' },
+  { name: 'HTML5', iconName: 'html5', color: '#E34F26', category: 'Frontend' },
+  { name: 'CSS3', iconName: 'css3', color: '#1572B6', category: 'Frontend' },
+  { name: 'JavaScript', iconName: 'js', color: '#F7DF1E', category: 'Frontend' },
+  { name: 'TypeScript', iconName: 'typescript', color: '#3178C6', category: 'Frontend' },
+  { name: 'React', iconName: 'react', color: '#61DAFB', category: 'Frontend' },
+  { name: 'Next.js', iconName: 'nextjs2', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend' },
+  { name: 'Vue.js', iconName: 'vuejs', color: '#4FC08D', category: 'Frontend' },
+  { name: 'React Native', iconName: 'reactnative', color: '#61DAFB', category: 'Frontend' },
+  { name: 'Capacitor', iconName: 'ionic', color: '#119EFF', category: 'Frontend' },
+  { name: 'Shadcn UI', iconName: 'shadcnui', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend' },
+  { name: 'Tailwind CSS', iconName: 'tailwindcss', color: '#06B6D4', category: 'Frontend' },
+  { name: 'Bootstrap', iconName: 'bootstrap5', color: '#7952B3', category: 'Frontend' },
+  { name: 'Framer Motion', iconName: 'framer', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend' },
+  { name: 'Zustand', iconName: 'zustand', color: '#443E38', darkColor: '#F4F4F5', category: 'Frontend' },
+  { name: 'Vite', iconName: 'vitejs', color: '#646CFF', category: 'Frontend' },
+  { name: 'Figma', iconName: 'figma', color: '#F24E1E', category: 'Frontend' },
 
   // ==========================================
   // BACKEND / DATABASE / CLOUD
   // ==========================================
-  { name: 'Node.js', iconClass: 'devicon-nodejs-plain', color: '#339933', category: 'Backend' },
-  { name: 'Python', iconClass: 'devicon-python-plain', color: '#3776AB', category: 'Backend' },
-  { name: 'Django', iconClass: 'devicon-django-plain', color: '#092E20', darkColor: '#44B78B', category: 'Backend' },
-  { name: 'Laravel', iconClass: 'devicon-laravel-original', color: '#FF2D20', category: 'Backend' },
-  { name: 'PostgreSQL', iconClass: 'devicon-postgresql-plain', color: '#4169E1', category: 'Backend' },
-  { name: 'Supabase', iconClass: 'devicon-supabase-plain', color: '#3ECF8E', category: 'Backend' },
-  { name: 'Firebase', iconClass: 'devicon-firebase-plain', color: '#FFCA28', category: 'Backend' },
-  { name: 'Prisma', iconClass: 'devicon-prisma-original', color: '#2D3748', darkColor: '#FFFFFF', category: 'Backend' },
+  { name: 'Node.js', iconName: 'nodejs', color: '#339933', category: 'Backend' },
+  { name: 'Python', iconName: 'python', color: '#3776AB', category: 'Backend' },
+  { name: 'Django', iconName: 'django', color: '#092E20', darkColor: '#44B78B', category: 'Backend' },
+  { name: 'Laravel', iconName: 'laravel', color: '#FF2D20', category: 'Backend' },
+  { name: 'PostgreSQL', iconName: 'postgresql', color: '#4169E1', category: 'Backend' },
+  { name: 'MySQL', iconName: 'mysql', color: '#4169E1', category: 'Backend' },
+  { name: 'Redis', iconName: 'redis', color: '#EE0000', category: 'Backend' },
+  { name: 'Supabase', iconName: 'supabase', color: '#3ECF8E', category: 'Backend' },
+  { name: 'Firebase', iconName: 'firebase', color: '#FFCA28', category: 'Backend' },
+  { name: 'Prisma ORM', iconName: 'prisma', color: '#2D3748', darkColor: '#FFFFFF', category: 'Backend' },
 
   // ==========================================
   // DEV TOOLS / TESTING / CI-CD
   // ==========================================
-  { name: 'Git', iconClass: 'devicon-git-plain', color: '#F05032', category: 'Tools' },
-  { name: 'Vercel', iconClass: 'devicon-vercel-original', color: '#000000', darkColor: '#FFFFFF', category: 'Tools' },
-  { name: 'Docker', iconClass: 'devicon-docker-plain', color: '#2496ED', category: 'Tools' },
-  { name: 'Postman', iconClass: 'devicon-postman-plain', color: '#FF6C37', category: 'Tools' },
-  { name: 'Playwright', iconClass: 'devicon-playwright-plain', color: '#2EAD33', category: 'Tools' },
-  { name: 'ESLint', iconClass: 'devicon-eslint-plain', color: '#4B32C3', category: 'Tools' },
-  { name: 'Prettier', icon: SiPrettier, color: '#F7B93E', category: 'Tools' },
+  { name: 'GitHub', iconName: 'github', color: '#000000', darkColor: '#FFFFFF', category: 'Tools' },
+  { name: 'Git', iconName: 'git', color: '#F05032', category: 'Tools' },
+  { name: 'Vercel', iconName: 'vercel', color: '#000000', darkColor: '#FFFFFF', category: 'Tools' },
+  { name: 'Docker', iconName: 'docker', color: '#2496ED', category: 'Tools' },
+  { name: 'Postman', iconName: 'postman', color: '#FF6C37', category: 'Tools' },
+  { name: 'Playwright', iconName: 'playwright', color: '#2EAD33', category: 'Tools' },
+  { name: 'ESLint', iconName: 'eslint', color: '#4B32C3', category: 'Tools' },
+  { name: 'Prettier', iconName: 'prettier', color: '#F7B93E', category: 'Tools' },
 
   // ==========================================
   // OPERATING SYSTEMS
   // ==========================================
-  { name: 'Windows', iconClass: 'devicon-windows8-original', color: '#0078D4', category: 'OS' },
-  { name: 'Linux', iconClass: 'devicon-linux-plain', color: '#FCC624', category: 'OS' },
+  { name: 'Windows', iconName: 'windows11', color: '#0078D4', category: 'OS' },
+  { name: 'Linux', iconName: 'linux', color: '#FCC624', category: 'OS' },
   { name: 'Kali Linux', iconClass: 'devicon-kalilinux-original', color: '#557C94', category: 'OS' },
 ];
 
@@ -62,22 +67,38 @@ interface CellInfo {
   y: number;
   distance: number;
   index: number; // original index
-  tech?: typeof TECH_STACK[0];
+  tech?: typeof TECH_STACK[number];
 }
 
 export function TechStackSection({ className }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
+    // Check initial dark mode state
+    setIsDark(document.documentElement.classList.contains('dark'));
+    
+    // Observe dark mode class changes
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    
     // Delay setting mounted to avoid hydration mismatch and avoid set-state-in-effect warning
     setTimeout(() => setMounted(true), 0);
     
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      observer.disconnect();
+    };
   }, []);
 
   const gridData = useMemo(() => {
@@ -182,6 +203,7 @@ export function TechStackSection({ className }: { className?: string }) {
               <Cell 
                 key={cell.index} 
                 cell={cell} 
+                isDark={isDark}
               />
             ))}
           </div>
@@ -191,7 +213,7 @@ export function TechStackSection({ className }: { className?: string }) {
   );
 }
 
-function Cell({ cell }: { cell: CellInfo }) {
+function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
   const tech = cell.tech;
 
   if (!tech) {
@@ -229,12 +251,20 @@ function Cell({ cell }: { cell: CellInfo }) {
         dark:hover:shadow-[0_4px_16px_rgba(0,0,0,0.5),0_12px_48px_-12px_rgba(0,0,0,0.7)]
         hover:border-white/[0.2] dark:hover:border-white/[0.2]"
     >
-      {/* Icon — uses darkColor in dark mode so dark-logoed brands remain visible */}
+      {/* Icon — uses StackIcon when available, otherwise falls back to Devicon classes or components */}
       <div className="relative z-10 text-2xl md:text-[28px] flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-        {tech.iconClass ? (
+        {'iconName' in tech && tech.iconName ? (
+          <StackIcon 
+            name={tech.iconName as any} 
+            variant={isDark ? 'dark' : 'light'} 
+            className={`w-7 h-7 md:w-9 md:h-9 ${tech.iconName === 'nextjs' ? 'dark:invert' : ''}`}
+          />
+        ) : 'iconClass' in tech && tech.iconClass ? (
           <i className={tech.iconClass} style={{ color: tech.darkColor ?? tech.color }} />
-        ) : tech.icon ? (
-          <tech.icon style={{ color: tech.darkColor ?? tech.color }} />
+        ) : 'icon' in tech && (tech as any).icon ? (
+          <React.Fragment>
+            {React.createElement((tech as any).icon, { style: { color: tech.darkColor ?? tech.color } })}
+          </React.Fragment>
         ) : null}
       </div>
 
