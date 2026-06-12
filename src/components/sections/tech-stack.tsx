@@ -67,6 +67,7 @@ interface CellInfo {
   distance: number;
   index: number;
   tech?: typeof TECH_STACK[number];
+  delay: number;
 }
 
 export function TechStackSection({ className }: { className?: string }) {
@@ -82,7 +83,7 @@ export function TechStackSection({ className }: { className?: string }) {
   });
 
   const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const ySpring = useSpring(y1, { stiffness: 100, damping: 30 });
+  const ySpring = useSpring(y1, { stiffness: 60, damping: 25 });
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -121,7 +122,7 @@ export function TechStackSection({ className }: { className?: string }) {
           ? (dx * dx) * 5 + (dy * dy) 
           : (dx * dx) + (dy * dy) * 5;
           
-        cells.push({ x, y, distance, index: y * cols + x });
+        cells.push({ x, y, distance, index: y * cols + x, delay: 0 });
       }
     }
 
@@ -140,19 +141,28 @@ export function TechStackSection({ className }: { className?: string }) {
 
     cells.sort((a, b) => a.index - b.index);
 
+    // Calculate radial delay
+    const maxDist = Math.max(...cells.map(c => c.distance));
+    cells.forEach(c => {
+      const normDist = c.distance / (maxDist || 1);
+      // Use square root for a beautiful, organic non-linear expansion wave
+      c.delay = Math.sqrt(normDist) * 0.45;
+    });
+
     return { cols, rows, cells };
   }, [isMobile]);
 
   if (!mounted) {
     return (
-      <section ref={containerRef} id="tech-stack" className={`py-32 bg-bg-base relative overflow-hidden min-h-[800px] ${className ?? ''}`}>
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <div className="mb-20">
-            <h2 className="font-heading text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">
-              Ecosystem
+      <section ref={containerRef} id="tech-stack" className={`py-32 md:py-48 bg-bg-base relative overflow-hidden min-h-[800px] flex flex-col items-center justify-center ${className ?? ''}`}>
+        <div className="container mx-auto px-6 relative z-10 w-full">
+
+          <div className="mb-8 text-center flex flex-col items-center">
+            <h2 className="font-heading text-4xl md:text-6xl font-extrabold tracking-tight uppercase mb-6 text-foreground">
+              The <span className="text-brand-500">Stack.</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              The tools and technologies I use to build scalable web applications.
+            <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed font-sans">
+              A curated collection of languages, frameworks, and tools calibrated for sub-second performance, strict type-safety, and interactive fluidity.
             </p>
           </div>
         </div>
@@ -166,8 +176,7 @@ export function TechStackSection({ className }: { className?: string }) {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.02,
-        delayChildren: 0.2
+        duration: 0.1
       }
     }
   };
@@ -181,26 +190,16 @@ export function TechStackSection({ className }: { className?: string }) {
       {/* Dynamic ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-500/10 dark:bg-brand-500/10 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="container mx-auto px-6 relative z-30 mb-16">
+      <div className="container mx-auto px-6 relative z-30 mb-2">
         <div className="mb-8 text-center flex flex-col items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6"
-          >
-            <div className="w-2 h-2 rounded-full bg-brand-500 animate-pulse" />
-            <span className="text-xs font-mono font-medium tracking-wider text-foreground/80 uppercase">Tech Stack</span>
-          </motion.div>
-          
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
-            className="font-heading text-5xl md:text-7xl font-extrabold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-br from-foreground via-foreground to-foreground/40"
+            className="font-heading text-4xl md:text-6xl font-extrabold tracking-tight uppercase mb-6 text-foreground"
           >
-            Tools of the Trade
+            The <span className="text-brand-500">Stack.</span>
           </motion.h2>
           
           <motion.p 
@@ -208,9 +207,9 @@ export function TechStackSection({ className }: { className?: string }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-light tracking-wide"
+            className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed font-sans"
           >
-            A curated ecosystem of modern frameworks, robust backends, and versatile tools designed for high-performance and scalability.
+            A curated collection of languages, frameworks, and tools calibrated for sub-second performance, strict type-safety, and interactive fluidity.
           </motion.p>
         </div>
       </div>
@@ -247,13 +246,22 @@ export function TechStackSection({ className }: { className?: string }) {
 }
 
 const cellVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.8, y: 10 },
-  show: { 
+  hidden: (custom: { delay: number; hasTech: boolean }) => ({
+    opacity: 0,
+    scale: custom?.hasTech ? 0.75 : 0.85,
+    y: custom?.hasTech ? 20 : 10,
+  }),
+  show: (custom: { delay: number; hasTech: boolean }) => ({ 
     opacity: 1, 
     scale: 1, 
     y: 0,
-    transition: { type: 'spring', stiffness: 300, damping: 24 }
-  }
+    transition: { 
+      type: 'spring', 
+      stiffness: custom?.hasTech ? 100 : 130, 
+      damping: custom?.hasTech ? 15 : 20,
+      delay: custom?.delay ?? 0
+    }
+  })
 };
 
 function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
@@ -263,6 +271,7 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
     return (
       <motion.div
         variants={cellVariants}
+        custom={{ delay: cell.delay, hasTech: false }}
         className="w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] rounded-xl md:rounded-2xl 
           border border-white/[0.03] dark:border-white/[0.02] 
           bg-white/[0.01] dark:bg-white/[0.01]
@@ -274,6 +283,7 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
   return (
     <motion.div
       variants={cellVariants}
+      custom={{ delay: cell.delay, hasTech: true }}
       whileHover={{ scale: 1.15, zIndex: 50 }}
       whileTap={{ scale: 0.95 }}
       className="relative z-10 group w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] flex items-center justify-center rounded-xl md:rounded-2xl cursor-pointer
@@ -282,7 +292,7 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
         shadow-[0_4px_12px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.1)]
         dark:shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)]
         backdrop-blur-md
-        transition-all duration-300
+        transition-colors transition-shadow duration-300
         hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]
         dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]
         hover:border-white/[0.2] dark:hover:border-white/[0.15]"
@@ -311,14 +321,17 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
       </div>
 
       {/* Tooltip */}
-      <div className="absolute -top-14 left-1/2 -translate-x-1/2 z-[60] px-4 py-2 
-        bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 
-        text-xs md:text-sm font-semibold rounded-lg opacity-0 scale-90 pointer-events-none 
+      <div className="absolute -top-16 left-1/2 -translate-x-1/2 z-[60] px-3.5 py-2 
+        bg-zinc-950 dark:bg-white text-white dark:text-zinc-900 
+        rounded-xl opacity-0 scale-90 pointer-events-none 
         transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 whitespace-nowrap 
-        shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
-        {tech.name}
-        <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 
-          bg-zinc-900 dark:bg-white rotate-45 shadow-[2px_2px_4px_rgba(0,0,0,0.1)]" />
+        shadow-[0_8px_24px_rgba(0,0,0,0.3)] dark:shadow-[0_8px_24px_rgba(0,0,0,0.15)]
+        border border-white/10 dark:border-black/5 flex flex-col items-center">
+        <span className="text-[10px] md:text-xs font-mono font-bold tracking-wider">
+          {tech.name}
+        </span>
+        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 
+          bg-zinc-950 dark:bg-white rotate-45 border-r border-b border-white/10 dark:border-black/5" />
       </div>
     </motion.div>
   );
