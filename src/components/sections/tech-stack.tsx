@@ -274,7 +274,7 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
   return (
     <motion.div
       variants={cellVariants}
-      whileHover={{ scale: 1.15, y: -5, zIndex: 50 }}
+      whileHover={{ scale: 1.15, zIndex: 50 }}
       whileTap={{ scale: 0.95 }}
       className="relative z-10 group w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] flex items-center justify-center rounded-xl md:rounded-2xl cursor-pointer
         bg-white/[0.05] dark:bg-white/[0.04]
