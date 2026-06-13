@@ -30,13 +30,13 @@ export default async function Home() {
           </ScrollReveal>
         </LazyMount>
         
-        <LazyMount>
+        <LazyMount id="about-journey">
           <ScrollReveal>
             <JourneySection />
           </ScrollReveal>
         </LazyMount>
         
-        <LazyMount>
+        <LazyMount id="about-tech">
           <ScrollReveal>
             <TechStackSection />
           </ScrollReveal>

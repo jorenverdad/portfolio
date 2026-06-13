@@ -120,7 +120,12 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
 
   // Intersection Observer for tracking active section
   useEffect(() => {
-    const sectionIds = links.map(link => link.href.replace('#', '')).filter(Boolean);
+    const baseSectionIds = links.map(link => link.href.replace('#', '')).filter(Boolean);
+    const sectionIds = Array.from(new Set([
+      ...baseSectionIds,
+      'about-journey',
+      'about-tech'
+    ]));
     const elements = sectionIds.map(id => document.getElementById(id)).filter((el): el is HTMLElement => el !== null);
 
     const observerOptions = {
@@ -150,7 +155,10 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
   useEffect(() => {
     const targetIndex = hoveredIndex !== null 
       ? hoveredIndex 
-      : links.findIndex(l => l.href.replace('#', '') === activeSection);
+      : links.findIndex(l => {
+          const href = l.href.replace('#', '');
+          return activeSection === href || activeSection.startsWith(href + '-');
+        });
 
     if (targetIndex !== -1 && linkRefs.current[targetIndex] && navRef.current) {
       const targetEl = linkRefs.current[targetIndex];
@@ -201,7 +209,8 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
               }}
             />
             {links.map((link, idx) => {
-              const isActive = link.href.replace('#', '') === activeSection;
+              const href = link.href.replace('#', '');
+              const isActive = activeSection === href || activeSection.startsWith(href + '-');
               return (
                 <a 
                   key={link.label} 
@@ -273,7 +282,8 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                 
                 <nav className="flex flex-col gap-6">
                   {links.map((link, idx) => {
-                    const isActive = link.href.replace('#', '') === activeSection;
+                    const href = link.href.replace('#', '');
+                    const isActive = activeSection === href || activeSection.startsWith(href + '-');
                     return (
                       <a 
                         key={link.label} 
