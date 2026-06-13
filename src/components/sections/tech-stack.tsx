@@ -6,44 +6,56 @@ import StackIcon from 'tech-stack-icons';
 
 const TECH_STACK = [
   // ==========================================
-  // FRONTEND / MOBILE / UI
+  // LANGUAGES
   // ==========================================
-  { name: 'HTML5', iconName: 'html5', color: '#E34F26', category: 'Frontend' },
-  { name: 'CSS3', iconName: 'css3', color: '#1572B6', category: 'Frontend' },
-  { name: 'JavaScript', iconName: 'js', color: '#F7DF1E', category: 'Frontend' },
-  { name: 'TypeScript', iconName: 'typescript', color: '#3178C6', category: 'Frontend', preferred: true },
+  { name: 'HTML5', iconName: 'html5', color: '#E34F26', category: 'Languages' },
+  { name: 'CSS3', iconName: 'css3', color: '#1572B6', category: 'Languages' },
+  { name: 'JavaScript', iconName: 'js', color: '#F7DF1E', category: 'Languages' },
+  { name: 'TypeScript', iconName: 'typescript', color: '#3178C6', category: 'Languages', preferred: true },
+  { name: 'Python', iconName: 'python', color: '#3776AB', category: 'Languages' },
+
+  // ==========================================
+  // FRONTEND
+  // ==========================================
   { name: 'React', iconName: 'react', color: '#61DAFB', category: 'Frontend'},
   { name: 'Next.js', iconName: 'nextjs2', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
   { name: 'Vue.js', iconName: 'vuejs', color: '#4FC08D', category: 'Frontend' },
-  { name: 'React Native', iconName: 'reactnative', color: '#61DAFB', category: 'Frontend' },
-  { name: 'Capacitor', iconName: 'ionic', color: '#119EFF', category: 'Frontend' },
-  { name: 'Shadcn UI', iconName: 'shadcnui', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
   { name: 'Tailwind CSS', iconName: 'tailwindcss', color: '#06B6D4', category: 'Frontend', preferred: true },
+  { name: 'Shadcn UI', iconName: 'shadcnui', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
   { name: 'Bootstrap', iconName: 'bootstrap5', color: '#7952B3', category: 'Frontend' },
   { name: 'Framer Motion', iconName: 'framer', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
   { name: 'Zustand', iconName: 'zustand', color: '#443E38', darkColor: '#F4F4F5', category: 'Frontend' },
-  { name: 'Vite', iconName: 'vitejs', color: '#646CFF', category: 'Frontend' },
-  { name: 'Figma', iconName: 'figma', color: '#F24E1E', category: 'Frontend', preferred: true },
 
   // ==========================================
-  // BACKEND / DATABASE / CLOUD
+  // MOBILE
+  // ==========================================
+  { name: 'React Native', iconName: 'reactnative', color: '#61DAFB', category: 'Mobile' },
+  { name: 'Capacitor', iconName: 'ionic', color: '#119EFF', category: 'Mobile' },
+
+  // ==========================================
+  // BACKEND (Servers, BaaS, & ORMs)
   // ==========================================
   { name: 'Node.js', iconName: 'nodejs', color: '#339933', category: 'Backend', preferred: true },
-  { name: 'Python', iconName: 'python', color: '#3776AB', category: 'Backend' },
   { name: 'Django', iconName: 'django', color: '#092E20', darkColor: '#44B78B', category: 'Backend' },
   { name: 'Laravel', iconName: 'laravel', color: '#FF2D20', category: 'Backend' },
-  { name: 'PostgreSQL', iconName: 'postgresql', color: '#4169E1', category: 'Backend', preferred: true },
-  { name: 'MySQL', iconName: 'mysql', color: '#4169E1', category: 'Backend' },
-  { name: 'Redis', iconName: 'redis', color: '#EE0000', category: 'Backend' },
   { name: 'Supabase', iconName: 'supabase', color: '#3ECF8E', category: 'Backend', preferred: true },
   { name: 'Firebase', iconName: 'firebase', color: '#FFCA28', category: 'Backend' },
   { name: 'Prisma ORM', iconName: 'prisma', color: '#2D3748', darkColor: '#FFFFFF', category: 'Backend', preferred: true },
 
   // ==========================================
-  // DEV TOOLS / TESTING / CI-CD
+  // DATABASE (Raw Storage & Caching)
   // ==========================================
-  { name: 'GitHub', iconName: 'github', color: '#000000', darkColor: '#FFFFFF', category: 'Tools', preferred: true },
+  { name: 'PostgreSQL', iconName: 'postgresql', color: '#4169E1', category: 'Database', preferred: true },
+  { name: 'MySQL', iconName: 'mysql', color: '#4169E1', category: 'Database' },
+  { name: 'Redis', iconName: 'redis', color: '#EE0000', category: 'Database' },
+
+  // ==========================================
+  // TOOLS
+  // ==========================================
+  { name: 'Vite', iconName: 'vitejs', color: '#646CFF', category: 'Tools' },
+  { name: 'Figma', iconName: 'figma', color: '#F24E1E', category: 'Tools', preferred: true },
   { name: 'Git', iconName: 'git', color: '#F05032', category: 'Tools'},
+  { name: 'GitHub', iconName: 'github', color: '#000000', darkColor: '#FFFFFF', category: 'Tools', preferred: true },
   { name: 'Vercel', iconName: 'vercel', color: '#000000', darkColor: '#FFFFFF', category: 'Tools', preferred: true },
   { name: 'Docker', iconName: 'docker', color: '#2496ED', category: 'Tools' },
   { name: 'Postman', iconName: 'postman', color: '#FF6C37', category: 'Tools' },
@@ -59,7 +71,7 @@ const TECH_STACK = [
   { name: 'Kali Linux', iconClass: 'devicon-kalilinux-original', color: '#557C94', category: 'OS' },
 ];
 
-const CATEGORIES = ['Frontend', 'Backend', 'Tools', 'OS'] as const;
+const CATEGORIES = ['Languages', 'Frontend', 'Mobile', 'Backend', 'Database', 'Tools', 'OS'] as const;
 
 interface CellInfo {
   x: number;
@@ -313,7 +325,7 @@ export function TechStackSection({ className }: { className?: string }) {
               animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
               exit={{ opacity: 0, filter: "blur(10px)", y: -20 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="w-full max-w-7xl mx-auto relative z-20 px-6 py-12"
+              className="w-full max-w-5xl mx-auto relative z-20 px-6 py-12"
             >
               <TechStackList isDark={isDark} />
             </m.div>
@@ -330,98 +342,106 @@ function TechStackList({ isDark }: { isDark: boolean }) {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { staggerChildren: 0.05 }
+      transition: { staggerChildren: 0.08 }
     }
   };
 
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 15, scale: 0.95 },
-    show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 260, damping: 20 } }
+  const rowVariants: Variants = {
+    hidden: { opacity: 0, y: 15, filter: "blur(4px)" },
+    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 260, damping: 25 } }
   };
 
   return (
-    <m.div variants={listContainerVariants} initial="hidden" animate="show" className="flex flex-col gap-20">
-      {CATEGORIES.map((category) => {
+    <m.div variants={listContainerVariants} initial="hidden" animate="show" className="flex flex-col w-full">
+      {CATEGORIES.map((category, index) => {
         const items = TECH_STACK.filter(t => t.category === category);
         if (items.length === 0) return null;
         
+        const isLast = index === CATEGORIES.length - 1;
+        
         return (
-          <div key={category} className="flex flex-col gap-8">
-            <div className="flex items-center gap-4">
-              <h3 className="text-2xl md:text-3xl font-heading font-extrabold text-foreground tracking-tight">
+          <m.div 
+            key={category} 
+            variants={rowVariants}
+            className={`flex flex-col md:flex-row md:items-start gap-4 md:gap-12 py-8 md:py-10 ${!isLast ? 'border-b border-black/5 dark:border-white/[0.05]' : ''}`}
+          >
+            <div className="md:w-48 flex-shrink-0 pt-2">
+              <h3 className="text-xs font-mono font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.25em]">
                 {category}
               </h3>
-              <div className="h-[1px] flex-1 bg-gradient-to-r from-black/10 to-transparent dark:from-white/10" />
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            <div className="flex flex-wrap gap-3">
               {items.map((tech) => (
                 <m.div
                   key={tech.name}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.02, y: -4 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="group relative overflow-hidden flex items-center p-5 rounded-2xl 
-                    bg-white/[0.01] dark:bg-white/[0.02] 
-                    border border-black/5 dark:border-white/[0.05]
-                    hover:border-black/10 dark:hover:border-white/[0.1]
-                    shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] 
-                    dark:shadow-[0_4px_24px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.2)]
-                    transition-all duration-300 cursor-pointer backdrop-blur-md"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group relative flex items-center gap-2.5 px-4 py-2.5 rounded-full 
+                    bg-white dark:bg-white/[0.02] 
+                    border border-black/[0.08] dark:border-white/[0.08]
+                    hover:border-black/20 dark:hover:border-white/[0.2]
+                    shadow-sm hover:shadow-md dark:shadow-none
+                    transition-all duration-300 cursor-pointer overflow-hidden"
                 >
                   {/* Subtle Glow background on hover */}
                   <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] dark:group-hover:opacity-[0.08] transition-opacity duration-500 -z-10"
+                    className="absolute inset-0 opacity-0 group-hover:opacity-[0.05] dark:group-hover:opacity-[0.1] transition-opacity duration-300 -z-10"
                     style={{ backgroundColor: tech.color }}
                   />
 
-                  {/* Logo Container */}
-                  <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-black/[0.03] dark:bg-white/[0.03] mr-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+                  {/* Icon */}
+                  <div className="w-5 h-5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                     {'iconName' in tech && tech.iconName ? (
                       <StackIcon 
                         name={tech.iconName as any} 
                         variant={isDark ? 'dark' : 'light'} 
-                        className={`w-7 h-7 ${tech.iconName === 'nextjs' ? 'dark:invert' : ''}`}
+                        className={`w-full h-full ${tech.iconName === 'nextjs' ? 'dark:invert' : ''}`}
                       />
                     ) : 'iconClass' in tech && tech.iconClass ? (
-                      <i className={tech.iconClass} style={{ color: tech.darkColor ?? tech.color, fontSize: '1.75rem' }} />
+                      <i className={tech.iconClass} style={{ color: tech.darkColor ?? tech.color, fontSize: '1.25rem' }} />
                     ) : 'icon' in tech && (tech as any).icon ? (
                       <React.Fragment>
-                        {React.createElement((tech as any).icon, { style: { color: tech.darkColor ?? tech.color }, size: 28 })}
+                        {React.createElement((tech as any).icon, { style: { color: tech.darkColor ?? tech.color }, size: 20 })}
                       </React.Fragment>
                     ) : null}
                   </div>
 
-                  {/* Text Container */}
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <span className="text-lg font-semibold text-foreground truncate font-sans">
-                      {tech.name}
-                    </span>
-                    {tech.preferred ? (
-                      <span className="text-xs text-amber-500 dark:text-amber-400 font-bold tracking-wider flex items-center mt-1 uppercase">
-                        <svg className="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                        </svg>
-                        Preferred
-                      </span>
-                    ) : (
-                      <span className="text-xs text-muted-foreground font-medium tracking-wide mt-1 capitalize opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        {tech.category}
-                      </span>
-                    )}
-                  </div>
+                  {/* Text */}
+                  <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                    {tech.name}
+                  </span>
+
+                  {/* Preferred Badge */}
+                  {tech.preferred && (
+                    <div 
+                      className="flex items-center justify-center ml-1
+                        w-3.5 h-3.5 rounded-full 
+                        bg-gradient-to-br from-amber-400 to-amber-500 
+                        shadow-[0_2px_8px_rgba(251,191,36,0.4)]"
+                      title="Preferred Choice"
+                    >
+                      <svg 
+                        viewBox="0 0 24 24" 
+                        fill="currentColor" 
+                        className="w-2 h-2 text-white"
+                      >
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                      </svg>
+                    </div>
+                  )}
                   
-                  {/* Decorative corner accent */}
+                  {/* Decorative corner accent - very subtle */}
                   <div 
-                    className="absolute top-0 right-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    className="absolute top-0 right-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                     style={{
-                      background: `radial-gradient(circle at top right, ${tech.color}40, transparent 70%)`
+                      background: `radial-gradient(circle at top right, ${tech.color}30, transparent 60%)`
                     }}
                   />
                 </m.div>
               ))}
             </div>
-          </div>
+          </m.div>
         );
       })}
     </m.div>
