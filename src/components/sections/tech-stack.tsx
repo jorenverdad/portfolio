@@ -220,22 +220,22 @@ export function TechStackSection({ className }: { className?: string }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="mt-8 flex items-center p-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full backdrop-blur-md"
+            className="mt-8 flex items-center p-1.5 bg-muted/40 border border-border/60 rounded-full backdrop-blur-md shadow-sm"
           >
             {['grid', 'list'].map((mode) => (
               <button
                 key={mode}
                 onClick={() => setViewMode(mode as 'grid' | 'list')}
-                className={`relative px-6 py-2 rounded-full text-sm font-bold transition-colors ${
+                className={`relative px-8 py-2.5 rounded-full text-sm font-bold transition-colors ${
                   viewMode === mode 
-                    ? 'text-white dark:text-zinc-900' 
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-foreground'
+                    ? 'text-background' 
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {viewMode === mode && (
                   <m.div
                     layoutId="active-pill"
-                    className="absolute inset-0 bg-zinc-900 dark:bg-white rounded-full shadow-lg"
+                    className="absolute inset-0 bg-foreground rounded-full shadow-md"
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   />
                 )}
