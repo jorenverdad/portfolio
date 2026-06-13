@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { LazyMotion, domAnimation, m, Variants } from 'motion/react';
+import { LazyMotion, domAnimation, m, Variants, AnimatePresence } from 'motion/react';
 import StackIcon from 'tech-stack-icons';
 
 const TECH_STACK = [
@@ -59,6 +59,8 @@ const TECH_STACK = [
   { name: 'Kali Linux', iconClass: 'devicon-kalilinux-original', color: '#557C94', category: 'OS' },
 ];
 
+const CATEGORIES = ['Frontend', 'Backend', 'Tools', 'OS'] as const;
+
 interface CellInfo {
   x: number;
   y: number;
@@ -72,6 +74,7 @@ export function TechStackSection({ className }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isDark, setIsDark] = useState(true);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -178,8 +181,8 @@ export function TechStackSection({ className }: { className?: string }) {
       className={`py-32 md:py-48 bg-bg-base relative overflow-hidden flex flex-col items-center justify-center ${className ?? ''}`}
     >
       <LazyMotion features={domAnimation}>
-      <div className="container mx-auto px-6 relative z-30 mb-0">
-        <div className="mb-8 text-center flex flex-col items-center">
+      <div className="container mx-auto px-6 relative z-30 mb-8">
+        <div className="text-center flex flex-col items-center">
           <m.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -199,74 +202,229 @@ export function TechStackSection({ className }: { className?: string }) {
           >
             A curated collection of languages, frameworks, and tools calibrated for sub-second performance, strict type-safety, and interactive fluidity.
           </m.p>
+
+          <m.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="mt-8 flex items-center p-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full backdrop-blur-md"
+          >
+            {['grid', 'list'].map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setViewMode(mode as 'grid' | 'list')}
+                className={`relative px-6 py-2 rounded-full text-sm font-bold transition-colors ${
+                  viewMode === mode 
+                    ? 'text-white dark:text-zinc-900' 
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-foreground'
+                }`}
+              >
+                {viewMode === mode && (
+                  <m.div
+                    layoutId="active-pill"
+                    className="absolute inset-0 bg-zinc-900 dark:bg-white rounded-full shadow-lg"
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  />
+                )}
+                <span className="relative z-10 capitalize tracking-wide">{mode}</span>
+              </button>
+            ))}
+          </m.div>
         </div>
       </div>
 
-      {/* The Infinite Grid Container */}
-      <m.div 
-        className="w-full flex justify-center items-center relative z-20 pointer-events-none overflow-visible"
-      >
-        <div className="relative">
-          <m.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-100px" }}
-            className="grid gap-2 md:gap-3 lg:gap-4 pointer-events-auto w-max"
-            style={{ 
-              gridTemplateColumns: `repeat(${gridData.cols}, max-content)`,
-              gridTemplateRows: `repeat(${gridData.rows}, max-content)`,
-            }}
-          >
-            {gridData.cells.map((cell) => (
-              <Cell 
-                key={cell.index} 
-                cell={cell} 
-                isDark={isDark}
-              />
-            ))}
-          </m.div>
+      <div className="w-full relative min-h-[600px] flex flex-col items-center">
+        <AnimatePresence mode="wait">
+          {viewMode === 'grid' && (
+            <m.div 
+              key="grid-view"
+              initial={{ opacity: 0, filter: "blur(10px)", scale: 0.98 }}
+              animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+              exit={{ opacity: 0, filter: "blur(10px)", scale: 0.98 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="w-full flex justify-center items-center relative z-20 pointer-events-none overflow-visible flex-1"
+            >
+              <div className="relative">
+                <m.div 
+                  variants={containerVariants}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, margin: "-100px" }}
+                  className="grid gap-2 md:gap-3 lg:gap-4 pointer-events-auto w-max"
+                  style={{ 
+                    gridTemplateColumns: `repeat(${gridData.cols}, max-content)`,
+                    gridTemplateRows: `repeat(${gridData.rows}, max-content)`,
+                  }}
+                >
+                  {gridData.cells.map((cell) => (
+                    <Cell 
+                      key={cell.index} 
+                      cell={cell} 
+                      isDark={isDark}
+                    />
+                  ))}
+                </m.div>
 
-          {/* Gradient fade overlays — blend grid edges into the background */}
-          {/* Radial vignette: large soft ellipse, transparent center → bg color edges */}
-          <div 
-            className="absolute inset-0 pointer-events-none z-10"
-            style={{
-              background: 'radial-gradient(ellipse 55% 60% at 50% 50%, transparent 0%, oklch(0.095 0.018 17 / 0.0) 20%, oklch(0.095 0.018 17 / 0.45) 50%, oklch(0.095 0.018 17 / 0.85) 70%, oklch(0.095 0.018 17) 90%)',
-            }}
-          />
-          {/* Left edge fade */}
-          <div 
-            className="absolute inset-y-0 left-0 w-[25%] pointer-events-none z-10"
-            style={{
-              background: 'linear-gradient(to right, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)',
-            }}
-          />
-          {/* Right edge fade */}
-          <div 
-            className="absolute inset-y-0 right-0 w-[25%] pointer-events-none z-10"
-            style={{
-              background: 'linear-gradient(to left, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)',
-            }}
-          />
-          {/* Top edge fade */}
-          <div 
-            className="absolute inset-x-0 top-0 h-[30%] pointer-events-none z-10"
-            style={{
-              background: 'linear-gradient(to bottom, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)',
-            }}
-          />
-          {/* Bottom edge fade */}
-          <div 
-            className="absolute inset-x-0 bottom-0 h-[30%] pointer-events-none z-10"
-            style={{
-              background: 'linear-gradient(to top, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)',
-            }}
-          />
-        </div>
-      </m.div>
+                {/* Gradient fade overlays — blend grid edges into the background */}
+                {/* Radial vignette */}
+                <div 
+                  className="absolute inset-0 pointer-events-none z-10"
+                  style={{
+                    background: 'radial-gradient(ellipse 55% 60% at 50% 50%, transparent 0%, oklch(0.095 0.018 17 / 0.0) 20%, oklch(0.095 0.018 17 / 0.45) 50%, oklch(0.095 0.018 17 / 0.85) 70%, oklch(0.095 0.018 17) 90%)',
+                  }}
+                />
+                {/* Left edge fade */}
+                <div 
+                  className="absolute inset-y-0 left-0 w-[25%] pointer-events-none z-10"
+                  style={{
+                    background: 'linear-gradient(to right, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)',
+                  }}
+                />
+                {/* Right edge fade */}
+                <div 
+                  className="absolute inset-y-0 right-0 w-[25%] pointer-events-none z-10"
+                  style={{
+                    background: 'linear-gradient(to left, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)',
+                  }}
+                />
+                {/* Top edge fade */}
+                <div 
+                  className="absolute inset-x-0 top-0 h-[30%] pointer-events-none z-10"
+                  style={{
+                    background: 'linear-gradient(to bottom, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)',
+                  }}
+                />
+                {/* Bottom edge fade */}
+                <div 
+                  className="absolute inset-x-0 bottom-0 h-[30%] pointer-events-none z-10"
+                  style={{
+                    background: 'linear-gradient(to top, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)',
+                  }}
+                />
+              </div>
+            </m.div>
+          )}
+
+          {viewMode === 'list' && (
+            <m.div
+              key="list-view"
+              initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
+              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              exit={{ opacity: 0, filter: "blur(10px)", y: -20 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="w-full max-w-7xl mx-auto relative z-20 px-6 py-12"
+            >
+              <TechStackList isDark={isDark} />
+            </m.div>
+          )}
+        </AnimatePresence>
+      </div>
       </LazyMotion>
     </section>
+  );
+}
+
+function TechStackList({ isDark }: { isDark: boolean }) {
+  const listContainerVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 }
+    }
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 15, scale: 0.95 },
+    show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 260, damping: 20 } }
+  };
+
+  return (
+    <m.div variants={listContainerVariants} initial="hidden" animate="show" className="flex flex-col gap-20">
+      {CATEGORIES.map((category) => {
+        const items = TECH_STACK.filter(t => t.category === category);
+        if (items.length === 0) return null;
+        
+        return (
+          <div key={category} className="flex flex-col gap-8">
+            <div className="flex items-center gap-4">
+              <h3 className="text-2xl md:text-3xl font-heading font-extrabold text-foreground tracking-tight">
+                {category}
+              </h3>
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-black/10 to-transparent dark:from-white/10" />
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+              {items.map((tech) => (
+                <m.div
+                  key={tech.name}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.02, y: -4 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative overflow-hidden flex items-center p-5 rounded-2xl 
+                    bg-white/[0.01] dark:bg-white/[0.02] 
+                    border border-black/5 dark:border-white/[0.05]
+                    hover:border-black/10 dark:hover:border-white/[0.1]
+                    shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] 
+                    dark:shadow-[0_4px_24px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.2)]
+                    transition-all duration-300 cursor-pointer backdrop-blur-md"
+                >
+                  {/* Subtle Glow background on hover */}
+                  <div 
+                    className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] dark:group-hover:opacity-[0.08] transition-opacity duration-500 -z-10"
+                    style={{ backgroundColor: tech.color }}
+                  />
+
+                  {/* Logo Container */}
+                  <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-black/[0.03] dark:bg-white/[0.03] mr-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-500 shadow-inner">
+                    {'iconName' in tech && tech.iconName ? (
+                      <StackIcon 
+                        name={tech.iconName as any} 
+                        variant={isDark ? 'dark' : 'light'} 
+                        className={`w-7 h-7 ${tech.iconName === 'nextjs' ? 'dark:invert' : ''}`}
+                      />
+                    ) : 'iconClass' in tech && tech.iconClass ? (
+                      <i className={tech.iconClass} style={{ color: tech.darkColor ?? tech.color, fontSize: '1.75rem' }} />
+                    ) : 'icon' in tech && (tech as any).icon ? (
+                      <React.Fragment>
+                        {React.createElement((tech as any).icon, { style: { color: tech.darkColor ?? tech.color }, size: 28 })}
+                      </React.Fragment>
+                    ) : null}
+                  </div>
+
+                  {/* Text Container */}
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <span className="text-lg font-semibold text-foreground truncate font-sans">
+                      {tech.name}
+                    </span>
+                    {tech.preferred ? (
+                      <span className="text-xs text-amber-500 dark:text-amber-400 font-bold tracking-wider flex items-center mt-1 uppercase">
+                        <svg className="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                        Preferred
+                      </span>
+                    ) : (
+                      <span className="text-xs text-muted-foreground font-medium tracking-wide mt-1 capitalize opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {tech.category}
+                      </span>
+                    )}
+                  </div>
+                  
+                  {/* Decorative corner accent */}
+                  <div 
+                    className="absolute top-0 right-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                      background: `radial-gradient(circle at top right, ${tech.color}40, transparent 70%)`
+                    }}
+                  />
+                </m.div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </m.div>
   );
 }
 
@@ -389,4 +547,3 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
     </m.div>
   );
 }
-
