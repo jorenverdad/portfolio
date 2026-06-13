@@ -11,40 +11,40 @@ const TECH_STACK = [
   { name: 'HTML5', iconName: 'html5', color: '#E34F26', category: 'Frontend' },
   { name: 'CSS3', iconName: 'css3', color: '#1572B6', category: 'Frontend' },
   { name: 'JavaScript', iconName: 'js', color: '#F7DF1E', category: 'Frontend' },
-  { name: 'TypeScript', iconName: 'typescript', color: '#3178C6', category: 'Frontend' },
-  { name: 'React', iconName: 'react', color: '#61DAFB', category: 'Frontend' },
-  { name: 'Next.js', iconName: 'nextjs2', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend' },
+  { name: 'TypeScript', iconName: 'typescript', color: '#3178C6', category: 'Frontend', preferred: true },
+  { name: 'React', iconName: 'react', color: '#61DAFB', category: 'Frontend'},
+  { name: 'Next.js', iconName: 'nextjs2', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
   { name: 'Vue.js', iconName: 'vuejs', color: '#4FC08D', category: 'Frontend' },
   { name: 'React Native', iconName: 'reactnative', color: '#61DAFB', category: 'Frontend' },
   { name: 'Capacitor', iconName: 'ionic', color: '#119EFF', category: 'Frontend' },
-  { name: 'Shadcn UI', iconName: 'shadcnui', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend' },
-  { name: 'Tailwind CSS', iconName: 'tailwindcss', color: '#06B6D4', category: 'Frontend' },
+  { name: 'Shadcn UI', iconName: 'shadcnui', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
+  { name: 'Tailwind CSS', iconName: 'tailwindcss', color: '#06B6D4', category: 'Frontend', preferred: true },
   { name: 'Bootstrap', iconName: 'bootstrap5', color: '#7952B3', category: 'Frontend' },
-  { name: 'Framer Motion', iconName: 'framer', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend' },
+  { name: 'Framer Motion', iconName: 'framer', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
   { name: 'Zustand', iconName: 'zustand', color: '#443E38', darkColor: '#F4F4F5', category: 'Frontend' },
   { name: 'Vite', iconName: 'vitejs', color: '#646CFF', category: 'Frontend' },
-  { name: 'Figma', iconName: 'figma', color: '#F24E1E', category: 'Frontend' },
+  { name: 'Figma', iconName: 'figma', color: '#F24E1E', category: 'Frontend', preferred: true },
 
   // ==========================================
   // BACKEND / DATABASE / CLOUD
   // ==========================================
-  { name: 'Node.js', iconName: 'nodejs', color: '#339933', category: 'Backend' },
+  { name: 'Node.js', iconName: 'nodejs', color: '#339933', category: 'Backend', preferred: true },
   { name: 'Python', iconName: 'python', color: '#3776AB', category: 'Backend' },
   { name: 'Django', iconName: 'django', color: '#092E20', darkColor: '#44B78B', category: 'Backend' },
   { name: 'Laravel', iconName: 'laravel', color: '#FF2D20', category: 'Backend' },
-  { name: 'PostgreSQL', iconName: 'postgresql', color: '#4169E1', category: 'Backend' },
+  { name: 'PostgreSQL', iconName: 'postgresql', color: '#4169E1', category: 'Backend', preferred: true },
   { name: 'MySQL', iconName: 'mysql', color: '#4169E1', category: 'Backend' },
   { name: 'Redis', iconName: 'redis', color: '#EE0000', category: 'Backend' },
-  { name: 'Supabase', iconName: 'supabase', color: '#3ECF8E', category: 'Backend' },
+  { name: 'Supabase', iconName: 'supabase', color: '#3ECF8E', category: 'Backend', preferred: true },
   { name: 'Firebase', iconName: 'firebase', color: '#FFCA28', category: 'Backend' },
-  { name: 'Prisma ORM', iconName: 'prisma', color: '#2D3748', darkColor: '#FFFFFF', category: 'Backend' },
+  { name: 'Prisma ORM', iconName: 'prisma', color: '#2D3748', darkColor: '#FFFFFF', category: 'Backend', preferred: true },
 
   // ==========================================
   // DEV TOOLS / TESTING / CI-CD
   // ==========================================
-  { name: 'GitHub', iconName: 'github', color: '#000000', darkColor: '#FFFFFF', category: 'Tools' },
-  { name: 'Git', iconName: 'git', color: '#F05032', category: 'Tools' },
-  { name: 'Vercel', iconName: 'vercel', color: '#000000', darkColor: '#FFFFFF', category: 'Tools' },
+  { name: 'GitHub', iconName: 'github', color: '#000000', darkColor: '#FFFFFF', category: 'Tools', preferred: true },
+  { name: 'Git', iconName: 'git', color: '#F05032', category: 'Tools'},
+  { name: 'Vercel', iconName: 'vercel', color: '#000000', darkColor: '#FFFFFF', category: 'Tools', preferred: true },
   { name: 'Docker', iconName: 'docker', color: '#2496ED', category: 'Tools' },
   { name: 'Postman', iconName: 'postman', color: '#FF6C37', category: 'Tools' },
   { name: 'Playwright', iconName: 'playwright', color: '#2EAD33', category: 'Tools' },
@@ -55,7 +55,7 @@ const TECH_STACK = [
   // OPERATING SYSTEMS
   // ==========================================
   { name: 'Windows', iconName: 'windows11', color: '#0078D4', category: 'OS' },
-  { name: 'Linux', iconName: 'linux', color: '#FCC624', category: 'OS' },
+  { name: 'Linux', iconName: 'linux', color: '#FCC624', category: 'OS', preferred: true },
   { name: 'Kali Linux', iconClass: 'devicon-kalilinux-original', color: '#557C94', category: 'OS' },
 ];
 
@@ -345,16 +345,44 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
         ) : null}
       </div>
 
+      {/* Preferred Stack Star Badge */}
+      {tech.preferred && (
+        <div 
+          className="absolute -top-1 -right-1 z-20 flex items-center justify-center 
+            w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 rounded-full 
+            bg-gradient-to-br from-amber-400 to-amber-500 
+            text-white shadow-[0_2px_8px_rgba(0,0,0,0.3)]
+            border border-background dark:border-background
+            transition-all duration-300 ease-out
+            group-hover:scale-110 group-hover:rotate-[15deg]"
+          title="Preferred Choice"
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 24 24" 
+            fill="currentColor" 
+            className="w-2 h-2 md:w-2.5 md:h-2.5 lg:w-3 lg:h-3 fill-white text-white"
+          >
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+          </svg>
+        </div>
+      )}
+
       {/* Tooltip */}
-      <div className="absolute -top-16 left-1/2 -translate-x-1/2 z-[60] px-3.5 py-2 
+      <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 z-[60] px-3.5 py-2 
         bg-zinc-950 dark:bg-white text-white dark:text-zinc-900 
         rounded-xl opacity-0 scale-90 pointer-events-none 
         transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 whitespace-nowrap 
         shadow-[0_8px_24px_rgba(0,0,0,0.3)] dark:shadow-[0_8px_24px_rgba(0,0,0,0.15)]
-        border border-white/10 dark:border-black/5 flex flex-col items-center">
+        border border-white/10 dark:border-black/5 flex flex-col items-center justify-center">
         <span className="text-[10px] md:text-xs font-mono font-bold tracking-wider">
           {tech.name}
         </span>
+        {tech.preferred && (
+          <span className="text-[9px] md:text-[10px] font-mono font-normal tracking-wide text-amber-500 dark:text-amber-600 mt-0.5">
+            (Preferred)
+          </span>
+        )}
         <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 
           bg-zinc-950 dark:bg-white rotate-45 border-r border-b border-white/10 dark:border-black/5" />
       </div>
