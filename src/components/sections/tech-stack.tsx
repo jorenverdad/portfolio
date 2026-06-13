@@ -8,8 +8,8 @@ const TECH_STACK = [
   // ==========================================
   // LANGUAGES
   // ==========================================
-  { name: 'HTML5', iconName: 'html5', color: '#E34F26', category: 'Languages' },
-  { name: 'CSS3', iconName: 'css3', color: '#1572B6', category: 'Languages' },
+  { name: 'HTML5', iconName: 'html5', color: '#E34F26' },
+  { name: 'CSS3', iconName: 'css3', color: '#1572B6' },
   { name: 'JavaScript', iconName: 'js', color: '#F7DF1E', category: 'Languages' },
   { name: 'TypeScript', iconName: 'typescript', color: '#3178C6', category: 'Languages', preferred: true },
   { name: 'Python', iconName: 'python', color: '#3776AB', category: 'Languages' },
@@ -354,7 +354,8 @@ function TechStackList({ isDark }: { isDark: boolean }) {
   return (
     <m.div variants={listContainerVariants} initial="hidden" animate="show" className="flex flex-col w-full">
       {CATEGORIES.map((category, index) => {
-        const items = TECH_STACK.filter(t => t.category === category);
+        const items = TECH_STACK.filter(t => t.category === category)
+          .sort((a, b) => (b.preferred ? 1 : 0) - (a.preferred ? 1 : 0));
         if (items.length === 0) return null;
         
         const isLast = index === CATEGORIES.length - 1;
