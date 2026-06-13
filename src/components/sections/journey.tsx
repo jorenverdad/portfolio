@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { m, useScroll, useTransform, AnimatePresence, useMotionValueEvent, LazyMotion, domMax } from 'motion/react';
+import { m, useScroll, AnimatePresence, useMotionValueEvent, LazyMotion, domMax } from 'motion/react';
 import { GridPattern } from '@/components/ui/grid-pattern';
 import { Briefcase, GraduationCap, Award, Activity } from 'lucide-react';
 
@@ -25,9 +25,15 @@ export type {
   ActivityItem 
 } from './journey/types';
 
+const TABS: readonly SubSectionTab[] = ['experience', 'education', 'certifications', 'activities'] as const;
+let globalActiveTab: SubSectionTab = 'experience';
+
 export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: JourneyProps) {
-  const [activeTab, setActiveTab] = useState<SubSectionTab>('experience');
-  const [[tabIndex, direction], setTabState] = useState<readonly [number, number]>([0, 0]);
+  const [activeTab, setActiveTab] = useState<SubSectionTab>(globalActiveTab);
+  const [[, direction], setTabState] = useState<readonly [number, number]>(() => {
+    const initialIndex = TABS.indexOf(globalActiveTab);
+    return [initialIndex, 0];
+  });
 
   const sectionRef = useRef<HTMLElement>(null);
   
@@ -43,11 +49,14 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
     setIsMenuVisible(latest > 0 && latest < 1);
   });
 
-  const tabs: readonly SubSectionTab[] = ['experience', 'education', 'certifications', 'activities'] as const;
+  // Persist active tab across unmounts/remounts
+  useEffect(() => {
+    globalActiveTab = activeTab;
+  }, [activeTab]);
 
   const switchTab = (newTab: SubSectionTab) => {
-    const currentIndex = tabs.indexOf(activeTab);
-    const newIndex = tabs.indexOf(newTab);
+    const currentIndex = TABS.indexOf(activeTab);
+    const newIndex = TABS.indexOf(newTab);
     if (currentIndex === newIndex) return;
 
     const dir = newIndex > currentIndex ? 1 : -1;
@@ -187,7 +196,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
                 
                 <div className="absolute right-14 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
                   <div className="bg-bg-surface border border-edge-subtle/80 text-foreground font-mono text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-md whitespace-nowrap shadow-lg">
-                    <span className="text-brand-500 mr-1.5">//</span>{item.label}
+                    <span className="text-brand-500 mr-1.5">{"//"}</span>{item.label}
                   </div>
                 </div>
               </button>
