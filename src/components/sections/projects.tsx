@@ -41,7 +41,7 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
 
 export function ProjectsSection({ className, projects = DEFAULT_PROJECTS }: ProjectsProps) {
   return (
-    <section id="projects" className={`py-32 bg-bg-void relative border-t border-edge-subtle overflow-hidden ${className ?? ''}`}>
+    <section className={`py-32 bg-bg-void relative border-t border-edge-subtle overflow-hidden ${className ?? ''}`}>
       <GridPattern className="opacity-[0.08]" />
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">

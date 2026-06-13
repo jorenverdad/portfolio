@@ -31,12 +31,26 @@ const DEFAULT_LINKS: ReadonlyArray<NavBarLink> = [
  */
 function scrollToSection(sectionId: string, e?: React.MouseEvent): void {
   e?.preventDefault();
-  const target = document.getElementById(sectionId);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' });
+  
+  // Trigger immediate mounting for lazy sections
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('lazy-mount-trigger', { detail: sectionId }));
   }
+
+  // Defer scrolling slightly to allow the newly mounted component to lay out
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const target = document.getElementById(sectionId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
   // Replace the URL to remove any hash, keeping it clean at "/"
-  window.history.replaceState(null, '', window.location.pathname);
+  if (typeof window !== 'undefined') {
+    window.history.replaceState(null, '', window.location.pathname);
+  }
 }
 
 export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {

@@ -24,7 +24,7 @@ export default async function Home() {
           <HeroSection />
         </div>
         
-        <LazyMount>
+        <LazyMount id="about">
           <ScrollReveal>
             <AboutSection stats={githubStats} />
           </ScrollReveal>
@@ -42,19 +42,19 @@ export default async function Home() {
           </ScrollReveal>
         </LazyMount>
         
-        <LazyMount>
+        <LazyMount id="projects">
           <ScrollReveal>
             <ProjectsSection />
           </ScrollReveal>
         </LazyMount>
         
-        <LazyMount>
+        <LazyMount id="service">
           <ScrollReveal>
             <ServicesSection />
           </ScrollReveal>
         </LazyMount>
         
-        <LazyMount>
+        <LazyMount id="testimonial">
           <ScrollReveal>
             <TestimonialsSection />
           </ScrollReveal>

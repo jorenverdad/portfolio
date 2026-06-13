@@ -7,13 +7,15 @@ interface LazyMountProps {
   minHeight?: string | number;
   rootMargin?: string;
   className?: string;
+  id?: string;
 }
 
 export function LazyMount({ 
   children, 
   minHeight = '100vh', 
   rootMargin = '200% 0px',
-  className 
+  className,
+  id
 }: LazyMountProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [actualHeight, setActualHeight] = useState<number | string>(minHeight);
@@ -42,10 +44,26 @@ export function LazyMount({
     return () => observer.disconnect();
   }, [rootMargin]);
 
+  // Support programmatic mounting when nav items are clicked
+  useEffect(() => {
+    if (!id) return;
+
+    const handleTrigger = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      if (customEvent.detail === id) {
+        setIsMounted(true);
+      }
+    };
+
+    window.addEventListener('lazy-mount-trigger', handleTrigger);
+    return () => window.removeEventListener('lazy-mount-trigger', handleTrigger);
+  }, [id]);
+
   return (
     <div 
       ref={containerRef} 
       className={className} 
+      id={id}
       style={{ minHeight: isMounted ? 'auto' : actualHeight }}
     >
       {isMounted ? children : null}

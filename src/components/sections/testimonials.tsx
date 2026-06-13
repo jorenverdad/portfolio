@@ -26,7 +26,7 @@ const DEFAULT_TESTIMONIALS: ReadonlyArray<Testimonial> = [
 
 export function TestimonialsSection({ className, testimonials = DEFAULT_TESTIMONIALS }: TestimonialsProps) {
   return (
-    <section id="testimonial" className={`py-32 relative bg-bg-void overflow-hidden ${className ?? ''}`}>
+    <section className={`py-32 relative bg-bg-void overflow-hidden ${className ?? ''}`}>
       {/* Decorative blurred blobs */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[400px] h-[400px] bg-warm-500/10 rounded-full blur-[100px] pointer-events-none" />

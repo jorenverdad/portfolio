@@ -81,7 +81,6 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
   return (
     <LazyMotion features={domAnimation}>
     <section 
-      id="about" 
       ref={containerRef}
       className={`py-24 md:py-32 relative bg-bg-base overflow-hidden ${className ?? ''}`}
     >

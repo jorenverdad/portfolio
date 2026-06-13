@@ -31,7 +31,7 @@ const DEFAULT_SERVICES: ReadonlyArray<Service> = [
 
 export function ServicesSection({ className, services = DEFAULT_SERVICES }: ServicesProps) {
   return (
-    <section id="service" className={`py-32 relative bg-bg-base overflow-hidden border-t border-edge-subtle ${className ?? ''}`}>
+    <section className={`py-32 relative bg-bg-base overflow-hidden border-t border-edge-subtle ${className ?? ''}`}>
       <div className="absolute inset-0 bg-gradient-to-tr from-brand-500/10 via-transparent to-transparent opacity-50 z-0" />
       
       <div className="container mx-auto px-6 relative z-10">
