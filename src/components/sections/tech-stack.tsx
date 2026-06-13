@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, Variants } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import StackIcon from 'tech-stack-icons';
 
 const TECH_STACK = [
@@ -75,14 +75,6 @@ export function TechStackSection({ className }: { className?: string }) {
   
   const containerRef = useRef<HTMLDivElement>(null);
   
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const ySpring = useSpring(y1, { stiffness: 10, damping: 100 });
-
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -212,7 +204,6 @@ export function TechStackSection({ className }: { className?: string }) {
 
       {/* The Infinite Grid Container */}
       <motion.div 
-        style={{ y: ySpring }}
         className="w-full flex justify-center items-center relative z-20 pointer-events-none overflow-visible"
       >
         <div className="relative">
