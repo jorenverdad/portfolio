@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { m, useScroll, useTransform, LazyMotion, domAnimation } from 'motion/react';
 import { GridPattern } from '@/components/ui/grid-pattern';
 import { GitHubStatsCard } from '@/components/sections/github-stats';
 import { SkillsMarquee } from '@/components/sections/skills-marquee';
@@ -11,7 +11,7 @@ import type { GitHubStats } from '@/lib/github';
 function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
   const letters = Array.from(text);
   return (
-    <motion.span
+    <m.span
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
@@ -26,7 +26,7 @@ function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
       }}
     >
       {letters.map((char, index) => (
-        <motion.span
+        <m.span
           key={index}
           variants={{
             hidden: { opacity: 0 },
@@ -35,9 +35,9 @@ function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
           transition={{ duration: 0.01 }}
         >
           {char}
-        </motion.span>
+        </m.span>
       ))}
-    </motion.span>
+    </m.span>
   );
 }
 
@@ -79,6 +79,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
   };
 
   return (
+    <LazyMotion features={domAnimation}>
     <section 
       id="about" 
       ref={containerRef}
@@ -90,7 +91,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
       </div>
       <GridPattern className="opacity-10 [mask-image:radial-gradient(ellipse_100%_100%_at_50%_50%,#000_20%,transparent_100%)] z-0" />
 
-      <motion.div 
+      <m.div 
         className="container mx-auto px-6 md:px-8 relative z-10"
         variants={containerVariants}
         initial="hidden"
@@ -98,7 +99,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
         viewport={{ once: true, margin: "-100px" }}
       >
         {/* Section Label */}
-        <motion.div 
+        <m.div 
           variants={itemVariants}
           className="flex items-center gap-3.5 mb-10 md:mb-14 select-none"
         >
@@ -110,12 +111,12 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
             About
           </span>
           <div className="h-px flex-1 bg-gradient-to-r from-edge-subtle/50 via-edge-subtle/10 to-transparent ml-4" />
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
           
           {/* Header Typography - Spans 8 cols */}
-          <motion.div 
+          <m.div 
             variants={itemVariants}
             className="md:col-span-8 flex flex-col justify-center border border-edge-subtle bg-bg-surface/30 backdrop-blur-md p-8 md:p-12 rounded-[2.5rem] relative overflow-hidden group shadow-2xl"
           >
@@ -130,15 +131,15 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
             <p className="text-xl md:text-2xl text-muted-foreground font-sans leading-relaxed max-w-2xl font-light relative z-10">
               Hi, I'm Joren. I build digital experiences with pixel-perfect precision and uncompromising performance. I don't just write code; I craft interfaces that feel alive.
             </p>
-          </motion.div>
+          </m.div>
 
           {/* Image/Avatar - Spans 4 cols */}
-          <motion.div 
+          <m.div 
             variants={itemVariants}
             className="md:col-span-4 relative group rounded-[2.5rem] overflow-hidden border border-edge-subtle h-[400px] md:h-auto shadow-2xl bg-bg-surface"
           >
             <div className="absolute inset-0 bg-brand-500/20 mix-blend-overlay z-10 group-hover:opacity-0 transition-opacity duration-700 pointer-events-none" />
-            <motion.div style={{ y: y1 }} className="w-full h-[130%] -top-[15%] relative">
+            <m.div style={{ y: y1 }} className="w-full h-[130%] -top-[15%] relative">
               <Image 
                 src={ProfileImg} 
                 alt="Joren" 
@@ -148,11 +149,11 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                 priority
                 draggable={false}
               />
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
 
           {/* Bento Box: Stats/Details - Spans 4 cols */}
-          <motion.div 
+          <m.div 
             variants={itemVariants}
             className="md:col-span-4 rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md flex flex-col justify-start relative group shadow-2xl overflow-hidden min-h-[460px]"
           >
@@ -193,7 +194,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                 </div>
 
                 {/* Output 1: TypeSafe code block */}
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 8 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -233,12 +234,12 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                     <span className="text-yellow-400">{'}'}</span>
                     <span className="text-muted-foreground/60">;</span>
                   </div>
-                </motion.div>
+                </m.div>
               </div>
 
               {/* Command 2: list arsenal */}
               <div className="space-y-3 pt-1">
-                <motion.div
+                <m.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
@@ -249,10 +250,10 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                   <span className="text-foreground font-medium ml-2">
                     <TypewriterText text="npx list-arsenal" delay={1.6} />
                   </span>
-                </motion.div>
+                </m.div>
 
                 {/* Output 2: Badge pills */}
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 8 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -264,11 +265,11 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                       {tech}
                     </span>
                   ))}
-                </motion.div>
+                </m.div>
               </div>
 
               {/* Blinking prompt */}
-              <motion.div
+              <m.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
@@ -277,12 +278,12 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
               >
                 <span className="text-emerald-400 font-semibold">joren</span><span className="text-zinc-500">@</span><span className="text-brand-400">portfolio</span><span className="text-zinc-500">:</span><span className="text-blue-400">~/expertise</span><span className="text-zinc-500">$</span>
                 <span className="w-1.5 h-3.5 bg-brand-500 animate-pulse inline-block ml-2" />
-              </motion.div>
+              </m.div>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Bento Box: Narrative - Spans 8 cols */}
-          <motion.div 
+          <m.div 
             variants={itemVariants}
             className="md:col-span-8 rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md p-8 md:p-12 relative overflow-hidden group flex items-center shadow-2xl"
           >
@@ -298,20 +299,21 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                 For me, a successful project isn't just one that works—it's one that loads instantly, scales gracefully, and leaves a profound impression on the user.
               </p>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* GitHub Stats - Spans 12 cols, not bento */}
-          <motion.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-8">
+          <m.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-8">
             <GitHubStatsCard stats={stats} />
-          </motion.div>
+          </m.div>
 
           {/* Infinite Skills Marquee - Spans 12 cols */}
-          <motion.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-12">
+          <m.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-12">
             <SkillsMarquee />
-          </motion.div>
+          </m.div>
 
         </div>
-      </motion.div>
+      </m.div>
     </section>
+    </LazyMotion>
   );
 }

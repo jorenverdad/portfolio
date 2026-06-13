@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { m, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { ChevronRight, Award, ShieldCheck } from 'lucide-react';
 import { CertificationsTelemetryDashboard } from './telemetry';
 import { CERTIFICATION_ITEMS } from './constants';
@@ -142,7 +142,7 @@ export function CertificationsView({
       {/* Right Content Credentials List (8-cols) */}
       <div ref={timelineRef} className="lg:col-span-8 relative">
         <div className="absolute left-3 md:left-8 top-3 bottom-3 w-[2px] bg-edge-subtle/40 pointer-events-none z-0">
-          <motion.div
+          <m.div
             style={{ scaleY }}
             className="w-full h-full bg-gradient-to-b from-brand-500 via-warm-500 to-brand-500 origin-top shadow-[0_0_12px_rgba(224,32,32,0.4)]"
           />
@@ -163,7 +163,7 @@ export function CertificationsView({
                 <div className="absolute -left-[45px] md:-left-[73px] top-4 select-none pointer-events-none flex items-center justify-center size-9 md:size-[52px]">
                   <AnimatePresence>
                     {isActive && (
-                      <motion.svg
+                      <m.svg
                         initial={{ scale: 0.6, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1, rotate: 360 }}
                         exit={{ scale: 0.6, opacity: 0 }}
@@ -172,7 +172,7 @@ export function CertificationsView({
                         viewBox="0 0 100 100"
                       >
                         <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="10 8" />
-                      </motion.svg>
+                      </m.svg>
                     )}
                   </AnimatePresence>
                   
@@ -189,7 +189,7 @@ export function CertificationsView({
                   }`} />
                 </div>
 
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-80px' }}
@@ -256,7 +256,7 @@ export function CertificationsView({
                       ))}
                     </div>
                   )}
-                </motion.div>
+                </m.div>
               </div>
             );
           })}

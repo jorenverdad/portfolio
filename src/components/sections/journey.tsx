@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, useScroll, useTransform, AnimatePresence, useMotionValueEvent } from 'framer-motion';
+import { m, useScroll, useTransform, AnimatePresence, useMotionValueEvent, LazyMotion, domMax } from 'motion/react';
 import { GridPattern } from '@/components/ui/grid-pattern';
 import { Briefcase, GraduationCap, Award, Activity } from 'lucide-react';
 
@@ -92,6 +92,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
   ] as const;
 
   return (
+    <LazyMotion features={domMax}>
     <>
     <section 
       id="journey" 
@@ -108,7 +109,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
 
       <div className="container mx-auto px-6 md:px-8 max-w-7xl relative z-10 min-h-[60vh]">
         <AnimatePresence initial={false} custom={direction} mode="wait">
-          <motion.div
+          <m.div
             key={activeTab}
             custom={direction}
             variants={slideVariants}
@@ -135,7 +136,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
             {activeTab === 'activities' && (
               <ActivitiesView />
             )}
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       </div>
     </section>
@@ -150,7 +151,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
     {/* Desktop HUD Sidebar (Visible xl and up) */}
     <AnimatePresence>
       {isMenuVisible && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: 30, scale: 0.95 }}
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ 
@@ -175,7 +176,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
                 className="group relative w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 {isActive && (
-                  <motion.div
+                  <m.div
                     layoutId="activeHUDTabDesktop"
                     className="absolute inset-0 rounded-full bg-brand-500/15 border border-brand-500/30 shadow-[0_0_15px_rgba(224,32,32,0.15)]"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
@@ -194,14 +195,14 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
           })}
           
           <div className="w-1.5 h-1.5 rounded-full bg-brand-500/40 animate-pulse mt-1" />
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
 
     {/* Mobile HUD Dock (Visible below xl) */}
     <AnimatePresence>
       {isMenuVisible && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30, x: '-50%', scale: 0.95 }}
           animate={{ opacity: 1, y: 0, x: '-50%', scale: 1 }}
           exit={{ 
@@ -224,7 +225,7 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
                 className="group relative px-3 py-2 rounded-full flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 {isActive && (
-                  <motion.div
+                  <m.div
                     layoutId="activeHUDTabMobile"
                     className="absolute inset-0 rounded-full bg-brand-500/10 border border-brand-500/20 shadow-[0_0_12px_rgba(224,32,32,0.1)]"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
@@ -240,13 +241,14 @@ export function JourneySection({ className, milestones = DEFAULT_MILESTONES }: J
               </button>
             );
           })}
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
       </>,
       document.body
     )}
     </>
+    </LazyMotion>
   );
 }
 

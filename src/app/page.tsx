@@ -1,14 +1,17 @@
+import dynamic from 'next/dynamic';
 import { NavBar } from '@/components/layout/nav-bar';
 import { Footer } from '@/components/layout/footer';
 import { HeroSection } from '@/components/sections/hero';
-import { AboutSection } from '@/components/sections/about';
-import { JourneySection } from '@/components/sections/journey';
-import { TechStackSection } from '@/components/sections/tech-stack';
-import { ProjectsSection } from '@/components/sections/projects';
-import { ServicesSection } from '@/components/sections/services';
-import { TestimonialsSection } from '@/components/sections/testimonials';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
+import { LazyMount } from '@/components/ui/lazy-mount';
 import { fetchGitHubStats } from '@/lib/github';
+
+const AboutSection = dynamic(() => import('@/components/sections/about').then(mod => mod.AboutSection));
+const JourneySection = dynamic(() => import('@/components/sections/journey').then(mod => mod.JourneySection));
+const TechStackSection = dynamic(() => import('@/components/sections/tech-stack').then(mod => mod.TechStackSection));
+const ProjectsSection = dynamic(() => import('@/components/sections/projects').then(mod => mod.ProjectsSection));
+const ServicesSection = dynamic(() => import('@/components/sections/services').then(mod => mod.ServicesSection));
+const TestimonialsSection = dynamic(() => import('@/components/sections/testimonials').then(mod => mod.TestimonialsSection));
 
 export default async function Home() {
   const githubStats = await fetchGitHubStats();
@@ -21,29 +24,41 @@ export default async function Home() {
           <HeroSection />
         </div>
         
-        <ScrollReveal>
-          <AboutSection stats={githubStats} />
-        </ScrollReveal>
+        <LazyMount>
+          <ScrollReveal>
+            <AboutSection stats={githubStats} />
+          </ScrollReveal>
+        </LazyMount>
         
-        <ScrollReveal>
-          <JourneySection />
-        </ScrollReveal>
+        <LazyMount>
+          <ScrollReveal>
+            <JourneySection />
+          </ScrollReveal>
+        </LazyMount>
         
-        <ScrollReveal>
-          <TechStackSection />
-        </ScrollReveal>
+        <LazyMount>
+          <ScrollReveal>
+            <TechStackSection />
+          </ScrollReveal>
+        </LazyMount>
         
-        <ScrollReveal>
-          <ProjectsSection />
-        </ScrollReveal>
+        <LazyMount>
+          <ScrollReveal>
+            <ProjectsSection />
+          </ScrollReveal>
+        </LazyMount>
         
-        <ScrollReveal>
-          <ServicesSection />
-        </ScrollReveal>
+        <LazyMount>
+          <ScrollReveal>
+            <ServicesSection />
+          </ScrollReveal>
+        </LazyMount>
         
-        <ScrollReveal>
-          <TestimonialsSection />
-        </ScrollReveal>
+        <LazyMount>
+          <ScrollReveal>
+            <TestimonialsSection />
+          </ScrollReveal>
+        </LazyMount>
       </main>
       <Footer />
     </>

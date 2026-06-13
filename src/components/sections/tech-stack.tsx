@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { motion, Variants } from 'framer-motion';
+import { LazyMotion, domAnimation, m, Variants } from 'motion/react';
 import StackIcon from 'tech-stack-icons';
 
 const TECH_STACK = [
@@ -177,10 +177,10 @@ export function TechStackSection({ className }: { className?: string }) {
       ref={containerRef}
       className={`py-32 md:py-48 bg-bg-base relative overflow-hidden flex flex-col items-center justify-center ${className ?? ''}`}
     >
-
+      <LazyMotion features={domAnimation}>
       <div className="container mx-auto px-6 relative z-30 mb-0">
         <div className="mb-8 text-center flex flex-col items-center">
-          <motion.h2 
+          <m.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -188,9 +188,9 @@ export function TechStackSection({ className }: { className?: string }) {
             className="font-heading text-4xl md:text-6xl font-extrabold tracking-tight uppercase mb-6 text-foreground"
           >
             The <span className="text-brand-500">Stack.</span>
-          </motion.h2>
+          </m.h2>
           
-          <motion.p 
+          <m.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -198,16 +198,16 @@ export function TechStackSection({ className }: { className?: string }) {
             className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed font-sans"
           >
             A curated collection of languages, frameworks, and tools calibrated for sub-second performance, strict type-safety, and interactive fluidity.
-          </motion.p>
+          </m.p>
         </div>
       </div>
 
       {/* The Infinite Grid Container */}
-      <motion.div 
+      <m.div 
         className="w-full flex justify-center items-center relative z-20 pointer-events-none overflow-visible"
       >
         <div className="relative">
-          <motion.div 
+          <m.div 
             variants={containerVariants}
             initial="hidden"
             whileInView="show"
@@ -225,7 +225,7 @@ export function TechStackSection({ className }: { className?: string }) {
                 isDark={isDark}
               />
             ))}
-          </motion.div>
+          </m.div>
 
           {/* Gradient fade overlays — blend grid edges into the background */}
           {/* Radial vignette: large soft ellipse, transparent center → bg color edges */}
@@ -264,7 +264,8 @@ export function TechStackSection({ className }: { className?: string }) {
             }}
           />
         </div>
-      </motion.div>
+      </m.div>
+      </LazyMotion>
     </section>
   );
 }
@@ -293,7 +294,7 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
 
   if (!tech) {
     return (
-      <motion.div
+      <m.div
         variants={cellVariants}
         custom={{ delay: cell.delay, hasTech: false }}
         className="w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] rounded-xl md:rounded-2xl 
@@ -305,7 +306,7 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
   }
 
   return (
-    <motion.div
+    <m.div
       variants={cellVariants}
       custom={{ delay: cell.delay, hasTech: true }}
       whileHover={{ scale: 1.15, zIndex: 50 }}
@@ -357,7 +358,7 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
         <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 
           bg-zinc-950 dark:bg-white rotate-45 border-r border-b border-white/10 dark:border-black/5" />
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 

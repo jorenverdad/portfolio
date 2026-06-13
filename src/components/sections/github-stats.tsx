@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import {
-  motion,
+  m,
   useMotionValue,
   useTransform,
   animate,
   useInView,
   type Variants,
-} from 'framer-motion';
+} from 'motion/react';
 import { FolderGit2, Users, Star, GitCommit } from 'lucide-react';
 import type { GitHubStats } from '@/lib/github';
 
@@ -111,14 +111,14 @@ export function GitHubStatsCard({ stats }: GitHubStatsCardProps) {
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-edge-subtle to-transparent opacity-50" />
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-edge-subtle to-transparent opacity-50" />
 
-      <motion.div 
+      <m.div 
         variants={containerVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         className="flex flex-col xl:flex-row items-start xl:items-center gap-12 xl:gap-24 relative z-10 px-4 md:px-0"
       >
         {/* Left Branding */}
-        <motion.div variants={itemVariants} className="flex flex-col gap-4 max-w-sm">
+        <m.div variants={itemVariants} className="flex flex-col gap-4 max-w-sm">
           <div className="flex items-center gap-3">
              <div className="w-8 h-px bg-brand-500" />
              <span className="text-xs font-mono uppercase tracking-[0.3em] text-brand-500">Live Telemetry</span>
@@ -130,7 +130,7 @@ export function GitHubStatsCard({ stats }: GitHubStatsCardProps) {
           <p className="text-sm font-sans text-muted-foreground/80 leading-relaxed font-light mt-2">
             Real-time data fetched directly from GitHub. A quantitative look at my contributions, public repositories, and community impact.
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Right Stats Grid */}
         <div className="flex-1 w-full grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
@@ -139,7 +139,7 @@ export function GitHubStatsCard({ stats }: GitHubStatsCardProps) {
              const value = stats[item.key];
 
              return (
-               <motion.div 
+               <m.div 
                  variants={itemVariants} 
                  key={item.key} 
                  className="flex flex-col gap-3 group/stat relative md:px-6"
@@ -158,11 +158,11 @@ export function GitHubStatsCard({ stats }: GitHubStatsCardProps) {
                  <span className="text-[10px] md:text-xs font-mono text-muted-foreground uppercase tracking-widest mt-1 group-hover/stat:text-foreground transition-colors duration-500">
                    {item.label}
                  </span>
-               </motion.div>
+               </m.div>
              );
           })}
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 }

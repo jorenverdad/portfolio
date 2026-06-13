@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'motion/react';
 
 export function TelemetryRadar() {
   return (
@@ -152,7 +152,7 @@ export function AcademicTelemetryDashboard() {
         <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="0.5" />
         
         {/* GPA Progress Circle (97.5% full for 3.9/4.0) */}
-        <motion.circle 
+        <m.circle 
           cx="50" 
           cy="50" 
           r="36" 
@@ -168,7 +168,7 @@ export function AcademicTelemetryDashboard() {
         />
 
         {/* Major Core Completion (100% full) */}
-        <motion.circle 
+        <m.circle 
           cx="50" 
           cy="50" 
           r="28" 
