@@ -382,16 +382,26 @@ function TechStackList({ isDark }: { isDark: boolean }) {
                     border border-black/[0.08] dark:border-white/[0.08]
                     hover:border-black/20 dark:hover:border-white/[0.2]
                     shadow-sm hover:shadow-md dark:shadow-none
-                    transition-all duration-300 cursor-pointer overflow-hidden"
+                    transition-all duration-300 cursor-pointer"
                 >
-                  {/* Subtle Glow background on hover */}
-                  <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-[0.05] dark:group-hover:opacity-[0.1] transition-opacity duration-300 -z-10"
-                    style={{ backgroundColor: tech.color }}
-                  />
+                  {/* Background effects container */}
+                  <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none -z-10">
+                    {/* Subtle Glow background on hover */}
+                    <div 
+                      className="absolute inset-0 opacity-0 group-hover:opacity-[0.05] dark:group-hover:opacity-[0.1] transition-opacity duration-300"
+                      style={{ backgroundColor: tech.color }}
+                    />
+                    {/* Decorative corner accent - very subtle */}
+                    <div 
+                      className="absolute top-0 right-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{
+                        background: `radial-gradient(circle at top right, ${tech.color}30, transparent 60%)`
+                      }}
+                    />
+                  </div>
 
                   {/* Icon */}
-                  <div className="w-5 h-5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <div className="relative z-10 w-5 h-5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                     {'iconName' in tech && tech.iconName ? (
                       <StackIcon 
                         name={tech.iconName as any} 
@@ -408,36 +418,32 @@ function TechStackList({ isDark }: { isDark: boolean }) {
                   </div>
 
                   {/* Text */}
-                  <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                  <span className="relative z-10 text-sm font-semibold text-zinc-700 dark:text-zinc-300 pr-1">
                     {tech.name}
                   </span>
 
-                  {/* Preferred Badge */}
+                  {/* Preferred Stack Star Badge */}
                   {tech.preferred && (
                     <div 
-                      className="flex items-center justify-center ml-1
-                        w-3.5 h-3.5 rounded-full 
+                      className="absolute -top-1 -right-1 z-20 flex items-center justify-center 
+                        w-4 h-4 md:w-[18px] md:h-[18px] rounded-full 
                         bg-gradient-to-br from-amber-400 to-amber-500 
-                        shadow-[0_2px_8px_rgba(251,191,36,0.4)]"
+                        text-white shadow-[0_2px_8px_rgba(0,0,0,0.3)]
+                        border border-background dark:border-background
+                        transition-all duration-300 ease-out
+                        group-hover:scale-110 group-hover:rotate-[15deg]"
                       title="Preferred Choice"
                     >
                       <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
                         viewBox="0 0 24 24" 
                         fill="currentColor" 
-                        className="w-2 h-2 text-white"
+                        className="w-2.5 h-2.5 md:w-3 md:h-3 fill-white text-white"
                       >
                         <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                       </svg>
                     </div>
                   )}
-                  
-                  {/* Decorative corner accent - very subtle */}
-                  <div 
-                    className="absolute top-0 right-0 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style={{
-                      background: `radial-gradient(circle at top right, ${tech.color}30, transparent 60%)`
-                    }}
-                  />
                 </m.div>
               ))}
             </div>
