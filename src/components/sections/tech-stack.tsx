@@ -82,13 +82,29 @@ interface CellInfo {
   delay: number;
 }
 
+type ViewMode = 'grid' | 'list';
+
 export function TechStackSection({ className }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isDark, setIsDark] = useState(true);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
   
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Retrieve selection after client hydration
+  useEffect(() => {
+    const saved = localStorage.getItem('tech-stack-view');
+    if (saved === 'grid' || saved === 'list') {
+      setViewMode(saved);
+    }
+  }, []);
+
+  // Update state and write to localStorage
+  const handleViewModeChange = (mode: ViewMode) => {
+    setViewMode(mode);
+    localStorage.setItem('tech-stack-view', mode);
+  };
   
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -225,7 +241,7 @@ export function TechStackSection({ className }: { className?: string }) {
             {['grid', 'list'].map((mode) => (
               <button
                 key={mode}
-                onClick={() => setViewMode(mode as 'grid' | 'list')}
+                onClick={() => handleViewModeChange(mode as ViewMode)}
                 className={`relative px-8 py-2.5 rounded-full text-sm font-bold transition-colors ${
                   viewMode === mode 
                     ? 'text-background' 
