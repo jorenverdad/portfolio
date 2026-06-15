@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'motion/react';
 import { Plus } from 'lucide-react';
 
 type ConnectionStatus = 'connecting' | 'connected' | 'polling' | 'error';
@@ -19,7 +19,8 @@ export function CountMeIn() {
   const [status, setStatus] = useState<ConnectionStatus>('connecting');
   const [particles, setParticles] = useState<ReadonlyArray<Particle>>([]);
   const [isTapping, setIsTapping] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
   
   const eventSourceRef = useRef<EventSource | null>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -92,7 +93,8 @@ export function CountMeIn() {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
   };
 
   const handleTap = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -136,16 +138,12 @@ export function CountMeIn() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       className="group relative flex items-center rounded-full bg-bg-surface/30 p-1.5 border border-edge-subtle/40 backdrop-blur-xl transition-all duration-500 hover:border-brand-500/30 overflow-hidden"
-      style={{
-        '--mouse-x': `${mousePos.x}px`,
-        '--mouse-y': `${mousePos.y}px`,
-      } as React.CSSProperties}
     >
       {/* Interactive Spotlight background effect */}
-      <div 
+      <motion.div 
         className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
-          background: `radial-gradient(120px circle at var(--mouse-x) var(--mouse-y), var(--color-brand-500), transparent 50%)`,
+          background: useMotionTemplate`radial-gradient(120px circle at ${mouseX}px ${mouseY}px, var(--color-brand-500), transparent 50%)`,
           opacity: 0.15,
           mixBlendMode: 'screen'
         }}
