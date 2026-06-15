@@ -23,7 +23,7 @@ interface StatItemConfig {
 }
 
 const STAT_ITEMS: readonly StatItemConfig[] = [
-  { key: 'publicRepos', label: 'Public Repositories', icon: FolderGit2 },
+  { key: 'publicRepos', label: 'Repositories', icon: FolderGit2 },
   { key: 'followers', label: 'Followers', icon: Users },
   { key: 'totalStars', label: 'Stars Earned', icon: Star },
   { key: 'totalCommits', label: 'Total Commits', icon: GitCommit },
