@@ -1,7 +1,6 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { CountMeIn } from '@/components/layout/count-me-in';
+import { CurrentYear } from '@/components/ui/current-year';
 
 export interface FooterProps {
   readonly className?: string;
@@ -10,12 +9,6 @@ export interface FooterProps {
 export function Footer({
   className,
 }: FooterProps) {
-  const [year, setYear] = useState('2026');
-
-  useEffect(() => {
-    setYear(new Date().getFullYear().toString());
-  }, []);
-
   return (
     <footer className={`bg-bg-base border-t border-edge-subtle pt-12 pb-8 relative overflow-hidden ${className ?? ''}`}>
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center">
@@ -27,7 +20,7 @@ export function Footer({
 
         <div className="flex flex-col md:flex-row w-full justify-between items-center gap-6">
           <p className="text-muted-foreground text-sm font-sans">
-            &copy; {year} Joren Verdad. All rights reserved.
+            &copy; <CurrentYear /> Joren Verdad. All rights reserved.
           </p>
           
           <CountMeIn />
