@@ -117,7 +117,7 @@ export function TechStackSection({ className }: { className?: string }) {
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     
-    setTimeout(() => setMounted(true), 0);
+    setMounted(true);
     return () => {
       window.removeEventListener('resize', checkMobile);
       observer.disconnect();
@@ -495,13 +495,16 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
 
   if (!tech) {
     return (
-      <m.div
-        variants={cellVariants}
-        custom={{ delay: cell.delay, hasTech: false }}
+      <div
         className="w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] rounded-xl md:rounded-2xl 
           border border-white/[0.03] dark:border-white/[0.02] 
           bg-white/[0.01] dark:bg-white/[0.01]
-          transition-colors duration-500 hover:bg-white/[0.04] dark:hover:bg-white/[0.04]"
+          transition-colors duration-500 hover:bg-white/[0.04] dark:hover:bg-white/[0.04]
+          animate-cell-empty"
+        style={{
+          animationDelay: `${cell.delay}s`,
+          animationFillMode: 'both'
+        }}
       />
     );
   }

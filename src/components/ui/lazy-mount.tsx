@@ -8,6 +8,7 @@ interface LazyMountProps {
   rootMargin?: string;
   className?: string;
   id?: string;
+  once?: boolean;
 }
 
 export function LazyMount({ 
@@ -15,7 +16,8 @@ export function LazyMount({
   minHeight = '100vh', 
   rootMargin = '200% 0px',
   className,
-  id
+  id,
+  once = true
 }: LazyMountProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [actualHeight, setActualHeight] = useState<number | string>(minHeight);
@@ -29,7 +31,10 @@ export function LazyMount({
       ([entry]) => {
         if (entry && entry.isIntersecting) {
           setIsMounted(true);
-        } else {
+          if (once) {
+            observer.unobserve(element);
+          }
+        } else if (!once) {
           // Record height before unmounting to prevent scrollbar jump
           if (element.offsetHeight > 0) {
             setActualHeight(element.offsetHeight);
@@ -42,7 +47,7 @@ export function LazyMount({
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, [rootMargin]);
+  }, [rootMargin, once]);
 
   // Support programmatic mounting when nav items are clicked
   useEffect(() => {
