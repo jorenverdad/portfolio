@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { LazyMotion, domAnimation, m, Variants, AnimatePresence } from 'motion/react';
+import { LazyMotion, domMax, m, Variants, AnimatePresence, MotionConfig } from 'motion/react';
 import StackIcon, { IconName } from 'tech-stack-icons';
 
 const CATEGORIES = ['Languages', 'Frontend', 'Mobile', 'Backend', 'Database', 'Tools', 'OS'] as const;
@@ -221,8 +221,9 @@ export function TechStackSection({ className }: { className?: string }) {
       ref={containerRef}
       className={`py-32 md:py-48 bg-bg-base relative overflow-hidden flex flex-col items-center justify-center ${className ?? ''}`}
     >
-      <LazyMotion features={domAnimation}>
-      <div className="container mx-auto px-6 relative z-30 mb-8">
+      <LazyMotion features={domMax}>
+        <MotionConfig reducedMotion="user">
+          <div className="container mx-auto px-6 relative z-30 mb-8">
         <div className="text-center flex flex-col items-center">
           <m.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -280,10 +281,10 @@ export function TechStackSection({ className }: { className?: string }) {
           {viewMode === 'grid' && (
             <m.div 
               key="grid-view"
-              initial={{ opacity: 0, filter: "blur(10px)", scale: 0.98 }}
-              animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-              exit={{ opacity: 0, filter: "blur(10px)", scale: 0.98 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
               className="w-full flex justify-center items-center relative z-20 pointer-events-none overflow-visible flex-1"
             >
               <div className="relative">
@@ -350,17 +351,18 @@ export function TechStackSection({ className }: { className?: string }) {
           {viewMode === 'list' && (
             <m.div
               key="list-view"
-              initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
-              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-              exit={{ opacity: 0, filter: "blur(10px)", y: -20 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               className="w-full max-w-5xl mx-auto relative z-20 px-6 py-12"
             >
               <TechStackList isDark={isDark} />
             </m.div>
           )}
         </AnimatePresence>
-      </div>
+          </div>
+        </MotionConfig>
       </LazyMotion>
     </section>
   );
@@ -376,8 +378,16 @@ function TechStackList({ isDark }: { isDark: boolean }) {
   };
 
   const rowVariants: Variants = {
-    hidden: { opacity: 0, y: 15, filter: "blur(4px)" },
-    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 260, damping: 25 } }
+    hidden: { opacity: 0, y: 10 },
+    show: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        type: "tween",
+        ease: [0.16, 1, 0.3, 1],
+        duration: 0.4
+      } 
+    }
   };
 
   return (
@@ -485,25 +495,25 @@ function TechStackList({ isDark }: { isDark: boolean }) {
 }
 
 const cellVariants: Variants = {
-  hidden: (custom: { delay: number; hasTech: boolean }) => ({
+  hidden: {
     opacity: 0,
-    scale: custom?.hasTech ? 0.75 : 0.85,
-    y: custom?.hasTech ? 20 : 10,
-  }),
-  show: (custom: { delay: number; hasTech: boolean }) => ({ 
+    scale: 0.75,
+    y: 20,
+  },
+  show: (delay: number) => ({ 
     opacity: 1, 
     scale: 1, 
     y: 0,
     transition: { 
-      type: 'spring', 
-      stiffness: custom?.hasTech ? 100 : 130, 
-      damping: custom?.hasTech ? 15 : 20,
-      delay: custom?.delay ?? 0
+      type: 'tween',
+      ease: [0.16, 1, 0.3, 1],
+      duration: 0.6,
+      delay
     }
   })
 };
 
-function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
+const Cell = React.memo(function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
   const tech = cell.tech;
 
   if (!tech) {
@@ -525,7 +535,7 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
   return (
     <m.div
       variants={cellVariants}
-      custom={{ delay: cell.delay, hasTech: true }}
+      custom={cell.delay}
       whileHover={{ scale: 1.15, zIndex: 50 }}
       whileTap={{ scale: 0.95 }}
       className="relative z-10 group w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] flex items-center justify-center rounded-xl md:rounded-2xl cursor-pointer
@@ -605,4 +615,4 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
       </div>
     </m.div>
   );
-}
+});
