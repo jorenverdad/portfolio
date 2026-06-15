@@ -2,9 +2,22 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { LazyMotion, domAnimation, m, Variants, AnimatePresence } from 'motion/react';
-import StackIcon from 'tech-stack-icons';
+import StackIcon, { IconName } from 'tech-stack-icons';
 
-const TECH_STACK = [
+const CATEGORIES = ['Languages', 'Frontend', 'Mobile', 'Backend', 'Database', 'Tools', 'OS'] as const;
+
+type TechItem = {
+  name: string;
+  color: string;
+  darkColor?: string;
+  category?: typeof CATEGORIES[number];
+  preferred?: boolean;
+  iconName?: IconName;
+  iconClass?: string;
+  icon?: React.ComponentType<{ style?: React.CSSProperties; size?: number }>;
+};
+
+const TECH_STACK: readonly TechItem[] = [
   // ==========================================
   // LANGUAGES
   // ==========================================
@@ -23,7 +36,7 @@ const TECH_STACK = [
   { name: 'Tailwind CSS', iconName: 'tailwindcss', color: '#06B6D4', category: 'Frontend', preferred: true },
   { name: 'Shadcn UI', iconName: 'shadcnui', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
   { name: 'Bootstrap', iconName: 'bootstrap5', color: '#7952B3', category: 'Frontend' },
-  { name: 'Framer Motion', iconName: 'framer', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
+  { name: 'Motion', iconName: 'motion', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
   { name: 'Zustand', iconName: 'zustand', color: '#443E38', darkColor: '#F4F4F5', category: 'Frontend' },
 
   // ==========================================
@@ -71,16 +84,14 @@ const TECH_STACK = [
   { name: 'Kali Linux', iconClass: 'devicon-kalilinux-original', color: '#557C94', category: 'OS' },
 ];
 
-const CATEGORIES = ['Languages', 'Frontend', 'Mobile', 'Backend', 'Database', 'Tools', 'OS'] as const;
-
-interface CellInfo {
+type CellInfo = {
   x: number;
   y: number;
   distance: number;
   index: number;
   tech?: typeof TECH_STACK[number];
   delay: number;
-}
+};
 
 type ViewMode = 'grid' | 'list';
 
@@ -96,6 +107,7 @@ export function TechStackSection({ className }: { className?: string }) {
   useEffect(() => {
     const saved = localStorage.getItem('tech-stack-view');
     if (saved === 'grid' || saved === 'list') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setViewMode(saved);
     }
   }, []);
@@ -111,6 +123,7 @@ export function TechStackSection({ className }: { className?: string }) {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsDark(document.documentElement.classList.contains('dark'));
     const observer = new MutationObserver(() => {
       setIsDark(document.documentElement.classList.contains('dark'));
@@ -419,17 +432,17 @@ function TechStackList({ isDark }: { isDark: boolean }) {
 
                   {/* Icon */}
                   <div className="relative z-10 w-5 h-5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    {'iconName' in tech && tech.iconName ? (
+                    {tech.iconName ? (
                       <StackIcon 
-                        name={tech.iconName as any} 
+                        name={tech.iconName} 
                         variant={isDark ? 'dark' : 'light'} 
                         className={`w-full h-full ${tech.iconName === 'nextjs' ? 'dark:invert' : ''}`}
                       />
-                    ) : 'iconClass' in tech && tech.iconClass ? (
+                    ) : tech.iconClass ? (
                       <i className={tech.iconClass} style={{ color: tech.darkColor ?? tech.color, fontSize: '1.25rem' }} />
-                    ) : 'icon' in tech && (tech as any).icon ? (
+                    ) : tech.icon ? (
                       <React.Fragment>
-                        {React.createElement((tech as any).icon, { style: { color: tech.darkColor ?? tech.color }, size: 20 })}
+                        {React.createElement(tech.icon, { style: { color: tech.darkColor ?? tech.color }, size: 20 })}
                       </React.Fragment>
                     ) : null}
                   </div>
@@ -534,17 +547,17 @@ function Cell({ cell, isDark }: { cell: CellInfo; isDark: boolean }) {
 
       {/* Icon Container */}
       <div className="relative z-10 text-2xl md:text-3xl lg:text-4xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
-        {'iconName' in tech && tech.iconName ? (
+        {tech.iconName ? (
           <StackIcon 
-            name={tech.iconName as any} 
+            name={tech.iconName} 
             variant={isDark ? 'dark' : 'light'} 
             className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 ${tech.iconName === 'nextjs' ? 'dark:invert' : ''}`}
           />
-        ) : 'iconClass' in tech && tech.iconClass ? (
+        ) : tech.iconClass ? (
           <i className={tech.iconClass} style={{ color: tech.darkColor ?? tech.color }} />
-        ) : 'icon' in tech && (tech as any).icon ? (
+        ) : tech.icon ? (
           <React.Fragment>
-            {React.createElement((tech as any).icon, { style: { color: tech.darkColor ?? tech.color } })}
+            {React.createElement(tech.icon, { style: { color: tech.darkColor ?? tech.color } })}
           </React.Fragment>
         ) : null}
       </div>
