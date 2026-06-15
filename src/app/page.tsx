@@ -12,6 +12,7 @@ const TechStackSection = dynamic(() => import('@/components/sections/tech-stack'
 const ProjectsSection = dynamic(() => import('@/components/sections/projects').then(mod => mod.ProjectsSection));
 const ServicesSection = dynamic(() => import('@/components/sections/services').then(mod => mod.ServicesSection));
 const TestimonialsSection = dynamic(() => import('@/components/sections/testimonials').then(mod => mod.TestimonialsSection));
+const ContactSection = dynamic(() => import('@/components/sections/contact').then(mod => mod.ContactSection));
 
 export default async function Home() {
   const githubStats = await fetchGitHubStats();
@@ -57,6 +58,11 @@ export default async function Home() {
         <LazyMount id="testimonial">
           <ScrollReveal>
             <TestimonialsSection />
+          </ScrollReveal>
+        </LazyMount>
+        <LazyMount id="contact">
+          <ScrollReveal>
+            <ContactSection />
           </ScrollReveal>
         </LazyMount>
       </main>
