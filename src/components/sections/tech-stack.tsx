@@ -415,7 +415,7 @@ function TechStackList({ isDark }: { isDark: boolean }) {
               {items.map((tech) => (
                 <m.div
                   key={tech.name}
-                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="group relative flex items-center gap-2.5 px-4 py-2.5 rounded-full 
                     bg-white dark:bg-white/[0.02] 
@@ -536,7 +536,7 @@ const Cell = React.memo(function Cell({ cell, isDark }: { cell: CellInfo; isDark
     <m.div
       variants={cellVariants}
       custom={cell.delay}
-      whileHover={{ scale: 1.12, y: -4, zIndex: 50 }}
+      whileHover={{ scale: 1.12, zIndex: 50 }}
       whileTap={{ scale: 0.95 }}
       className="relative z-10 group w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] flex items-center justify-center rounded-xl md:rounded-2xl cursor-pointer
         bg-white/[0.05] dark:bg-white/[0.04]
