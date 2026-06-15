@@ -299,15 +299,15 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
               </p>
             </div>
           </m.div>
-
-          {/* GitHub Stats - Spans 12 cols, not bento */}
-          <m.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-8">
-            <GitHubStatsCard stats={stats} />
+          
+          {/* Infinite Skills Marquee - Spans 12 cols */}
+          <m.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-4">
+            <SkillsMarquee />
           </m.div>
 
-          {/* Infinite Skills Marquee - Spans 12 cols */}
-          <m.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-12">
-            <SkillsMarquee />
+          {/* GitHub Stats - Spans 12 cols, not bento */}
+          <m.div variants={itemVariants} className="col-span-1 md:col-span-12 mt-4 md:mt-4">
+            <GitHubStatsCard stats={stats} />
           </m.div>
 
         </div>

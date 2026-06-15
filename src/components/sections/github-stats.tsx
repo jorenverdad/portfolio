@@ -103,7 +103,7 @@ export function GitHubStatsCard({ stats }: GitHubStatsCardProps) {
   };
 
   return (
-    <div ref={containerRef} className="w-full relative py-12 md:py-16 group">
+    <div ref={containerRef} className="w-full relative py-8 md:py-4 group">
       {/* Ambient hover glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-full bg-brand-500/5 blur-[120px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
       

@@ -35,7 +35,7 @@ export function SkillsMarquee() {
               key={`${skill}-${i}`} 
               className="flex items-center gap-6 md:gap-12 group/item"
             >
-              <span className="text-4xl md:text-6xl lg:text-7xl font-heading font-black tracking-tighter uppercase text-transparent [-webkit-text-stroke:1px_var(--color-muted-foreground)] opacity-70 transition-all duration-500 hover:opacity-100 hover:text-brand-500 hover:[-webkit-text-stroke:0px_transparent] hover:-skew-x-12 hover:[text-shadow:0_0_40px_var(--color-brand-500)] cursor-default select-none">
+              <span className="text-4xl text-center md:text-6xl lg:text-7xl font-heading font-black tracking-tighter uppercase text-transparent [-webkit-text-stroke:1px_var(--color-muted-foreground)] opacity-70 transition-all duration-500 hover:opacity-100 hover:text-brand-500 hover:[-webkit-text-stroke:0px_transparent] hover:-skew-x-12 hover:[text-shadow:0_0_40px_var(--color-brand-500)] cursor-default select-none">
                 {skill}
               </span>
               <span className="text-2xl md:text-4xl text-warm-500/30 font-light select-none">
