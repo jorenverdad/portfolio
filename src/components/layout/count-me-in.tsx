@@ -164,6 +164,8 @@ export function CountMeIn() {
           <span className="font-mono text-sm font-medium tracking-wider text-brand-500">
             {formattedCount}
           </span>
+
+          <span className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground text-brand-500">Visitors</span>
         </div>
       </div>
 
