@@ -59,7 +59,7 @@ const TECH_STACK: readonly TechItem[] = [
   // DATABASE (Raw Storage & Caching)
   // ==========================================
   { name: 'PostgreSQL', iconName: 'postgresql', color: '#4169E1', category: 'Database', preferred: true },
-  { name: 'MySQL', iconName: 'mysql', color: '#4169E1', category: 'Database' },
+  { name: 'MySQL', iconName: 'mysql', color: '#4479A1', category: 'Database' },
   { name: 'Redis', iconName: 'redis', color: '#EE0000', category: 'Database' },
 
   // ==========================================
