@@ -2,10 +2,12 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Mail, ArrowUpRight } from 'lucide-react';
 
 export function ContactSection() {
-  const email = 'hello@joren.com';
+  const email = 'jorenverdad@gmail.com';
 
   return (
     <section id="contact" className="relative py-32 overflow-hidden bg-background">
@@ -62,9 +64,17 @@ export function ContactSection() {
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
             className="pt-8"
           >
-            <Button size="lg" className="h-16 px-12 text-xl rounded-full shadow-[0_0_40px_-10px_rgba(224,32,32,0.5)] bg-brand-500 hover:bg-brand-600 text-white transition-all duration-300 shimmer-btn border border-brand-400/20">
-              {email}
-            </Button>
+            <a
+              href={`mailto:${email}`}
+              className={cn(
+                buttonVariants({ size: "lg" }),
+                "h-16 px-12 text-xl rounded-full shadow-[0_0_40px_-10px_rgba(224,32,32,0.5)] bg-brand-500 hover:bg-brand-600 text-white transition-all duration-300 shimmer-btn border border-brand-400/20 inline-flex items-center gap-3 group/contact-btn cursor-pointer"
+              )}
+            >
+              <Mail className="size-6 transition-transform duration-300 group-hover/contact-btn:scale-110" />
+              <span>Let's talk</span>
+              <ArrowUpRight className="size-6 transition-transform duration-300 group-hover/contact-btn:translate-x-1 group-hover/contact-btn:-translate-y-1" />
+            </a>
           </motion.div>
         </motion.div>
       </div>
