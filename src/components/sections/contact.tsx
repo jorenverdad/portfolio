@@ -40,7 +40,7 @@ export function ContactSection() {
           </motion.div>
 
           <h2 className="font-heading text-5xl md:text-7xl font-bold tracking-tight text-foreground">
-            Let's build something <br className="hidden md:block" />
+            Let&apos;s build something <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-warm-500 relative inline-block">
               exceptional.
               <motion.span 
@@ -55,7 +55,7 @@ export function ContactSection() {
           </h2>
           
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            I'm always open to discussing product design work or partnership opportunities. Reach out and let's create the next big thing together.
+            I&apos;m always open to discussing product design work or partnership opportunities. Reach out and let&apos;s create the next big thing together.
           </p>
 
           <motion.div
@@ -72,7 +72,7 @@ export function ContactSection() {
               )}
             >
               <Mail className="size-6 transition-transform duration-300 group-hover/contact-btn:scale-110" />
-              <span>Let's talk</span>
+              <span>Let&apos;s talk</span>
               <ArrowUpRight className="size-6 transition-transform duration-300 group-hover/contact-btn:translate-x-1 group-hover/contact-btn:-translate-y-1" />
             </a>
           </motion.div>
