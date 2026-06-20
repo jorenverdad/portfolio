@@ -162,7 +162,7 @@ export function TestimonialsSection({
       </div>
 
       <div
-        className="relative w-full max-w-[100vw] overflow-hidden flex flex-col gap-6"
+        className="relative w-full max-w-[100vw] overflow-hidden flex flex-col gap-6 py-4"
         style={{
           maskImage:
             "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
