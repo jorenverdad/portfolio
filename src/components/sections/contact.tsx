@@ -8,10 +8,22 @@ import { Mail, ArrowUpRight } from "lucide-react";
 import { FaLinkedin, FaGithub, FaFacebook, FaInstagram } from "react-icons/fa6";
 
 const SOCIALS = [
-  { name: "LinkedIn", icon: FaLinkedin, href: "#" },
-  { name: "GitHub", icon: FaGithub, href: "#" },
-  { name: "Facebook", icon: FaFacebook, href: "#" },
-  { name: "Instagram", icon: FaInstagram, href: "#" },
+  {
+    name: "Facebook",
+    icon: FaFacebook,
+    href: "https://www.facebook.com/jorenverdad/",
+  },
+  {
+    name: "Instagram",
+    icon: FaInstagram,
+    href: "https://www.instagram.com/verdadjoren/",
+  },
+  {
+    name: "LinkedIn",
+    icon: FaLinkedin,
+    href: "https://www.linkedin.com/in/jorenverdad/",
+  },
+  { name: "GitHub", icon: FaGithub, href: "https://github.com/jorenverdad" },
 ] as const;
 
 export function ContactSection() {
@@ -105,7 +117,7 @@ export function ContactSection() {
 
             <motion.div
               onMouseLeave={() => setHoveredSocial(null)}
-              className="flex items-center gap-2 p-2 rounded-full border border-edge-subtle/50 bg-surface/30 backdrop-blur-md shadow-2xl relative"
+              className="flex items-center gap-2 md:gap-4 p-2 md:p-3 rounded-full border border-white/[0.05] border-t-white/10 bg-white/[0.02] backdrop-blur-xl shadow-2xl relative"
             >
               {SOCIALS.map((social, idx) => {
                 const Icon = social.icon;
@@ -138,14 +150,14 @@ export function ContactSection() {
                       type: "spring",
                       bounce: 0.2,
                     }}
-                    className="relative flex items-center justify-center size-14 rounded-full group cursor-pointer focus:outline-none"
+                    className="relative flex items-center justify-center size-14 md:size-16 rounded-full group cursor-pointer focus:outline-none"
                     aria-label={`Visit my ${social.name}`}
                   >
                     <AnimatePresence>
                       {isHovered && (
                         <motion.div
                           layoutId="dock-hover"
-                          className="absolute inset-0 bg-surface border border-edge-subtle/80 rounded-full shadow-[0_0_30px_-5px_rgba(224,32,32,0.15)]"
+                          className="absolute inset-0 bg-brand-500/10 border border-brand-500/30 rounded-full shadow-[0_0_15px_-3px_rgba(224,32,32,0.4)]"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
@@ -201,10 +213,10 @@ export function ContactSection() {
                     >
                       <Icon
                         className={cn(
-                          "size-6 transition-colors duration-300",
+                          "size-6 md:size-7 transition-all duration-300",
                           isHovered
-                            ? "text-brand-500 drop-shadow-[0_0_8px_rgba(224,32,32,0.3)]"
-                            : "text-muted-foreground",
+                            ? "text-brand-500 drop-shadow-[0_0_12px_rgba(224,32,32,0.8)]"
+                            : "text-muted-foreground/60",
                         )}
                       />
                     </motion.div>
