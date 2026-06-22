@@ -276,7 +276,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                       </span>
                       <span className="text-muted-foreground/60">,</span>{" "}
                       <span className="text-emerald-400">
-                        &ldquo;fluid-motion&rdquo;
+                        &ldquo;feature-sliced-design&rdquo;
                       </span>
                       <span className="text-purple-400">]</span>
                     </div>

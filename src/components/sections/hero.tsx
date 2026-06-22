@@ -1,6 +1,6 @@
-import { HeroInteractive } from './hero-interactive';
-import { Button } from '@/components/ui/button';
-import { GridPattern } from '@/components/ui/grid-pattern';
+import { HeroInteractive } from "./hero-interactive";
+import { Button } from "@/components/ui/button";
+import { GridPattern } from "@/components/ui/grid-pattern";
 
 export interface HeroProps {
   readonly className?: string;
@@ -8,10 +8,12 @@ export interface HeroProps {
 
 export function HeroSection({ className }: HeroProps) {
   return (
-    <section className={`relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-void pt-20 ${className ?? ''}`}>
+    <section
+      className={`relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-void pt-20 ${className ?? ""}`}
+    >
       {/* Background Grid Pattern */}
       <GridPattern className="opacity-30 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)]" />
-      
+
       {/* Subtle Glow at the top */}
       <div className="absolute top-0 inset-x-0 h-64 bg-brand-500/10 blur-[120px] pointer-events-none" />
 
@@ -24,20 +26,30 @@ export function HeroSection({ className }: HeroProps) {
             </span>
             Available for new opportunities
           </div>
-          
+
           <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground max-w-5xl mb-6">
-            Crafting digital experiences with <span className="text-brand-500">precision.</span>
+            Crafting digital experiences with{" "}
+            <span className="text-brand-500">precision.</span>
           </h1>
-          
+
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
-            I'm a frontend engineer specializing in building exceptional, non-generic digital experiences. Currently focused on building accessible, human-centered products.
+            I'm a frontend engineer specializing in building exceptional,
+            non-generic digital experiences. Currently focused on building
+            accessible, human-centered products.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <Button size="lg" className="h-14 px-8 text-base shadow-[0_0_30px_-5px_rgba(224,32,32,0.4)] transition-transform hover:scale-[1.02]">
+            <Button
+              size="lg"
+              className="h-14 px-8 text-base shadow-[0_0_30px_-5px_rgba(224,32,32,0.4)] transition-transform hover:scale-[1.02]"
+            >
               View My Work
             </Button>
-            <Button variant="outline" size="lg" className="h-14 px-8 text-base border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated transition-colors">
+            <Button
+              variant="outline"
+              size="lg"
+              className="h-14 px-8 text-base border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated transition-colors"
+            >
               Contact Me
             </Button>
           </div>
