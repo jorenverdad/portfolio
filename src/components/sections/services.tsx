@@ -19,24 +19,38 @@ export interface ServicesProps {
 const DEFAULT_SERVICES: ReadonlyArray<Service> = [
   {
     id: "01",
-    title: "Frontend Architecture",
+    title: "Web Application Development",
     description:
-      "Architecting scalable, type-safe foundations using Next.js and React. Built for raw performance, seamless routing, and long-term maintainability.",
+      "Architecting scalable, type-safe web applications using Next.js and React. Built for raw speed, efficient state management, and long-term maintainability.",
     tags: ["Next.js", "React", "TypeScript", "Performance"],
   },
   {
     id: "02",
     title: "Design Engineering",
     description:
-      "Bridging the gap between Figma and code. Crafting pixel-perfect, responsive interfaces that respect design tokens and user experience.",
+      "Bridging the gap between Figma and code. Crafting pixel-perfect, responsive interfaces that strictly respect design systems and prioritize the user experience.",
     tags: ["Tailwind CSS", "Figma", "Design Systems", "Accessibility"],
   },
   {
     id: "03",
-    title: "Interaction & Motion",
+    title: "Full-Stack Engineering",
     description:
-      "Elevating interfaces with fluid animations, scroll-driven reveals, and micro-interactions that make digital products feel alive and premium.",
-    tags: ["Framer Motion", "GSAP", "Micro-interactions", "WebGL"],
+      "Building secure, data-driven SaaS platforms from the schema up. Designing robust REST APIs and optimizing databases to launch complete, highly scalable products.",
+    tags: ["Laravel", "Supabase", "PostgreSQL", "API Design", "Vercel"],
+  },
+  {
+    id: "04",
+    title: "Mobile Application Development",
+    description:
+      "Building native-feeling, fluid applications for iOS and Android. Delivering seamless cross-platform experiences from initial setup to App Store launch.",
+    tags: ["React Native", "Expo", "iOS & Android", "Mobile UI"],
+  },
+  {
+    id: "05",
+    title: "Video & Content Editing",
+    description:
+      "Crafting short-form video content tailored for social algorithms. Using dynamic typography, precise pacing, and sound design to hook viewers and turn organic impressions into active engagement.",
+    tags: ["CapCut", "Adobe Premiere", "Video Editing", "Content Strategy"],
   },
 ];
 
