@@ -21,35 +21,42 @@ const DEFAULT_SERVICES: ReadonlyArray<Service> = [
     id: "01",
     title: "Web Application Development",
     description:
-      "Architecting scalable, type-safe web applications using Next.js and React. Built for raw speed, efficient state management, and long-term maintainability.",
-    tags: ["Next.js", "React", "TypeScript", "Performance"],
+      "Build fast, type-safe web applications that scale. I construct clean architectures using modern frameworks, prioritizing load speed and codebase longevity so your product handles growth without friction.",
+    tags: ["Next.js", "React", "TypeScript", "Web Performance"],
   },
   {
     id: "02",
     title: "Design Engineering",
     description:
-      "Bridging the gap between Figma and code. Crafting pixel-perfect, responsive interfaces that strictly respect design systems and prioritize the user experience.",
+      "Convert Figma designs into pixel-perfect frontend code. I build responsive, highly accessible interfaces that respect your design system's integrity while ensuring fluid user interactions.",
     tags: ["Tailwind CSS", "Figma", "Design Systems", "Accessibility"],
   },
   {
     id: "03",
     title: "Full-Stack Engineering",
     description:
-      "Building secure, data-driven SaaS platforms from the schema up. Designing robust REST APIs and optimizing databases to launch complete, highly scalable products.",
+      "Launch secure, database-driven products from the schema up. I develop robust backends, design secure APIs, and optimize SQL databases so your platform runs fast under heavy traffic.",
     tags: ["Laravel", "Supabase", "PostgreSQL", "API Design", "Vercel"],
   },
   {
     id: "04",
     title: "Mobile Application Development",
     description:
-      "Building native-feeling, fluid applications for iOS and Android. Delivering seamless cross-platform experiences from initial setup to App Store launch.",
-    tags: ["React Native", "Expo", "iOS & Android", "Mobile UI"],
+      "Reach users on any screen with native iOS and Android apps. I build lightweight mobile experiences using React Native, guiding your product from initial setup to a successful App Store launch.",
+    tags: ["React Native", "iOS & Android", "Mobile UI"],
   },
   {
     id: "05",
+    title: "Quality Assurance & Testing",
+    description:
+      "Ship software with total confidence. I write automated integration and end-to-end tests using Playwright and Vitest to catch bugs before your users do, keeping deployments safe and reliable.",
+    tags: ["Playwright", "Vitest", "CI/CD", "E2E Testing"],
+  },
+  {
+    id: "06",
     title: "Video & Content Editing",
     description:
-      "Crafting short-form video content tailored for social algorithms. Using dynamic typography, precise pacing, and sound design to hook viewers and turn organic impressions into active engagement.",
+      "Grow your brand's reach with short-form videos tailored for social algorithms. I edit content using dynamic typography, tight pacing, and sound design to hook viewers in the first seconds and turn impressions into engagement.",
     tags: ["CapCut", "Adobe Premiere", "Video Editing", "Content Strategy"],
   },
 ];
@@ -189,15 +196,16 @@ export function ServicesSection({
           className="max-w-4xl mx-auto flex flex-col items-center text-center"
         >
           <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
-            Expertise &{" "}
+            Services &{" "}
             <span className="text-brand-500 font-serif italic font-normal">
               Capabilities.
             </span>
           </h2>
 
           <p className="text-lg md:text-xl text-muted-foreground font-sans max-w-2xl leading-relaxed">
-            Delivering comprehensive frontend solutions that prioritize both
-            aesthetic brilliance and technical excellence.
+            Building high-performance web applications, reliable APIs,
+            pixel-perfect user interfaces, and engaging digital content designed
+            to scale your business.
           </p>
         </motion.div>
       </div>
