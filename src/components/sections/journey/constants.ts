@@ -1,164 +1,216 @@
-import { 
-  JourneyMilestone, 
-  EducationItem, 
-  CertificationItem, 
-  ActivityItem 
-} from './types';
+import {
+  JourneyMilestone,
+  EducationItem,
+  CertificationItem,
+  ActivityItem,
+} from "./types";
 
 export const DEFAULT_MILESTONES: ReadonlyArray<JourneyMilestone> = [
   {
-    year: '2025 - Present',
-    title: 'Senior Frontend Engineer',
-    role: 'Tech Innovators Inc.',
-    description: 'Leading frontend architecture and team execution for modern next-gen enterprise platforms.',
-    location: 'San Francisco, CA (Remote)',
-    tags: ['Next.js 15', 'TypeScript', 'Tailwind v4', 'Framer Motion', 'GraphQL'],
+    year: "June 2025 - September 2025",
+    title: "Full-Stack Web Developer",
+    role: "Office of Curriculum and Instruction Development (OCID - Caraga State University)",
+    description:
+      "Leading frontend architecture and team execution for modern next-gen enterprise platforms.",
+    location: "Butuan, PH (On-site Intern)",
+    tags: ["React.js", "Tailwind CSS", "Shadcn UI", "Laravel", "PostgreSQL"],
     highlights: [
-      'Architected a micro-frontend migration from legacy SPA to Next.js App Router, reducing initial page load times by 40%.',
-      'Established core component library with high accessibility standards (WCAG 2.1 AA) and token-driven styles.',
-      'Mentored 6 junior/mid-level engineers, running design reviews and enforcing strict type-safe code standards.'
+      "Engineered the backend architecture and core database logic for an employee database management system using Laravel and PostgreSQL, reducing average query time by ~35% through optimized schema design and indexing.",
+      "Developed and integrated secure RESTful APIs, enabling reliable data exchange across 5+ core system modules with zero reported downtime.",
+      "Designed and programmed responsive frontend views for the system's administrative dashboard using React.js and Tailwind CSS, facilitating seamless data management and full-stack integration.",
+      "Led the full Software Development Lifecycle (SDLC), delivering the system on schedule within a 3-month timeline",
     ],
     metrics: [
-      { label: 'Load Time Reduction', value: '-40%' },
-      { label: 'LCP Score', value: '1.2s' },
-      { label: 'Team Led', value: '6 Eng' }
-    ]
+      { label: "Query Speedup", value: "35%" },
+      { label: "Core Modules", value: "5+" },
+      { label: "Project Timeline", value: "3 Mos" },
+    ],
   },
   {
-    year: '2022 - 2024',
-    title: 'Frontend Developer',
-    role: 'Creative Agency Co.',
-    description: 'Developed immersive visual marketing experiences and robust headless commerce applications.',
-    location: 'Los Angeles, CA',
-    tags: ['React', 'Next.js', 'Three.js / WebGL', 'Tailwind', 'Stripe API'],
+    year: "January 2025 - April 2025",
+    title: "Frontend Developer",
+    role: "VZ Stellar Realty",
+    description:
+      "Developed immersive visual marketing experiences and robust headless commerce applications.",
+    location: "Remote",
+    tags: ["Vue.js", "Vuetify", "Supabase", "PostgreSQL"],
     highlights: [
-      'Built custom interactive 3D landing pages using Three.js and react-three-fiber, yielding a 25% increase in visitor engagement.',
-      'Implemented headless e-commerce integrations using Shopify Admin API and Stripe with optimized server-side rendering.',
-      'Managed design-to-code pipeline, ensuring exact styling fidelity and smooth UI animations.'
+      "Spearheaded the end-to-end design and development of a responsive web application for a local real estate agency as the sole developer, establishing their online brand presence.",
+      "Engineered an intuitive frontend using Vue.js and Vuetify, featuring advanced search filters and dynamic UI components to streamline browsing of 40+ property listings.",
+      "Implemented a secure, real-time backend and database architecture using Supabase and PostgreSQL, managing user authentication and 40+ live listings, deployed to production on Vercel within a 3-month timeline.",
     ],
     metrics: [
-      { label: 'Engagement Increase', value: '+25%' },
-      { label: 'Conversion Rate', value: '4.8%' },
-      { label: 'Custom 3D Builds', value: '8+' }
-    ]
+      { label: "Property Listings", value: "40+" },
+      { label: "Project Timeline", value: "3 Months" },
+      { label: "Property Views", value: "1k+" },
+    ],
   },
   {
-    year: '2020 - 2022',
-    title: 'UI/UX Designer & Dev',
-    role: 'Freelance',
-    description: 'Designed and built tailormade web solutions and digital design systems for growth-stage businesses.',
-    location: 'Hybrid / Remote',
-    tags: ['Figma', 'React', 'Gatsby', 'CSS Modules', 'WordPress Headless'],
+    year: "2025",
+    title: "UI/UX Designer",
+    role: "Freelance",
+    description:
+      "Designed and built tailormade web solutions and digital design systems for growth-stage businesses.",
+    location: "Hybrid / Remote",
+    tags: ["Figma"],
     highlights: [
-      'Created end-to-end user interfaces, brand identities, and high-fidelity prototypes in Figma, translating them directly to React code.',
-      'Constructed modular design systems that reduced future development cycles by up to 35% for clients.',
-      'Optimized SEO performance and semantic HTML structures, helping clients rank on the first page of Google search results.'
+      "Created end-to-end user interfaces, brand identities, and high-fidelity prototypes in Figma, translating them directly to React code.",
+      "Constructed modular design systems that reduced future development cycles by up to 35% for clients.",
+      "Optimized SEO performance and semantic HTML structures, helping clients rank on the first page of Google search results.",
     ],
     metrics: [
-      { label: 'Dev Cycle Speedup', value: '35%' },
-      { label: 'SEO Audit Score', value: '100' },
-      { label: 'Clients Served', value: '15+' }
-    ]
-  }
+      { label: "Dev Cycle Speedup", value: "35%" },
+      { label: "Clients Served", value: "15+" },
+      { label: "Projects Completed", value: "15+" },
+    ],
+  },
+  {
+    year: "October 2024 - February 2025",
+    title: "Video Editor",
+    role: "Freelance",
+    description:
+      "Produced and edited high-engagement short-form video content for diverse clients across multiple platforms.",
+    location: "Remote",
+    tags: ["CapCut", "Adobe Premiere Pro"],
+    highlights: [
+      "Produced 10+ short-form videos for Instagram Reels and Facebook across e-commerce retail, cosmetic surgery, and travel/lifestyle vlog accounts, growing average post reach by ~40%.",
+      "Collaborated with clients to integrate feedback, meet brand standards, and deliver projects on deadline.",
+      "Leveraged dynamic text overlays, transitions, and trending audio to enhance storytelling and viewer retention across platforms.",
+    ],
+    metrics: [
+      { label: "Videos Produced", value: "10+" },
+      { label: "Average Reach Increase", value: "40%" },
+      { label: "Clients Served", value: "3" },
+    ],
+  },
 ] as const;
 
 export const EDUCATION_ITEMS: readonly EducationItem[] = [
   {
-    degree: 'B.S. in Computer Science',
-    school: 'Tech University / Elite Institution',
-    period: '2018 - 2022',
-    gpa: '3.9/4.0',
-    courses: ['Distributed Systems', 'Advanced Algorithms', 'Web Security', 'Database Engineering'],
+    degree: "B.S. in Information Technology",
+    school: "Caraga State University - Main Campus",
+    period: "August 2021 - June 2026",
+    gpa: "2.5",
+    courses: [
+      "Web Development",
+      "Mobile Application Development",
+      "Networking",
+      "Database Systems",
+      "Software Engineering",
+      "Fundamentals of Programming",
+      "Data Structures and Algorithms",
+      "Systems Integration and Architecture",
+      "Information Assurance and Security",
+      "Human-Computer Interaction",
+      "AI and Intelligent Systems",
+    ],
     highlights: [
-      'Graduated with Summa Cum Laude honors, specializing in high-performance computing.',
-      'Completed a capstone project building a distributed task orchestrator, achieving sub-10ms task delays.',
-      'Undergraduate researcher in Web Performance Engineering, publishing a paper on WASM-based optimizations.'
-    ]
+      "Graduated with honors, specializing in Web Application Development and Design.",
+      "Developed an AI-powered multilingual profanity detection Chrome extension for real-time web content filtering as a thesis project.",
+      "Won back-to-back Regional Championships at Hack4Gov (2024 & 2025) with CarSU CyberNinja, qualifying to represent the Caraga Region at the national level.",
+      "Secured 3rd place nationally at the DOST Level Up Game Dev Challenge 2024 and won the DICT Startup Challenge Regional Championship building 'Sinawali Showdown' frontend with Vue 3.",
+    ],
   },
+
   {
-    degree: 'Advanced Web Engineering Track',
-    school: 'Frontend Masters & Tech Institutes',
-    period: '2022 - 2023',
-    gpa: 'N/A',
-    courses: ['V8 JS Engine Tuning', 'React Concurrent Architecture', 'HTTP/3 Protocols', 'LCP Diagnostic Audits'],
+    degree: "Senior High School",
+    school: "ACLC College Butuan",
+    period: "2015 - 2017",
+    gpa: "2.44",
+    courses: ["Computer System Servicing (CSS) NCII"],
     highlights: [
-      'Mastered the inner workings of React Fiber architecture, concurrent rendering, and rendering lifecycle optimization.',
-      'Achieved certification in Web Performance Diagnostics and Largest Contentful Paint (LCP) engineering.'
-    ]
-  }
+      "Acquired technical skills in computer hardware and software troubleshooting and maintenance.",
+      "Completed hands-on training and assessments for practical application of technical knowledge.",
+    ],
+  },
 ];
 
 export const CERTIFICATION_ITEMS: readonly CertificationItem[] = [
   {
-    title: 'AWS Certified Solutions Architect',
-    issuer: 'Amazon Web Services',
-    date: '2025',
-    credId: 'AWS-ASA-99212',
-    verifyKey: '0x8f2d9a3b00fe41',
-    skills: ['VPC Architecture', 'Serverless (Lambda)', 'ECS/EKS Containerization', 'Cloud Security']
+    title: "AWS Certified Solutions Architect",
+    issuer: "Amazon Web Services",
+    date: "2025",
+    credId: "AWS-ASA-99212",
+    verifyKey: "0x8f2d9a3b00fe41",
+    skills: [
+      "VPC Architecture",
+      "Serverless (Lambda)",
+      "ECS/EKS Containerization",
+      "Cloud Security",
+    ],
   },
   {
-    title: 'Meta Advanced React Developer',
-    issuer: 'Meta (Coursera)',
-    date: '2024',
-    credId: 'META-ARD-88341',
-    verifyKey: '0x4c2b9a78fd1230',
-    skills: ['Custom Hooks', 'Concurrent Mode', 'React Performance Profiling', 'State Managers']
+    title: "Meta Advanced React Developer",
+    issuer: "Meta (Coursera)",
+    date: "2024",
+    credId: "META-ARD-88341",
+    verifyKey: "0x4c2b9a78fd1230",
+    skills: [
+      "Custom Hooks",
+      "Concurrent Mode",
+      "React Performance Profiling",
+      "State Managers",
+    ],
   },
   {
-    title: 'Vercel Next.js Developer Certification',
-    issuer: 'Vercel',
-    date: '2025',
-    credId: 'VRC-NJS-77429',
-    verifyKey: '0x9e107d3fa20bb1',
-    skills: ['App Router Architecture', 'Server Actions', 'PPR Configurations', 'Edge Middleware']
-  }
+    title: "Vercel Next.js Developer Certification",
+    issuer: "Vercel",
+    date: "2025",
+    credId: "VRC-NJS-77429",
+    verifyKey: "0x9e107d3fa20bb1",
+    skills: [
+      "App Router Architecture",
+      "Server Actions",
+      "PPR Configurations",
+      "Edge Middleware",
+    ],
+  },
 ];
 
 export const ACTIVITY_ITEMS: readonly ActivityItem[] = [
   {
-    title: 'Global Hackathon 2024',
-    role: 'Team Lead & Lead Engineer',
-    period: '48 Hours (2024)',
+    title: "Global Hackathon 2024",
+    role: "Team Lead & Lead Engineer",
+    period: "48 Hours (2024)",
     metrics: [
-      { label: 'Team size', value: '4 Eng' },
-      { label: 'Rank', value: '1st Place' },
-      { label: 'Teams competed', value: '200+' }
+      { label: "Team size", value: "4 Eng" },
+      { label: "Rank", value: "1st Place" },
+      { label: "Teams competed", value: "200+" },
     ],
-    tags: ['Next.js', 'WebRTC', 'Tailwind', 'Socket.io'],
+    tags: ["Next.js", "WebRTC", "Tailwind", "Socket.io"],
     highlights: [
       'Led the architecture and engineering of "SyncBoard" — a collaborative real-time whiteboarding tool utilizing WebRTC for ultra-low latency mesh networking.',
-      'Won the Grand Prize for Best Technical Implementation and UI/UX fluid design out of 200+ global teams.'
-    ]
+      "Won the Grand Prize for Best Technical Implementation and UI/UX fluid design out of 200+ global teams.",
+    ],
   },
   {
-    title: 'Open Source Ecosystem',
-    role: 'Core Contributor',
-    period: '2023 - Present',
+    title: "Open Source Ecosystem",
+    role: "Core Contributor",
+    period: "2023 - Present",
     metrics: [
-      { label: 'PRs merged', value: '45+' },
-      { label: 'Repos helped', value: '6+' },
-      { label: 'Commits', value: '120+' }
+      { label: "PRs merged", value: "45+" },
+      { label: "Repos helped", value: "6+" },
+      { label: "Commits", value: "120+" },
     ],
-    tags: ['React', 'Next.js', 'Framer Motion', 'TypeScript'],
+    tags: ["React", "Next.js", "Framer Motion", "TypeScript"],
     highlights: [
-      'Regular contributor to web standard libraries, focusing on optimizing CSS-in-JS transitions and reducing library sizes.',
-      'Optimized performance in rendering loops, helping resolve memory leaks on standard routing frameworks.'
-    ]
+      "Regular contributor to web standard libraries, focusing on optimizing CSS-in-JS transitions and reducing library sizes.",
+      "Optimized performance in rendering loops, helping resolve memory leaks on standard routing frameworks.",
+    ],
   },
   {
-    title: 'Technical Author & Speaker',
-    role: 'Tech Evangelist',
-    period: '2022 - Present',
+    title: "Technical Author & Speaker",
+    role: "Tech Evangelist",
+    period: "2022 - Present",
     metrics: [
-      { label: 'Articles', value: '18+' },
-      { label: 'Reads', value: '50k+' },
-      { label: 'Talks given', value: '4' }
+      { label: "Articles", value: "18+" },
+      { label: "Reads", value: "50k+" },
+      { label: "Talks given", value: "4" },
     ],
-    tags: ['Blogging', 'Public Speaking', 'Mentorship'],
+    tags: ["Blogging", "Public Speaking", "Mentorship"],
     highlights: [
-      'Published articles on Dev.to and Medium covering advanced React 19 concepts, compiler optimization, and Framer Motion spring physics.',
-      'Spoke at local frontend meetups about Next.js App Router performance audits and layout shifts.'
-    ]
-  }
+      "Published articles on Dev.to and Medium covering advanced React 19 concepts, compiler optimization, and Framer Motion spring physics.",
+      "Spoke at local frontend meetups about Next.js App Router performance audits and layout shifts.",
+    ],
+  },
 ];
