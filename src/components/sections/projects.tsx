@@ -53,7 +53,7 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
   {
     id: "proj-1",
     title: "JoSan Website",
-    category: "Frontend Next.js",
+    category: "Frontend Web App",
     video:
       "/projects/JoSan - AI-Powered Content Moderation - Google Chrome.mp4",
     yOffset: -16,
@@ -61,37 +61,33 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
   },
   {
     id: "proj-2",
-    title: "Fintech Dashboard",
-    category: "Design System",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto=format&fit=crop",
+    title: "VzStellar Website",
+    category: "Full-stack Web App",
+    video: "/projects/VZ Stellar Realty - Google Chrome.mp4",
     yOffset: 24,
     link: "#",
   },
   {
     id: "proj-3",
-    title: "AI Prompt Optimizer",
-    category: "Web Tool",
-    image:
-      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2865&auto=format&fit=crop",
+    title: "Portfolio",
+    category: "Frontend Web App",
+    video: "/projects/Portfolio- Honey.mp4",
     yOffset: -24,
     link: "#",
   },
   {
     id: "proj-4",
-    title: "Creative Agency Site",
-    category: "Interactive",
-    image:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2864&auto=format&fit=crop",
+    title: "JoSan Extension",
+    category: "Chromium Web Extension",
+    video: "/projects/JoSan Extension - Chromium.mp4",
     yOffset: 16,
     link: "#",
   },
   {
     id: "proj-5",
-    title: "Luxury Brand Identity",
-    category: "Branding",
-    image:
-      "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2940&auto=format&fit=crop",
+    title: "Uwu Hotel Booking",
+    category: "Landing Page",
+    image: "/projects/Uwu Hotel Booking.png",
     yOffset: -12,
     link: "#",
   },
