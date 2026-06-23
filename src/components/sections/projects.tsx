@@ -107,20 +107,31 @@ type ProjectCardProps = {
   readonly index: number;
   readonly isActive: boolean;
   readonly isDesktop: boolean;
-  readonly onMouseEnter: () => void;
-  readonly onFocus: () => void;
+  readonly onActive: (id: string) => void;
 };
 
-function ProjectCard({
+const ProjectCard = React.memo(function ProjectCard({
   project,
   index,
   isActive,
   isDesktop,
-  onMouseEnter,
-  onFocus,
+  onActive,
 }: ProjectCardProps) {
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [hasBeenActive, setHasBeenActive] = useState(false);
+
+  if (isActive && !hasBeenActive) {
+    setHasBeenActive(true);
+  }
+
+  const handleMouseEnter = useCallback(() => {
+    onActive(project.id);
+  }, [project.id, onActive]);
+
+  const handleFocus = useCallback(() => {
+    onActive(project.id);
+  }, [project.id, onActive]);
 
   const images = project.images;
   const hasMultipleImages = !!(images && images.length > 1);
@@ -181,9 +192,10 @@ function ProjectCard({
 
   return (
     <m.div
-      onMouseEnter={onMouseEnter}
-      onFocus={onFocus}
+      onMouseEnter={handleMouseEnter}
+      onFocus={handleFocus}
       layout
+      layoutDependency={isActive}
       initial={false}
       style={{
         flex: isActive ? 6 : 1,
@@ -216,6 +228,7 @@ function ProjectCard({
           <video
             ref={videoRef}
             src={project.video}
+            preload="metadata"
             loop
             muted
             playsInline
@@ -245,7 +258,7 @@ function ProjectCard({
               }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              {hasMultipleImages && images ? (
+              {hasMultipleImages && images && hasBeenActive ? (
                 <AnimatePresence initial={false} mode="popLayout">
                   <m.div
                     key={currentImageIndex}
@@ -405,7 +418,7 @@ function ProjectCard({
       </div>
     </m.div>
   );
-}
+});
 
 export function ProjectsSection({
   className,
@@ -413,6 +426,14 @@ export function ProjectsSection({
 }: ProjectsProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const handleActive = useCallback((id: string) => {
+    setHoveredId(id);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHoveredId(null);
+  }, []);
 
   return (
     <LazyMotion features={domMax}>
@@ -477,7 +498,7 @@ export function ProjectsSection({
             {/* Accordion Layout */}
             <div
               className="flex flex-col md:flex-row w-full h-[800px] md:h-[600px] gap-2 md:gap-3 items-center justify-center"
-              onMouseLeave={() => setHoveredId(null)}
+              onMouseLeave={handleMouseLeave}
             >
               {projects.map((project, index) => {
                 const isActive = hoveredId === project.id;
@@ -489,8 +510,7 @@ export function ProjectsSection({
                     index={index}
                     isActive={isActive}
                     isDesktop={isDesktop}
-                    onMouseEnter={() => setHoveredId(project.id)}
-                    onFocus={() => setHoveredId(project.id)}
+                    onActive={handleActive}
                   />
                 );
               })}
