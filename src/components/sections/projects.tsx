@@ -1,7 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { m, AnimatePresence, LazyMotion, domMax, MotionConfig } from "motion/react";
+import React, { useState, useSyncExternalStore, useCallback } from "react";
+import Image from "next/image";
+import {
+  m,
+  AnimatePresence,
+  LazyMotion,
+  domMax,
+  MotionConfig,
+} from "motion/react";
 import { Button } from "@/components/ui/button";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { ArrowUpRight } from "lucide-react";
@@ -21,19 +28,24 @@ export type ProjectsProps = {
 };
 
 function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const subscribe = useCallback(
+    (callback: () => void) => {
+      const media = window.matchMedia(query);
+      media.addEventListener("change", callback);
+      return () => media.removeEventListener("change", callback);
+    },
+    [query],
+  );
 
-  useEffect(() => {
-    setMounted(true);
-    const media = window.matchMedia(query);
-    setMatches(media.matches);
-    const listener = (e: MediaQueryListEvent) => setMatches(e.matches);
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
+  const getSnapshot = useCallback(() => {
+    return window.matchMedia(query).matches;
   }, [query]);
 
-  return mounted ? matches : false;
+  const getServerSnapshot = useCallback(() => {
+    return false;
+  }, []);
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
@@ -192,11 +204,13 @@ export function ProjectsSection({
                       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                     >
                       {/* Grayscale Base Image */}
-                      <img
+                      <Image
                         src={project.image}
                         alt=""
                         role="presentation"
-                        className="absolute inset-0 object-cover w-full h-full grayscale brightness-[0.4]"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover grayscale brightness-[0.4]"
                       />
                       {/* Color Overlay Image (Opacity Animated) */}
                       <m.div
@@ -207,11 +221,13 @@ export function ProjectsSection({
                         }}
                         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                       >
-                        <img
+                        <Image
                           src={project.image}
                           alt=""
                           role="presentation"
-                          className="object-cover w-full h-full"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover"
                         />
                       </m.div>
                     </m.div>
