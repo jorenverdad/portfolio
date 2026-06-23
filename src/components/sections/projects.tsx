@@ -145,8 +145,10 @@ function ProjectCard({
       onFocus={onFocus}
       layout
       initial={false}
-      animate={{
+      style={{
         flex: isActive ? 6 : 1,
+      }}
+      animate={{
         y: isDesktop ? (isActive ? 0 : project.yOffset) : 0,
       }}
       transition={{
@@ -177,7 +179,7 @@ function ProjectCard({
             loop
             muted
             playsInline
-            className={`object-cover w-full h-full absolute inset-0 transition-all duration-700 ease-out ${
+            className={`object-cover w-full h-full absolute inset-0 transition-[filter] duration-700 ease-out ${
               isActive
                 ? "grayscale-0 brightness-100"
                 : "grayscale brightness-[0.4]"
@@ -251,15 +253,14 @@ function ProjectCard({
             {project.title}
           </h3>
 
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence>
             {isActive && (
               <m.div
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.2 }}
-                className="mt-4"
+                initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                animate={{ opacity: 1, height: "auto", marginTop: 16 }}
+                exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="overflow-hidden"
               >
                 <Button
                   render={<a href={project.link ?? "#"} />}
