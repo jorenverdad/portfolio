@@ -108,6 +108,7 @@ type ProjectCardProps = {
   readonly isActive: boolean;
   readonly isDesktop: boolean;
   readonly onActive: (id: string) => void;
+  readonly hoveredId: string | null;
 };
 
 const ProjectCard = React.memo(function ProjectCard({
@@ -116,6 +117,7 @@ const ProjectCard = React.memo(function ProjectCard({
   isActive,
   isDesktop,
   onActive,
+  hoveredId,
 }: ProjectCardProps) {
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -195,7 +197,7 @@ const ProjectCard = React.memo(function ProjectCard({
       onMouseEnter={handleMouseEnter}
       onFocus={handleFocus}
       layout
-      layoutDependency={isActive}
+      layoutDependency={hoveredId}
       initial={false}
       style={{
         flex: isActive ? 6 : 1,
@@ -205,9 +207,9 @@ const ProjectCard = React.memo(function ProjectCard({
       }}
       transition={{
         type: "spring",
-        stiffness: 260,
-        damping: 30,
-        mass: 0.8,
+        stiffness: 160,
+        damping: 24,
+        mass: 0.9,
       }}
       className={`
         relative overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer group bg-bg-surface min-w-0 min-h-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
@@ -511,6 +513,7 @@ export function ProjectsSection({
                     isActive={isActive}
                     isDesktop={isDesktop}
                     onActive={handleActive}
+                    hoveredId={hoveredId}
                   />
                 );
               })}
