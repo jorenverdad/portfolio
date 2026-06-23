@@ -18,6 +18,7 @@ export type Project = {
   readonly title: string;
   readonly category: string;
   readonly image: string;
+  readonly video?: string;
   readonly yOffset: number;
   readonly link?: string;
 };
@@ -51,10 +52,12 @@ function useMediaQuery(query: string): boolean {
 const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
   {
     id: "proj-1",
-    title: "E-Commerce Reimagined",
-    category: "Full-stack Next.js",
+    title: "JoSan Website",
+    category: "Frontend Next.js",
     image:
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2420&auto=format&fit=crop",
+    video:
+      "/projects/JoSan - AI-Powered Content Moderation - Google Chrome.mp4",
     yOffset: -16,
     link: "#",
   },
@@ -95,6 +98,187 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
     link: "#",
   },
 ] as const;
+
+type ProjectCardProps = {
+  readonly project: Project;
+  readonly index: number;
+  readonly isActive: boolean;
+  readonly isDesktop: boolean;
+  readonly onMouseEnter: () => void;
+  readonly onFocus: () => void;
+};
+
+function ProjectCard({
+  project,
+  index,
+  isActive,
+  isDesktop,
+  onMouseEnter,
+  onFocus,
+}: ProjectCardProps) {
+  const videoRef = React.useRef<HTMLVideoElement | null>(null);
+
+  React.useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isActive) {
+      const playTimer = setTimeout(() => {
+        video.play().catch((err) => {
+          console.warn("Playback prevented or interrupted: ", err);
+        });
+      }, 800); //800ms delay upon play at hover
+
+      return () => {
+        clearTimeout(playTimer);
+      };
+    } else {
+      video.pause();
+      try {
+        video.currentTime = 0;
+      } catch {
+        // Safe check for video elements not fully loaded yet
+      }
+    }
+  }, [isActive]);
+
+  return (
+    <m.div
+      onMouseEnter={onMouseEnter}
+      onFocus={onFocus}
+      layout
+      initial={false}
+      animate={{
+        flex: isActive ? 6 : 1,
+        y: isDesktop ? (isActive ? 0 : project.yOffset) : 0,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 260,
+        damping: 30,
+        mass: 0.8,
+      }}
+      className={`
+        relative overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer group bg-bg-surface min-w-0 min-h-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
+        ${isActive ? "h-full w-full" : "w-[90%] md:w-full h-full md:h-[85%]"}
+      `}
+      tabIndex={0}
+    >
+      {/* Background Image/Video Container (Scale Animated) */}
+      <m.div
+        className="absolute inset-0 w-full h-full origin-center"
+        initial={false}
+        animate={{
+          scale: isActive ? 1.0 : 1.2,
+        }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {project.video ? (
+          <video
+            ref={videoRef}
+            src={project.video}
+            loop
+            muted
+            playsInline
+            className={`object-cover w-full h-full absolute inset-0 transition-all duration-700 ease-out ${
+              isActive
+                ? "grayscale-0 brightness-100"
+                : "grayscale brightness-[0.4]"
+            }`}
+          />
+        ) : (
+          <>
+            {/* Grayscale Base Image */}
+            <Image
+              src={project.image}
+              alt=""
+              role="presentation"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover grayscale brightness-[0.4]"
+            />
+            {/* Color Overlay Image (Opacity Animated) */}
+            <m.div
+              className="absolute inset-0 w-full h-full"
+              initial={false}
+              animate={{
+                opacity: isActive ? 1 : 0,
+              }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Image
+                src={project.image}
+                alt=""
+                role="presentation"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
+              />
+            </m.div>
+          </>
+        )}
+      </m.div>
+
+      {/* Overlays */}
+      <m.div
+        initial={false}
+        animate={{ opacity: isActive ? 0.8 : 0 }}
+        transition={{ duration: 0.4 }}
+        className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"
+      />
+
+      {/* Content */}
+      <div className="absolute inset-0 z-20 flex flex-col justify-end p-6 md:p-8">
+        {/* Expanded Content */}
+        <m.div
+          animate={{
+            opacity: isActive ? 1 : 0,
+            y: isActive ? 0 : 20,
+          }}
+          transition={{
+            duration: 0.4,
+            delay: isActive ? 0.1 : 0,
+          }}
+          className={`flex flex-col gap-3 ${isActive ? "pointer-events-auto" : "pointer-events-none"}`}
+        >
+          <div className="flex items-center gap-3 overflow-hidden">
+            <span className="px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 text-xs font-semibold tracking-wider uppercase backdrop-blur-md border border-brand-500/30 whitespace-nowrap">
+              {project.category}
+            </span>
+            <span className="text-white/50 text-sm font-mono whitespace-nowrap">
+              0{index + 1}
+            </span>
+          </div>
+
+          <h3 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white leading-tight line-clamp-2">
+            {project.title}
+          </h3>
+
+          <AnimatePresence mode="popLayout">
+            {isActive && (
+              <m.div
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.2 }}
+                className="mt-4"
+              >
+                <Button
+                  render={<a href={project.link ?? "#"} />}
+                  nativeButton={false}
+                  className="bg-white text-black hover:bg-white/90 rounded-full px-6"
+                >
+                  Explore Project
+                </Button>
+              </m.div>
+            )}
+          </AnimatePresence>
+        </m.div>
+      </div>
+    </m.div>
+  );
+}
 
 export function ProjectsSection({
   className,
@@ -172,124 +356,15 @@ export function ProjectsSection({
                 const isActive = hoveredId === project.id;
 
                 return (
-                  <m.div
+                  <ProjectCard
                     key={project.id}
+                    project={project}
+                    index={index}
+                    isActive={isActive}
+                    isDesktop={isDesktop}
                     onMouseEnter={() => setHoveredId(project.id)}
                     onFocus={() => setHoveredId(project.id)}
-                    layout
-                    initial={false}
-                    animate={{
-                      flex: isActive ? 6 : 1,
-                      y: isDesktop ? (isActive ? 0 : project.yOffset) : 0,
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 260,
-                      damping: 30,
-                      mass: 0.8,
-                    }}
-                    className={`
-                      relative overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer group bg-bg-surface min-w-0 min-h-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
-                      ${isActive ? "h-full w-full" : "w-[90%] md:w-full h-full md:h-[85%]"}
-                    `}
-                    tabIndex={0}
-                  >
-                    {/* Background Image Container (Scale Animated) */}
-                    <m.div
-                      className="absolute inset-0 w-full h-full origin-center"
-                      initial={false}
-                      animate={{
-                        scale: isActive ? 1.0 : 1.2,
-                      }}
-                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      {/* Grayscale Base Image */}
-                      <Image
-                        src={project.image}
-                        alt=""
-                        role="presentation"
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover grayscale brightness-[0.4]"
-                      />
-                      {/* Color Overlay Image (Opacity Animated) */}
-                      <m.div
-                        className="absolute inset-0 w-full h-full"
-                        initial={false}
-                        animate={{
-                          opacity: isActive ? 1 : 0,
-                        }}
-                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                      >
-                        <Image
-                          src={project.image}
-                          alt=""
-                          role="presentation"
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover"
-                        />
-                      </m.div>
-                    </m.div>
-
-                    {/* Overlays */}
-                    <m.div
-                      initial={false}
-                      animate={{ opacity: isActive ? 0.8 : 0 }}
-                      transition={{ duration: 0.4 }}
-                      className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"
-                    />
-
-                    {/* Content */}
-                    <div className="absolute inset-0 z-20 flex flex-col justify-end p-6 md:p-8">
-                      {/* Expanded Content */}
-                      <m.div
-                        animate={{
-                          opacity: isActive ? 1 : 0,
-                          y: isActive ? 0 : 20,
-                        }}
-                        transition={{
-                          duration: 0.4,
-                          delay: isActive ? 0.1 : 0,
-                        }}
-                        className={`flex flex-col gap-3 ${isActive ? "pointer-events-auto" : "pointer-events-none"}`}
-                      >
-                        <div className="flex items-center gap-3 overflow-hidden">
-                          <span className="px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 text-xs font-semibold tracking-wider uppercase backdrop-blur-md border border-brand-500/30 whitespace-nowrap">
-                            {project.category}
-                          </span>
-                          <span className="text-white/50 text-sm font-mono whitespace-nowrap">
-                            0{index + 1}
-                          </span>
-                        </div>
-
-                        <h3 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white leading-tight line-clamp-2">
-                          {project.title}
-                        </h3>
-
-                        <AnimatePresence mode="popLayout">
-                          {isActive && (
-                            <m.div
-                              layout
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: 10 }}
-                              transition={{ duration: 0.2 }}
-                              className="mt-4"
-                            >
-                              <Button
-                                render={<a href={project.link ?? "#"} />}
-                                nativeButton={false}
-                                className="bg-white text-black hover:bg-white/90 rounded-full px-6"
-                              >
-                                Explore Project
-                              </Button>
-                            </m.div>
-                          )}
-                        </AnimatePresence>
-                      </m.div>
-                    </div>
-                  </m.div>
+                  />
                 );
               })}
             </div>
