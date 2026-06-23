@@ -17,7 +17,7 @@ export type Project = {
   readonly id: string;
   readonly title: string;
   readonly category: string;
-  readonly image: string;
+  readonly image?: string;
   readonly video?: string;
   readonly yOffset: number;
   readonly link?: string;
@@ -54,8 +54,6 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
     id: "proj-1",
     title: "JoSan Website",
     category: "Frontend Next.js",
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2420&auto=format&fit=crop",
     video:
       "/projects/JoSan - AI-Powered Content Moderation - Google Chrome.mp4",
     yOffset: -16,
@@ -127,8 +125,7 @@ function ProjectCard({
         video.play().catch((err) => {
           console.warn("Playback prevented or interrupted: ", err);
         });
-      }, 800); //800ms delay upon play at hover
-
+      }, 900); //delay upon play at hover
       return () => {
         clearTimeout(playTimer);
       };
@@ -186,7 +183,7 @@ function ProjectCard({
                 : "grayscale brightness-[0.4]"
             }`}
           />
-        ) : (
+        ) : project.image ? (
           <>
             {/* Grayscale Base Image */}
             <Image
@@ -216,7 +213,7 @@ function ProjectCard({
               />
             </m.div>
           </>
-        )}
+        ) : null}
       </m.div>
 
       {/* Overlays */}
