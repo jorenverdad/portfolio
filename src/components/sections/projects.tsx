@@ -11,13 +11,14 @@ import {
 } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { GridPattern } from "@/components/ui/grid-pattern";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 export type Project = {
   readonly id: string;
   readonly title: string;
   readonly category: string;
   readonly image?: string;
+  readonly images?: ReadonlyArray<string>;
   readonly video?: string;
   readonly yOffset: number;
   readonly link?: string;
@@ -86,8 +87,16 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
   {
     id: "proj-5",
     title: "Uwu Hotel Booking",
-    category: "Landing Page",
-    image: "/projects/Uwu Hotel Booking.png",
+    category: "Mobile App",
+    image: "/projects/UwU.png",
+    images: [
+      "/projects/UwU.png",
+      "/projects/UwU1.png",
+      "/projects/UwU2.png",
+      "/projects/UwU3.png",
+      "/projects/UwU4.png",
+      "/projects/UwU5.png",
+    ],
     yOffset: -12,
     link: "#",
   },
@@ -111,6 +120,41 @@ function ProjectCard({
   onFocus,
 }: ProjectCardProps) {
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const images = project.images;
+  const hasMultipleImages = !!(images && images.length > 1);
+  const baseImage = project.image ?? images?.[0] ?? "";
+
+  // Reset index to 0 when the project card becomes inactive (render-phase state adjustment)
+  const [prevIsActive, setPrevIsActive] = useState(isActive);
+  if (isActive !== prevIsActive) {
+    setPrevIsActive(isActive);
+    if (!isActive) {
+      setCurrentImageIndex(0);
+    }
+  }
+
+  // Autoplay slideshow when active
+  React.useEffect(() => {
+    if (!isActive || !hasMultipleImages || !images) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isActive, hasMultipleImages, images]);
+
+  const handlePrev = useCallback(() => {
+    if (!images || images.length === 0) return;
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  }, [images]);
+
+  const handleNext = useCallback(() => {
+    if (!images || images.length === 0) return;
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  }, [images]);
 
   React.useEffect(() => {
     const video = videoRef.current;
@@ -181,11 +225,11 @@ function ProjectCard({
                 : "grayscale brightness-[0.4]"
             }`}
           />
-        ) : project.image ? (
+        ) : project.image || (images && images.length > 0) ? (
           <>
             {/* Grayscale Base Image */}
             <Image
-              src={project.image}
+              src={baseImage}
               alt=""
               role="presentation"
               fill
@@ -201,18 +245,107 @@ function ProjectCard({
               }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Image
-                src={project.image}
-                alt=""
-                role="presentation"
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover"
-              />
+              {hasMultipleImages && images ? (
+                <AnimatePresence initial={false} mode="popLayout">
+                  <m.div
+                    key={currentImageIndex}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="absolute inset-0 w-full h-full"
+                  >
+                    <Image
+                      src={images[currentImageIndex] ?? baseImage}
+                      alt=""
+                      role="presentation"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover"
+                      priority={currentImageIndex === 0}
+                    />
+                  </m.div>
+                </AnimatePresence>
+              ) : (
+                <Image
+                  src={baseImage}
+                  alt=""
+                  role="presentation"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover"
+                />
+              )}
             </m.div>
           </>
         ) : null}
       </m.div>
+
+      {/* Story-style progress indicators at top */}
+      {isActive && hasMultipleImages && images && (
+        <div className="absolute top-4 left-4 right-4 z-30 flex gap-1.5">
+          {images.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setCurrentImageIndex(idx);
+              }}
+              className="h-1 flex-1 rounded-full overflow-hidden focus:outline-none pointer-events-auto"
+              aria-label={`Go to slide ${idx + 1}`}
+            >
+              <div
+                className={`h-full transition-all duration-300 ${
+                  idx === currentImageIndex
+                    ? "bg-white"
+                    : "bg-white/30 hover:bg-white/50"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Floating Arrows */}
+      <AnimatePresence>
+        {isActive && hasMultipleImages && images && (
+          <>
+            <m.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                handlePrev();
+              }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 text-white border border-white/10 backdrop-blur-md transition-colors pointer-events-auto"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </m.button>
+            <m.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                handleNext();
+              }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 text-white border border-white/10 backdrop-blur-md transition-colors pointer-events-auto"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </m.button>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Overlays */}
       <m.div
