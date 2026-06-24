@@ -41,14 +41,16 @@ function DownloadResumeButton() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  function handleMouseMove(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleMouseMove(event: React.MouseEvent<HTMLAnchorElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
     x.set(event.clientX - rect.left);
     y.set(event.clientY - rect.top);
   }
 
   return (
-    <motion.button
+    <motion.a
+      href="/pdfs/CV_JorenVerdad-2026.pdf"
+      download="CV_JorenVerdad-2026.pdf"
       onMouseMove={handleMouseMove}
       initial="initial"
       whileHover="hover"
@@ -113,7 +115,7 @@ function DownloadResumeButton() {
       <span className="relative z-10 tracking-wide text-white transition-colors duration-300">
         Download Resume
       </span>
-    </motion.button>
+    </motion.a>
   );
 }
 
@@ -129,18 +131,55 @@ function SocialIconButton({
   tooltip: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  function handleMouseMove(event: React.MouseEvent<HTMLAnchorElement>) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    x.set(event.clientX - rect.left);
+    y.set(event.clientY - rect.top);
+  }
 
   return (
-    <a
+    <motion.a
       href={href}
       target="_blank"
       rel="noreferrer"
+      onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative flex items-center justify-center size-14 rounded-full border border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated text-muted-foreground hover:text-foreground transition-all hover:scale-[1.05] group"
+      initial="initial"
+      whileHover="hover"
+      whileTap="tap"
+      variants={{
+        initial: { scale: 1 },
+        hover: { scale: 1.05 },
+        tap: { scale: 0.95 },
+      }}
+      transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+      className="relative flex items-center justify-center size-14 rounded-full border border-brand-500/20 bg-bg-surface/30 backdrop-blur-md text-muted-foreground hover:text-foreground transition-colors group shadow-sm hover:shadow-[0_0_20px_-5px_rgba(224,32,32,0.2)]"
       aria-label={label}
     >
-      <Icon className="size-5 group-hover:scale-110 transition-transform" />
+      {/* Spotlight Border */}
+      <motion.div
+        className="absolute -inset-px pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"
+        style={{
+          padding: "1px",
+          background: useMotionTemplate`radial-gradient(50px circle at ${x}px ${y}px, rgba(224,32,32,0.8), transparent 100%)`,
+          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+        }}
+      />
+      {/* Spotlight Inner Glow */}
+      <motion.div
+        className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"
+        style={{
+          background: useMotionTemplate`radial-gradient(40px circle at ${x}px ${y}px, rgba(224,32,32,0.1), transparent 100%)`,
+        }}
+      />
+
+      <Icon className="size-5 z-10 relative transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" />
       <AnimatePresence>
         {isHovered && (
           <motion.div
@@ -176,7 +215,7 @@ function SocialIconButton({
           </motion.div>
         )}
       </AnimatePresence>
-    </a>
+    </motion.a>
   );
 }
 
@@ -184,6 +223,9 @@ export function HeroSection({ className }: HeroProps) {
   const [copied, setCopied] = useState(false);
   const [time, setTime] = useState<string>("");
   const [isHovered, setIsHovered] = useState(false);
+
+  const copyX = useMotionValue(0);
+  const copyY = useMotionValue(0);
 
   useEffect(() => {
     const updateTime = () => {
@@ -282,7 +324,7 @@ export function HeroSection({ className }: HeroProps) {
 
             <div className="flex items-center gap-3">
               <SocialIconButton
-                href="https://www.instagram.com/jorenverdad/"
+                href="https://www.instagram.com/verdadjoren/"
                 icon={FaInstagram}
                 label="Instagram Profile"
                 tooltip="Instagram"
@@ -299,36 +341,71 @@ export function HeroSection({ className }: HeroProps) {
                 label="LinkedIn Profile"
                 tooltip="LinkedIn"
               />
-              <button
+              <motion.button
                 onClick={handleCopyEmail}
+                onMouseMove={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  const rect = event.currentTarget.getBoundingClientRect();
+                  copyX.set(event.clientX - rect.left);
+                  copyY.set(event.clientY - rect.top);
+                }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                className="flex items-center justify-center size-14 rounded-full border border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated text-muted-foreground hover:text-foreground transition-all hover:scale-[1.05] group relative"
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
+                variants={{
+                  initial: { scale: 1 },
+                  hover: { scale: 1.05 },
+                  tap: { scale: 0.95 },
+                }}
+                transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+                className="relative flex items-center justify-center size-14 rounded-full border border-brand-500/20 bg-bg-surface/30 backdrop-blur-md text-muted-foreground hover:text-foreground transition-colors group shadow-sm hover:shadow-[0_0_20px_-5px_rgba(224,32,32,0.2)]"
                 aria-label="Copy Email"
               >
-                <AnimatePresence mode="wait">
-                  {copied ? (
-                    <motion.div
-                      key="check"
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.5 }}
-                      transition={{ duration: 0.15 }}
-                    >
-                      <Check className="size-5 text-green-500" />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="copy"
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.5 }}
-                      transition={{ duration: 0.15 }}
-                    >
-                      <Copy className="size-5 group-hover:scale-110 transition-transform" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Spotlight Border */}
+                <motion.div
+                  className="absolute -inset-px pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"
+                  style={{
+                    padding: "1px",
+                    background: useMotionTemplate`radial-gradient(50px circle at ${copyX}px ${copyY}px, rgba(224,32,32,0.8), transparent 100%)`,
+                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    maskComposite: "exclude",
+                  }}
+                />
+                {/* Spotlight Inner Glow */}
+                <motion.div
+                  className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"
+                  style={{
+                    background: useMotionTemplate`radial-gradient(40px circle at ${copyX}px ${copyY}px, rgba(224,32,32,0.1), transparent 100%)`,
+                  }}
+                />
+
+                <div className="z-10 relative flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5">
+                  <AnimatePresence mode="wait">
+                    {copied ? (
+                      <motion.div
+                        key="check"
+                        initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                        exit={{ opacity: 0, scale: 0.5, rotate: 45 }}
+                        transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+                      >
+                        <Check className="size-5 text-green-500" />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="copy"
+                        initial={{ opacity: 0, scale: 0.5, rotate: 45 }}
+                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                        exit={{ opacity: 0, scale: 0.5, rotate: -45 }}
+                        transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+                      >
+                        <Copy className="size-5" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 <AnimatePresence>
                   {(isHovered || copied) && (
@@ -365,7 +442,7 @@ export function HeroSection({ className }: HeroProps) {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         </motion.div>
