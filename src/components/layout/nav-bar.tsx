@@ -6,6 +6,7 @@ import { Dialog } from "@base-ui/react/dialog";
 import { Menu, X } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { FiSun, FiMoon } from "react-icons/fi";
+import { WorkInProgress } from "@/components/ui/work-in-progress";
 
 export interface NavBarLink {
   readonly label: string;
@@ -53,7 +54,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  // const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [resizeKey, setResizeKey] = useState(0);
 
   const [pillStyle, setPillStyle] = useState({
@@ -65,17 +66,17 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
   const navRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
-  // Theme synchronization and handler
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTheme(savedTheme as "light" | "dark");
-    if (savedTheme === "light") {
-      document.documentElement.classList.remove("dark");
-    } else {
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
+  // // Theme synchronization and handler
+  // useEffect(() => {
+  //   const savedTheme = localStorage.getItem("theme") || "dark";
+  //   // eslint-disable-next-line react-hooks/set-state-in-effect
+  //   setTheme(savedTheme as "light" | "dark");
+  //   if (savedTheme === "light") {
+  //     document.documentElement.classList.remove("dark");
+  //   } else {
+  //     document.documentElement.classList.add("dark");
+  //   }
+  // }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -88,17 +89,17 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  const toggleTheme = () => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    if (nextTheme === "light") {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    }
-  };
+  // const toggleTheme = () => {
+  //   const nextTheme = theme === "dark" ? "light" : "dark";
+  //   setTheme(nextTheme);
+  //   if (nextTheme === "light") {
+  //     document.documentElement.classList.remove("dark");
+  //     localStorage.setItem("theme", "light");
+  //   } else {
+  //     document.documentElement.classList.add("dark");
+  //     localStorage.setItem("theme", "dark");
+  //   }
+  // };
 
   // Resize listener to re-evaluate pill position
   useEffect(() => {
@@ -270,18 +271,19 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                 GitHub
               </span>
             </a>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label="Toggle dark mode"
-              className="h-10 w-10 rounded-full flex items-center justify-center border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-foreground transition-all duration-300 active:scale-95 cursor-pointer relative overflow-hidden group shadow-sm"
-            >
-              <div className="absolute inset-0 rounded-full bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
-              <div className="relative h-5 w-5 flex flex-col items-center justify-center transition-transform duration-500 group-hover:rotate-90">
-                <FiMoon className="size-4.5 absolute transition-all duration-300 opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-50 text-foreground" />
-                <FiSun className="size-4.5 absolute transition-all duration-300 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-brand-500" />
-              </div>
-            </button>
+            <WorkInProgress position="bottom">
+              <button
+                type="button"
+                aria-label="Toggle dark mode"
+                className="h-10 w-10 rounded-full flex items-center justify-center border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-foreground transition-all duration-300 active:scale-95 cursor-pointer relative overflow-hidden group shadow-sm"
+              >
+                <div className="absolute inset-0 rounded-full bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
+                <div className="relative h-5 w-5 flex flex-col items-center justify-center transition-transform duration-500 group-hover:rotate-90">
+                  <FiMoon className="size-4.5 absolute transition-all duration-300 opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-50 text-foreground" />
+                  <FiSun className="size-4.5 absolute transition-all duration-300 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-brand-500" />
+                </div>
+              </button>
+            </WorkInProgress>
           </div>
 
           {/* Mobile Menu Trigger */}
@@ -360,18 +362,22 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                       jorenverdad
                     </span>
                   </a>
-                  <button
-                    type="button"
-                    onClick={toggleTheme}
-                    aria-label="Toggle dark mode"
-                    className="h-12 w-12 rounded-xl flex items-center justify-center border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-foreground transition-all duration-300 active:scale-95 cursor-pointer relative overflow-hidden group"
+                  <WorkInProgress
+                    position="top"
+                    className="bottom-full mb-3 -translate-x-[15%]"
                   >
-                    <div className="absolute inset-0 rounded-xl bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
-                    <div className="relative h-5 w-5 flex flex-col items-center justify-center transition-transform duration-500 group-hover:rotate-90">
-                      <FiMoon className="size-5 absolute transition-all duration-300 opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-50 text-foreground" />
-                      <FiSun className="size-5 absolute transition-all duration-300 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-brand-500" />
-                    </div>
-                  </button>
+                    <button
+                      type="button"
+                      aria-label="Toggle dark mode"
+                      className="h-12 w-12 rounded-xl flex items-center justify-center border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-foreground transition-all duration-300 active:scale-95 cursor-pointer relative overflow-hidden group"
+                    >
+                      <div className="absolute inset-0 rounded-xl bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
+                      <div className="relative h-5 w-5 flex flex-col items-center justify-center transition-transform duration-500 group-hover:rotate-90">
+                        <FiMoon className="size-5 absolute transition-all duration-300 opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-50 text-foreground" />
+                        <FiSun className="size-5 absolute transition-all duration-300 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-brand-500" />
+                      </div>
+                    </button>
+                  </WorkInProgress>
                 </div>
               </Dialog.Popup>
             </Dialog.Portal>
