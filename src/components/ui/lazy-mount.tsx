@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
 interface LazyMountProps {
   children: React.ReactNode;
@@ -11,13 +11,13 @@ interface LazyMountProps {
   once?: boolean;
 }
 
-export function LazyMount({ 
-  children, 
-  minHeight = '100vh', 
-  rootMargin = '200% 0px',
+export function LazyMount({
+  children,
+  minHeight = "100vh",
+  rootMargin = "200% 0px",
   className,
   id,
-  once = true
+  once = true,
 }: LazyMountProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [actualHeight, setActualHeight] = useState<number | string>(minHeight);
@@ -42,7 +42,7 @@ export function LazyMount({
           setIsMounted(false);
         }
       },
-      { rootMargin }
+      { rootMargin },
     );
 
     observer.observe(element);
@@ -55,21 +55,22 @@ export function LazyMount({
 
     const handleTrigger = (e: Event) => {
       const customEvent = e as CustomEvent<string>;
-      if (customEvent.detail === id || customEvent.detail === 'all') {
+      if (customEvent.detail === id || customEvent.detail === "all") {
         setIsMounted(true);
       }
     };
 
-    window.addEventListener('lazy-mount-trigger', handleTrigger);
-    return () => window.removeEventListener('lazy-mount-trigger', handleTrigger);
+    window.addEventListener("lazy-mount-trigger", handleTrigger);
+    return () =>
+      window.removeEventListener("lazy-mount-trigger", handleTrigger);
   }, [id]);
 
   return (
-    <div 
-      ref={containerRef} 
-      className={className} 
+    <div
+      ref={containerRef}
+      className={className}
       id={id}
-      style={{ minHeight: isMounted ? 'auto' : actualHeight }}
+      style={{ minHeight: isMounted ? "auto" : actualHeight }}
     >
       {isMounted ? children : null}
     </div>
