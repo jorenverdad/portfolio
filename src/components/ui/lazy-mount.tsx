@@ -55,7 +55,7 @@ export function LazyMount({
 
     const handleTrigger = (e: Event) => {
       const customEvent = e as CustomEvent<string>;
-      if (customEvent.detail === id) {
+      if (customEvent.detail === id || customEvent.detail === 'all') {
         setIsMounted(true);
       }
     };

@@ -32,9 +32,9 @@ const DEFAULT_LINKS: ReadonlyArray<NavBarLink> = [
 function scrollToSection(sectionId: string, e?: React.MouseEvent): void {
   e?.preventDefault();
   
-  // Trigger immediate mounting for lazy sections
+  // Trigger immediate mounting for all lazy sections to prevent layout shifts during scroll
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('lazy-mount-trigger', { detail: sectionId }));
+    window.dispatchEvent(new CustomEvent('lazy-mount-trigger', { detail: 'all' }));
   }
 
   // Defer scrolling slightly to allow the newly mounted component to lay out
@@ -79,6 +79,16 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
     } else {
       document.documentElement.classList.add('dark');
     }
+  }, []);
+
+  // Idle-mount all lazy sections after the initial page load to prevent layout shifts later
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('lazy-mount-trigger', { detail: 'all' }));
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   const toggleTheme = () => {
