@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { motion, AnimatePresence, Variants } from "motion/react";
 import { Download, Copy, Check, MapPin, Clock } from "lucide-react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaInstagram, FaFacebook, FaLinkedin } from "react-icons/fa";
 
 export interface HeroProps {
   readonly className?: string;
@@ -35,6 +35,7 @@ const itemVariants: Variants = {
 export function HeroSection({ className }: HeroProps) {
   const [copied, setCopied] = useState(false);
   const [time, setTime] = useState<string>("");
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -139,16 +140,25 @@ export function HeroSection({ className }: HeroProps) {
 
             <div className="flex items-center gap-3">
               <a
-                href="https://github.com/jorenverdad"
+                href="https://www.instagram.com/jorenverdad/"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center justify-center size-14 rounded-full border border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated text-muted-foreground hover:text-foreground transition-all hover:scale-[1.05] group"
-                aria-label="GitHub Profile"
+                aria-label="Instagram Profile"
               >
-                <FaGithub className="size-5 group-hover:scale-110 transition-transform" />
+                <FaInstagram className="size-5 group-hover:scale-110 transition-transform" />
               </a>
               <a
-                href="https://linkedin.com/in/jorenverdad"
+                href="https://www.facebook.com/jorenverdad/"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center size-14 rounded-full border border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated text-muted-foreground hover:text-foreground transition-all hover:scale-[1.05] group"
+                aria-label="Facebook Profile"
+              >
+                <FaFacebook className="size-5 group-hover:scale-110 transition-transform" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/jorenverdad/"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center justify-center size-14 rounded-full border border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated text-muted-foreground hover:text-foreground transition-all hover:scale-[1.05] group"
@@ -158,6 +168,8 @@ export function HeroSection({ className }: HeroProps) {
               </a>
               <button
                 onClick={handleCopyEmail}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
                 className="flex items-center justify-center size-14 rounded-full border border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated text-muted-foreground hover:text-foreground transition-all hover:scale-[1.05] group relative"
                 aria-label="Copy Email"
               >
@@ -181,6 +193,42 @@ export function HeroSection({ className }: HeroProps) {
                       transition={{ duration: 0.15 }}
                     >
                       <Copy className="size-5 group-hover:scale-110 transition-transform" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <AnimatePresence>
+                  {(isHovered || copied) && (
+                    <motion.div
+                      initial={{
+                        opacity: 0,
+                        y: 10,
+                        scale: 0.8,
+                        filter: "blur(4px)",
+                      }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        filter: "blur(0px)",
+                      }}
+                      exit={{
+                        opacity: 0,
+                        y: 2,
+                        scale: 0.9,
+                        filter: "blur(2px)",
+                      }}
+                      transition={{
+                        type: "spring",
+                        bounce: 0.2,
+                        duration: 0.3,
+                      }}
+                      className="absolute bottom-full mb-3 px-3 py-1.5 rounded-md bg-foreground text-background shadow-xl whitespace-nowrap z-20 pointer-events-none flex flex-col items-center"
+                    >
+                      <span className="text-xs font-semibold tracking-wide">
+                        {copied ? "Copied!" : "Copy Email"}
+                      </span>
+                      <div className="absolute -bottom-1 w-2 h-2 bg-foreground rotate-45 rounded-sm" />
                     </motion.div>
                   )}
                 </AnimatePresence>

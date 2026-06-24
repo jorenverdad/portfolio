@@ -9,14 +9,14 @@ import { FaLinkedin, FaGithub, FaFacebook, FaInstagram } from "react-icons/fa6";
 
 const SOCIALS = [
   {
-    name: "Facebook",
-    icon: FaFacebook,
-    href: "https://www.facebook.com/jorenverdad/",
-  },
-  {
     name: "Instagram",
     icon: FaInstagram,
     href: "https://www.instagram.com/verdadjoren/",
+  },
+  {
+    name: "Facebook",
+    icon: FaFacebook,
+    href: "https://www.facebook.com/jorenverdad/",
   },
   {
     name: "LinkedIn",
