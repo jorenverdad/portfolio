@@ -69,6 +69,16 @@ test.describe("Navigation & Scroll Behavior", () => {
     const testimonialSection = page.locator("#testimonial");
     await expect(testimonialSection).toBeVisible();
 
+    // Scroll down to the Testimonial section, centering it in the viewport
+    // to trigger the whileInView animation (threshold: 0.8)
+    await page.evaluate(() => {
+      const el = document.getElementById("testimonial");
+      if (el) el.scrollIntoView({ block: "center" });
+    });
+    
+    // Wait for the scroll and animation to settle
+    await page.waitForTimeout(500);
+
     // Verify content inside testimonial is loaded using the correct heading
     const heading = testimonialSection.locator("text=Client Perspectives");
     await expect(heading).toBeVisible();

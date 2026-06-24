@@ -1,5 +1,11 @@
 import { test, expect } from "@playwright/test";
 
+declare global {
+  interface Window {
+    mockWriteText: (text: string) => Promise<void>;
+  }
+}
+
 test.describe("Hero & Social Interactions", () => {
   test("should verify the download resume link is correct", async ({ page }) => {
     await page.goto("/");
@@ -35,7 +41,7 @@ test.describe("Hero & Social Interactions", () => {
     await page.addInitScript(() => {
       const mockClipboard = {
         writeText: async (text: string) => {
-          await (window as any).mockWriteText(text);
+          await window.mockWriteText(text);
         }
       };
       
@@ -46,14 +52,14 @@ test.describe("Hero & Social Interactions", () => {
           configurable: true,
           writable: true
         });
-      } catch (e) {
+      } catch {
         try {
           // 2. Fallback: try defining it on the prototype of Navigator
           Object.defineProperty(Object.getPrototypeOf(navigator), "clipboard", {
             get: () => mockClipboard,
             configurable: true
           });
-        } catch (err2) {
+        } catch {
           // 3. Ultimate fallback: override navigator entirely
           const newNavigator = Object.create(navigator, {
             clipboard: {
@@ -76,8 +82,12 @@ test.describe("Hero & Social Interactions", () => {
     const copyBtn = page.getByLabel("Copy Email");
     await expect(copyBtn).toBeVisible();
 
-    // Click the button directly to copy the email (no hover beforehand)
-    await copyBtn.click();
+    // Hover over the button first to ensure the tooltip is mounted and visible
+    await copyBtn.hover();
+    await expect(page.locator("text=Copy Email")).toBeVisible();
+
+    // Dispatch click event directly to copy the email without shifting focus or moving the pointer
+    await copyBtn.dispatchEvent("click");
 
     // Verify the clipboard function was called with the correct email
     expect(copiedText).toBe("jorenverdad@gmail.com");
@@ -86,7 +96,7 @@ test.describe("Hero & Social Interactions", () => {
     const checkIcon = copyBtn.locator("svg.lucide-check");
     await expect(checkIcon).toBeVisible();
 
-    // The tooltip should mount and show "Copied!" immediately without transition conflicts
+    // The tooltip text should update to "Copied!" immediately
     const copiedTooltip = page.locator("text=Copied!");
     await expect(copiedTooltip).toBeVisible();
   });
