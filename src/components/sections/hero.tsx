@@ -1,9 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { GridPattern } from "@/components/ui/grid-pattern";
-import { motion, AnimatePresence, Variants } from "motion/react";
+import {
+  motion,
+  AnimatePresence,
+  Variants,
+  useMotionValue,
+  useMotionTemplate,
+} from "motion/react";
 import { Download, Copy, Check, MapPin, Clock } from "lucide-react";
 import { FaInstagram, FaFacebook, FaLinkedin } from "react-icons/fa";
 
@@ -31,6 +36,149 @@ const itemVariants: Variants = {
     transition: { type: "spring", bounce: 0, duration: 0.8 },
   },
 };
+
+function DownloadResumeButton() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  function handleMouseMove(event: React.MouseEvent<HTMLButtonElement>) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    x.set(event.clientX - rect.left);
+    y.set(event.clientY - rect.top);
+  }
+
+  return (
+    <motion.button
+      onMouseMove={handleMouseMove}
+      initial="initial"
+      whileHover="hover"
+      whileTap="tap"
+      variants={{
+        initial: { scale: 1 },
+        hover: { scale: 1.02 },
+        tap: { scale: 0.98 },
+      }}
+      transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+      className="relative flex items-center justify-center gap-2.5 h-14 px-8 text-base font-semibold text-white bg-brand-500 rounded-full overflow-hidden group shadow-[0_0_30px_-5px_rgba(224,32,32,0.4)] hover:shadow-[0_0_40px_-5px_rgba(224,32,32,0.6)] transition-all duration-300"
+    >
+      {/* Interactive Glow */}
+      <motion.div
+        className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{
+          background: useMotionTemplate`radial-gradient(100px circle at ${x}px ${y}px, rgba(255, 255, 255, 0.25), transparent 80%)`,
+        }}
+      />
+
+      {/* Animated Shine Layer */}
+      <motion.div
+        variants={{
+          initial: { x: "-100%", opacity: 0 },
+          hover: {
+            x: "200%",
+            opacity: [0, 1, 0],
+            transition: { duration: 1.5, repeat: Infinity, ease: "linear" },
+          },
+        }}
+        className="absolute inset-0 w-1/2 z-0 pointer-events-none bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg]"
+      />
+
+      <div className="relative z-10 flex items-center justify-center size-5 overflow-hidden">
+        <motion.div
+          variants={{
+            initial: { y: 0, opacity: 1 },
+            hover: {
+              y: 24,
+              opacity: 0,
+              transition: { type: "spring", bounce: 0, duration: 0.3 },
+            },
+          }}
+          className="absolute flex items-center justify-center"
+        >
+          <Download className="size-4 text-white" />
+        </motion.div>
+        <motion.div
+          variants={{
+            initial: { y: -24, opacity: 0 },
+            hover: {
+              y: 0,
+              opacity: 1,
+              transition: { type: "spring", bounce: 0, duration: 0.3 },
+            },
+          }}
+          className="absolute flex items-center justify-center"
+        >
+          <Download className="size-4 text-white" />
+        </motion.div>
+      </div>
+      <span className="relative z-10 tracking-wide text-white transition-colors duration-300">
+        Download Resume
+      </span>
+    </motion.button>
+  );
+}
+
+function SocialIconButton({
+  href,
+  icon: Icon,
+  label,
+  tooltip,
+}: {
+  href: string;
+  icon: React.ElementType;
+  label: string;
+  tooltip: string;
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative flex items-center justify-center size-14 rounded-full border border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated text-muted-foreground hover:text-foreground transition-all hover:scale-[1.05] group"
+      aria-label={label}
+    >
+      <Icon className="size-5 group-hover:scale-110 transition-transform" />
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 10,
+              scale: 0.8,
+              filter: "blur(4px)",
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              filter: "blur(0px)",
+            }}
+            exit={{
+              opacity: 0,
+              y: 2,
+              scale: 0.9,
+              filter: "blur(2px)",
+            }}
+            transition={{
+              type: "spring",
+              bounce: 0.2,
+              duration: 0.3,
+            }}
+            className="absolute bottom-full mb-3 px-3 py-1.5 rounded-md bg-foreground text-background shadow-xl whitespace-nowrap z-20 pointer-events-none flex flex-col items-center"
+          >
+            <span className="text-xs font-semibold tracking-wide">
+              {tooltip}
+            </span>
+            <div className="absolute -bottom-1 w-2 h-2 bg-foreground rotate-45 rounded-sm" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </a>
+  );
+}
 
 export function HeroSection({ className }: HeroProps) {
   const [copied, setCopied] = useState(false);
@@ -130,42 +278,27 @@ export function HeroSection({ className }: HeroProps) {
             variants={itemVariants}
             className="flex flex-col sm:flex-row items-center gap-4 mt-4"
           >
-            <Button
-              size="lg"
-              className="h-14 px-8 text-base shadow-[0_0_30px_-5px_rgba(224,32,32,0.3)] transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_-5px_rgba(224,32,32,0.5)] rounded-full group"
-            >
-              <Download className="mr-2 size-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
-              Download Résumé
-            </Button>
+            <DownloadResumeButton />
 
             <div className="flex items-center gap-3">
-              <a
+              <SocialIconButton
                 href="https://www.instagram.com/jorenverdad/"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-center size-14 rounded-full border border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated text-muted-foreground hover:text-foreground transition-all hover:scale-[1.05] group"
-                aria-label="Instagram Profile"
-              >
-                <FaInstagram className="size-5 group-hover:scale-110 transition-transform" />
-              </a>
-              <a
+                icon={FaInstagram}
+                label="Instagram Profile"
+                tooltip="Instagram"
+              />
+              <SocialIconButton
                 href="https://www.facebook.com/jorenverdad/"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-center size-14 rounded-full border border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated text-muted-foreground hover:text-foreground transition-all hover:scale-[1.05] group"
-                aria-label="Facebook Profile"
-              >
-                <FaFacebook className="size-5 group-hover:scale-110 transition-transform" />
-              </a>
-              <a
+                icon={FaFacebook}
+                label="Facebook Profile"
+                tooltip="Facebook"
+              />
+              <SocialIconButton
                 href="https://www.linkedin.com/in/jorenverdad/"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-center size-14 rounded-full border border-edge-default bg-bg-surface/30 backdrop-blur-md hover:bg-bg-elevated text-muted-foreground hover:text-foreground transition-all hover:scale-[1.05] group"
-                aria-label="LinkedIn Profile"
-              >
-                <FaLinkedin className="size-5 group-hover:scale-110 transition-transform" />
-              </a>
+                icon={FaLinkedin}
+                label="LinkedIn Profile"
+                tooltip="LinkedIn"
+              />
               <button
                 onClick={handleCopyEmail}
                 onMouseEnter={() => setIsHovered(true)}
