@@ -33,14 +33,41 @@ test.describe("Hero & Social Interactions", () => {
 
     // Mock clipboard API before page loads
     await page.addInitScript(() => {
-      Object.defineProperty(navigator, "clipboard", {
-        value: {
-          writeText: async (text: string) => {
-            (window as any).mockWriteText(text);
-          }
-        },
-        configurable: true
-      });
+      const mockClipboard = {
+        writeText: async (text: string) => {
+          await (window as any).mockWriteText(text);
+        }
+      };
+      
+      try {
+        // 1. Try to define the property directly on navigator
+        Object.defineProperty(navigator, "clipboard", {
+          value: mockClipboard,
+          configurable: true,
+          writable: true
+        });
+      } catch (e) {
+        try {
+          // 2. Fallback: try defining it on the prototype of Navigator
+          Object.defineProperty(Object.getPrototypeOf(navigator), "clipboard", {
+            get: () => mockClipboard,
+            configurable: true
+          });
+        } catch (err2) {
+          // 3. Ultimate fallback: override navigator entirely
+          const newNavigator = Object.create(navigator, {
+            clipboard: {
+              value: mockClipboard,
+              configurable: true,
+              writable: true
+            }
+          });
+          Object.defineProperty(window, "navigator", {
+            value: newNavigator,
+            configurable: true
+          });
+        }
+      }
     });
 
     await page.goto("/");
