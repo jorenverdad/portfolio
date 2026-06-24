@@ -167,7 +167,8 @@ function SocialIconButton({
         style={{
           padding: "1px",
           background: useMotionTemplate`radial-gradient(50px circle at ${x}px ${y}px, rgba(224,32,32,0.8), transparent 100%)`,
-          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          WebkitMask:
+            "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           WebkitMaskComposite: "xor",
           maskComposite: "exclude",
         }}
@@ -227,6 +228,8 @@ export function HeroSection({ className }: HeroProps) {
 
   const copyX = useMotionValue(0);
   const copyY = useMotionValue(0);
+  const badgeX = useMotionValue(0);
+  const badgeY = useMotionValue(0);
 
   useEffect(() => {
     const updateTime = () => {
@@ -262,6 +265,12 @@ export function HeroSection({ className }: HeroProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleBadgeMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    badgeX.set(event.clientX - rect.left);
+    badgeY.set(event.clientY - rect.top);
+  };
+
   return (
     <section
       className={`relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-void pt-20 ${className ?? ""}`}
@@ -280,13 +289,45 @@ export function HeroSection({ className }: HeroProps) {
           className="flex flex-col items-center"
         >
           <motion.div variants={itemVariants}>
-            <div className="inline-flex items-center gap-3.5 px-4.5 py-2 rounded-full border border-edge-default bg-bg-surface/50 text-xs font-medium text-muted-foreground mb-8 backdrop-blur-md shadow-sm hover:border-brand-500/30 hover:bg-bg-surface/80 transition-all duration-300 group cursor-default">
-              <span className="flex items-center gap-2 text-foreground/90">
+            <motion.div 
+              onMouseMove={handleBadgeMouseMove}
+              initial="initial"
+              whileHover="hover"
+              whileTap="tap"
+              variants={{
+                initial: { scale: 1 },
+                hover: { scale: 1.05 },
+                tap: { scale: 0.95 },
+              }}
+              transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+              className="relative inline-flex items-center gap-3.5 px-4.5 py-2 rounded-full border border-edge-default bg-bg-surface/50 text-xs font-medium text-muted-foreground mb-8 backdrop-blur-md shadow-sm hover:border-brand-500/30 hover:bg-bg-surface/80 transition-all duration-300 group cursor-default hover:shadow-[0_0_20px_-5px_rgba(224,32,32,0.2)]"
+            >
+              {/* Spotlight Border */}
+              <motion.div
+                className="absolute -inset-px pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"
+                style={{
+                  padding: "1px",
+                  background: useMotionTemplate`radial-gradient(100px circle at ${badgeX}px ${badgeY}px, rgba(224,32,32,0.8), transparent 100%)`,
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  maskComposite: "exclude",
+                }}
+              />
+              {/* Spotlight Inner Glow */}
+              <motion.div
+                className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"
+                style={{
+                  background: useMotionTemplate`radial-gradient(80px circle at ${badgeX}px ${badgeY}px, rgba(224,32,32,0.1), transparent 100%)`,
+                }}
+              />
+
+              <span className="relative z-10 flex items-center gap-2 text-foreground/90">
                 <MapPin className="size-3.5 text-brand-500 group-hover:scale-110 transition-transform duration-300" />
                 <span className="font-sans tracking-wide">Philippines</span>
               </span>
-              <span className="w-px h-3.5 bg-edge-subtle" />
-              <span className="flex items-center gap-2">
+              <span className="relative z-10 w-px h-3.5 bg-edge-subtle" />
+              <span className="relative z-10 flex items-center gap-2">
                 <Clock className="size-3.5 text-brand-500 group-hover:rotate-12 transition-transform duration-300" />
                 <span className="font-sans">PHT (UTC+8)</span>
                 {time && (
@@ -295,7 +336,7 @@ export function HeroSection({ className }: HeroProps) {
                   </span>
                 )}
               </span>
-            </div>
+            </motion.div>
           </motion.div>
 
           <motion.h1
@@ -369,7 +410,8 @@ export function HeroSection({ className }: HeroProps) {
                   style={{
                     padding: "1px",
                     background: useMotionTemplate`radial-gradient(50px circle at ${copyX}px ${copyY}px, rgba(224,32,32,0.8), transparent 100%)`,
-                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                     WebkitMaskComposite: "xor",
                     maskComposite: "exclude",
                   }}
@@ -390,7 +432,11 @@ export function HeroSection({ className }: HeroProps) {
                         initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
                         animate={{ opacity: 1, scale: 1, rotate: 0 }}
                         exit={{ opacity: 0, scale: 0.5, rotate: 45 }}
-                        transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+                        transition={{
+                          type: "spring",
+                          bounce: 0,
+                          duration: 0.3,
+                        }}
                       >
                         <Check className="size-5 text-green-500" />
                       </motion.div>
@@ -400,7 +446,11 @@ export function HeroSection({ className }: HeroProps) {
                         initial={{ opacity: 0, scale: 0.5, rotate: 45 }}
                         animate={{ opacity: 1, scale: 1, rotate: 0 }}
                         exit={{ opacity: 0, scale: 0.5, rotate: -45 }}
-                        transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+                        transition={{
+                          type: "spring",
+                          bounce: 0,
+                          duration: 0.3,
+                        }}
                       >
                         <Copy className="size-5" />
                       </motion.div>
