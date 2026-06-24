@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, DM_Sans, Geist_Mono } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import "devicon/devicon.min.css";
 
@@ -22,8 +23,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Joren | Portfolio",
-  description: "Personal Portfolio of Joren",
+  title: "Joren Verdad - Software Engineer & Full Stack Developer",
+  description: "Portfolio of Joren Verdad",
 };
 
 export default function RootLayout({
@@ -38,6 +39,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col bg-bg-base text-foreground font-sans">
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
