@@ -17,6 +17,7 @@ export interface WorkInProgressProps {
   readonly status?: string;
   readonly position?: "top" | "bottom" | "left" | "right";
   readonly className?: string;
+  readonly onOpenChange?: (isOpen: boolean) => void;
 }
 
 export function WorkInProgress({
@@ -27,9 +28,15 @@ export function WorkInProgress({
   status = "Under Construction",
   position = "bottom",
   className,
+  onOpenChange,
 }: WorkInProgressProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Notify parent component when open state changes
+  useEffect(() => {
+    onOpenChange?.(isOpen);
+  }, [isOpen, onOpenChange]);
 
   // Close when clicking outside
   useEffect(() => {

@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { WorkInProgress } from "@/components/ui/work-in-progress";
 
 export type Project = {
   readonly id: string;
@@ -109,6 +110,8 @@ type ProjectCardProps = {
   readonly isDesktop: boolean;
   readonly onActive: (id: string) => void;
   readonly hoveredId: string | null;
+  readonly isTooltipOpen: boolean;
+  readonly onTooltipOpenChange: (isOpen: boolean) => void;
 };
 
 const ProjectCard = React.memo(function ProjectCard({
@@ -118,6 +121,8 @@ const ProjectCard = React.memo(function ProjectCard({
   isDesktop,
   onActive,
   hoveredId,
+  isTooltipOpen,
+  onTooltipOpenChange,
 }: ProjectCardProps) {
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -212,14 +217,15 @@ const ProjectCard = React.memo(function ProjectCard({
         mass: 0.9,
       }}
       className={`
-        relative overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer group bg-bg-surface min-w-0 min-h-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
+        relative rounded-2xl md:rounded-3xl cursor-pointer group bg-bg-surface min-w-0 min-h-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
+        ${isTooltipOpen ? "overflow-visible" : "overflow-hidden"}
         ${isActive ? "h-full w-full" : "w-[90%] md:w-full h-full md:h-[85%]"}
       `}
       tabIndex={0}
     >
       {/* Background Image/Video Container (Scale Animated) */}
       <m.div
-        className="absolute inset-0 w-full h-full origin-center"
+        className="absolute inset-0 w-full h-full origin-center rounded-2xl md:rounded-3xl overflow-hidden"
         initial={false}
         animate={{
           scale: isActive ? 1.0 : 1.2,
@@ -367,7 +373,7 @@ const ProjectCard = React.memo(function ProjectCard({
         initial={false}
         animate={{ opacity: isActive ? 0.8 : 0 }}
         transition={{ duration: 0.4 }}
-        className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"
+        className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 rounded-2xl md:rounded-3xl"
       />
 
       {/* Content */}
@@ -404,15 +410,23 @@ const ProjectCard = React.memo(function ProjectCard({
                 animate={{ opacity: 1, height: "auto", marginTop: 16 }}
                 exit={{ opacity: 0, height: 0, marginTop: 0 }}
                 transition={{ duration: 0.25, ease: "easeInOut" }}
-                className="overflow-hidden"
+                className={isTooltipOpen ? "overflow-visible" : "overflow-hidden"}
               >
-                <Button
-                  render={<a href={project.link ?? "#"} />}
-                  nativeButton={false}
-                  className="bg-white text-black hover:bg-white/90 rounded-full px-6"
+                <WorkInProgress
+                  position="top"
+                  featureName="Deep Dive"
+                  title="Synthesizing the Case Study"
+                  description="I am compiling the technical architecture, design decisions, and performance metrics for this build. The breakdown of engineering challenges and their solutions will be live shortly."
+                  onOpenChange={onTooltipOpenChange}
                 >
-                  Explore Project
-                </Button>
+                  <Button
+                    render={<a href={project.link ?? "#"} />}
+                    nativeButton={false}
+                    className="bg-white text-black hover:bg-white/90 rounded-full px-6"
+                  >
+                    Explore Project
+                  </Button>
+                </WorkInProgress>
               </m.div>
             )}
           </AnimatePresence>
@@ -427,14 +441,26 @@ export function ProjectsSection({
   projects = DEFAULT_PROJECTS,
 }: ProjectsProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [activeTooltipId, setActiveTooltipId] = useState<string | null>(null);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const handleActive = useCallback((id: string) => {
+    if (activeTooltipId) return;
     setHoveredId(id);
-  }, []);
+  }, [activeTooltipId]);
 
   const handleMouseLeave = useCallback(() => {
+    if (activeTooltipId) return;
     setHoveredId(null);
+  }, [activeTooltipId]);
+
+  const handleTooltipOpenChange = useCallback((id: string, isOpen: boolean) => {
+    if (isOpen) {
+      setActiveTooltipId(id);
+      setHoveredId(id);
+    } else {
+      setActiveTooltipId(null);
+    }
   }, []);
 
   return (
@@ -472,7 +498,7 @@ export function ProjectsSection({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-                className="max-w-4xl mx-auto flex flex-col items-center text-center"
+                className="max-w-4xl mx-auto flex flex-col items-center text-center relative z-30"
               >
                 <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
                   Featured{" "}
@@ -487,13 +513,20 @@ export function ProjectsSection({
                   clean user experiences.
                 </p>
 
-                <Button
-                  variant="outline"
-                  className="rounded-full px-8 border-edge-default hover:bg-bg-elevated hover:text-foreground transition-all duration-300 group"
+                <WorkInProgress
+                  position="bottom"
+                  featureName="Project Index"
+                  title="Cataloging the Archive"
+                  description="I am organizing and polishing a comprehensive index of my experimental prototypes, open-source utilities, and client systems. The complete directory is currently being curated."
                 >
-                  Explore All Projects
-                  <ArrowUpRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </Button>
+                  <Button
+                    variant="outline"
+                    className="rounded-full px-8 border-edge-default hover:bg-bg-elevated hover:text-foreground transition-all duration-300 group"
+                  >
+                    Explore All Projects
+                    <ArrowUpRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </Button>
+                </WorkInProgress>
               </m.div>
             </div>
 
@@ -503,7 +536,10 @@ export function ProjectsSection({
               onMouseLeave={handleMouseLeave}
             >
               {projects.map((project, index) => {
-                const isActive = hoveredId === project.id;
+                const isActive = activeTooltipId
+                  ? activeTooltipId === project.id
+                  : hoveredId === project.id;
+                const isTooltipOpen = activeTooltipId === project.id;
 
                 return (
                   <ProjectCard
@@ -514,6 +550,10 @@ export function ProjectsSection({
                     isDesktop={isDesktop}
                     onActive={handleActive}
                     hoveredId={hoveredId}
+                    isTooltipOpen={isTooltipOpen}
+                    onTooltipOpenChange={(isOpen) =>
+                      handleTooltipOpenChange(project.id, isOpen)
+                    }
                   />
                 );
               })}
