@@ -72,10 +72,8 @@ const TestimonialCard = React.memo(function TestimonialCard({
             "transform 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 500ms, background-color 500ms",
         }}
       >
-        {/* Soft elegant gradient mesh that appears on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 via-transparent to-warm-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-        {/* Noise texture for premium print-like feel */}
         <div
           className="absolute inset-0 opacity-[0.02] mix-blend-overlay pointer-events-none group-hover:opacity-[0.04] transition-opacity duration-700"
           style={{
@@ -89,7 +87,6 @@ const TestimonialCard = React.memo(function TestimonialCard({
         <div className="relative z-10 flex flex-col h-full justify-between flex-grow">
           <div className="flex flex-col gap-8">
             <div className="flex justify-between items-start">
-              {/* Premium minimal quote mark */}
               <div className="w-10 h-10 rounded-2xl border border-edge-subtle flex items-center justify-center bg-bg-void shadow-sm group-hover:border-brand-500/30 group-hover:bg-brand-500/10 transition-all duration-500 group-hover:rotate-[-6deg] group-hover:scale-110 origin-center">
                 <svg
                   width="14"
@@ -138,7 +135,6 @@ export function TestimonialsSection({
   className,
   testimonials = DEFAULT_TESTIMONIALS,
 }: TestimonialsProps) {
-  // We duplicate the array multiple times to ensure enough content to fill the screen width before it loops
   const marqueeItems = React.useMemo(() => {
     return [...testimonials, ...testimonials, ...testimonials];
   }, [testimonials]);

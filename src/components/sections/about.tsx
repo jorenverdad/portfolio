@@ -10,6 +10,7 @@ import {
   domAnimation,
   useInView,
 } from "motion/react";
+
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { GitHubStatsCard } from "@/components/sections/github-stats";
 import { SkillsMarquee } from "@/components/sections/skills-marquee";
