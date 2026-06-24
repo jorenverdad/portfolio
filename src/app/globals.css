@@ -50,7 +50,9 @@
   /* Custom design tokens from color-palette.md */
   --color-bg-void: oklch(0.07 0.012 17);
   --color-bg-surface: oklch(0.135 0.025 17);
+  --color-brand-400: oklch(0.64 0.215 25);
   --color-brand-500: oklch(0.56 0.215 25);
+  --color-brand-600: oklch(0.48 0.215 25);
   --color-edge-subtle: oklch(0.15 0.025 17);
   --color-warm-500: oklch(0.62 0.17 45);
 
