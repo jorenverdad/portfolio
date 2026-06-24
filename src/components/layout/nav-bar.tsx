@@ -112,7 +112,9 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      if (
+      if (window.scrollY < 50) {
+        setActiveSection("home");
+      } else if (
         window.innerHeight + window.scrollY >=
         document.documentElement.scrollHeight - 20
       ) {
