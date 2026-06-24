@@ -410,7 +410,9 @@ const ProjectCard = React.memo(function ProjectCard({
                 animate={{ opacity: 1, height: "auto", marginTop: 16 }}
                 exit={{ opacity: 0, height: 0, marginTop: 0 }}
                 transition={{ duration: 0.25, ease: "easeInOut" }}
-                className={isTooltipOpen ? "overflow-visible" : "overflow-hidden"}
+                className={
+                  isTooltipOpen ? "overflow-visible" : "overflow-hidden"
+                }
               >
                 <WorkInProgress
                   position="top"
@@ -444,10 +446,13 @@ export function ProjectsSection({
   const [activeTooltipId, setActiveTooltipId] = useState<string | null>(null);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  const handleActive = useCallback((id: string) => {
-    if (activeTooltipId) return;
-    setHoveredId(id);
-  }, [activeTooltipId]);
+  const handleActive = useCallback(
+    (id: string) => {
+      if (activeTooltipId) return;
+      setHoveredId(id);
+    },
+    [activeTooltipId],
+  );
 
   const handleMouseLeave = useCallback(() => {
     if (activeTooltipId) return;

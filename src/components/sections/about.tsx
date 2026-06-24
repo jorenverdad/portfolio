@@ -165,7 +165,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
             {/* Image/Avatar - Spans 4 cols */}
             <m.div
               variants={itemVariants}
-              className="md:col-span-4 relative group rounded-[2.5rem] overflow-hidden border border-edge-subtle w-full max-w-[420px] aspect-[3/4] mx-auto md:mx-0 shadow-2xl bg-bg-surface md:self-center"
+              className="md:col-span-4 relative group rounded-[2.5rem] overflow-hidden border border-edge-subtle w-full aspect-[3/4] md:aspect-auto shadow-2xl bg-bg-surface"
             >
               <div className="absolute inset-0 bg-brand-500/20 mix-blend-overlay z-10 group-hover:opacity-0 transition-opacity duration-700 pointer-events-none" />
               <m.div

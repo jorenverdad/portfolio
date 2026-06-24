@@ -28,17 +28,16 @@ export async function GET(request: NextRequest): Promise<Response> {
         }
       });
 
-      // Send periodic heartbeats to prevent proxies/browsers from dropping idle connection
       heartbeatInterval = setInterval(() => {
         try {
           controller.enqueue(encoder.encode(': heartbeat\n\n'));
-        } catch (error) {
+        } catch {
           // Stream might be closed already
           if (heartbeatInterval) clearInterval(heartbeatInterval);
           if (unsubscribe) unsubscribe();
           try {
             controller.close();
-          } catch (_) {}
+          } catch {}
         }
       }, 15000);
     },

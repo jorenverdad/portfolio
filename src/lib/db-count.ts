@@ -35,7 +35,7 @@ async function ensureLoaded(): Promise<void> {
     const data = await fs.readFile(DB_FILE, 'utf-8');
     const parsed = JSON.parse(data) as { count: number };
     state.count = typeof parsed.count === 'number' ? parsed.count : 0;
-  } catch (error) {
+  } catch {
     // If file doesn't exist, create it with 0
     state.count = 0;
     try {

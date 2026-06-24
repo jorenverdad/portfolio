@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'motion/react';
 import { Plus } from 'lucide-react';
 
@@ -27,7 +27,15 @@ export function CountMeIn() {
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const fetchCurrentCount = async () => {
+  const statusRef = useRef<ConnectionStatus>('connecting');
+  const connectSSERef = useRef<() => void>(() => {});
+
+  const updateStatus = useCallback((newStatus: ConnectionStatus) => {
+    statusRef.current = newStatus;
+    setStatus(newStatus);
+  }, []);
+
+  const fetchCurrentCount = useCallback(async () => {
     try {
       const res = await fetch('/api/count');
       if (res.ok) {
@@ -39,16 +47,24 @@ export function CountMeIn() {
       console.error('Failed to fetch count via REST:', err);
     }
     return null;
-  };
+  }, []);
 
-  const connectSSE = () => {
+  const startPolling = useCallback(() => {
+    if (pollingIntervalRef.current) return;
+    pollingIntervalRef.current = setInterval(async () => {
+      const latestCount = await fetchCurrentCount();
+      updateStatus(latestCount !== null ? 'polling' : 'error');
+    }, 3000);
+  }, [fetchCurrentCount, updateStatus]);
+
+  const connectSSE = useCallback(() => {
     if (eventSourceRef.current) eventSourceRef.current.close();
-    setStatus('connecting');
+    updateStatus('connecting');
     const source = new EventSource('/api/count');
     eventSourceRef.current = source;
 
     source.onopen = () => {
-      setStatus('connected');
+      updateStatus('connected');
       if (pollingIntervalRef.current) {
         clearInterval(pollingIntervalRef.current);
         pollingIntervalRef.current = null;
@@ -59,36 +75,51 @@ export function CountMeIn() {
       try {
         const data = JSON.parse(event.data) as { count: number };
         setCount(data.count);
-      } catch (err) {}
+      } catch {
+      }
     };
 
     source.onerror = () => {
       source.close();
-      setStatus('polling');
+      updateStatus('polling');
       startPolling();
       if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
       reconnectTimeoutRef.current = setTimeout(() => {
-        if (status === 'polling') connectSSE();
+        if (statusRef.current === 'polling') connectSSERef.current();
       }, 30000);
     };
-  };
-
-  const startPolling = () => {
-    if (pollingIntervalRef.current) return;
-    pollingIntervalRef.current = setInterval(async () => {
-      const latestCount = await fetchCurrentCount();
-      setStatus(latestCount !== null ? 'polling' : 'error');
-    }, 3000);
-  };
+  }, [startPolling, updateStatus]);
 
   useEffect(() => {
-    void fetchCurrentCount().then(() => connectSSE());
+    connectSSERef.current = connectSSE;
+  }, [connectSSE]);
+
+  useEffect(() => {
+    let active = true;
+    const init = async () => {
+      const latest = await fetchCurrentCount();
+      if (active) {
+        if (latest !== null) {
+          connectSSE();
+        } else {
+          updateStatus('polling');
+          startPolling();
+        }
+      }
+    };
+
+    const timeoutId = setTimeout(() => {
+      void init();
+    }, 0);
+
     return () => {
+      active = false;
+      clearTimeout(timeoutId);
       if (eventSourceRef.current) eventSourceRef.current.close();
       if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
       if (reconnectTimeoutRef.current) clearTimeout(reconnectTimeoutRef.current);
     };
-  }, []);
+  }, [fetchCurrentCount, connectSSE, startPolling, updateStatus]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
