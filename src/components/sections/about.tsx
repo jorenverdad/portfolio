@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import {
   m,
@@ -8,11 +8,13 @@ import {
   useTransform,
   LazyMotion,
   domAnimation,
+  useInView,
 } from "motion/react";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { GitHubStatsCard } from "@/components/sections/github-stats";
 import { SkillsMarquee } from "@/components/sections/skills-marquee";
-import ProfileImg from "@/assets/imgs/profile.png";
+import ProfileImg1 from "@/assets/imgs/profile.jpg";
+import ProfileImg2 from "@/assets/imgs/profile 1.png";
 import type { GitHubStats } from "@/lib/github";
 function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
   const letters = Array.from(text);
@@ -54,12 +56,26 @@ export interface AboutSectionProps {
 
 export function AboutSection({ className, stats }: AboutSectionProps) {
   const containerRef = useRef<HTMLElement>(null);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const isImageInView = useInView(imageContainerRef, { amount: 0.2 });
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isImageInView) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev === 0 ? 1 : 0));
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [isImageInView]);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const y1 = useTransform(scrollYProgress, [0, 1], [30, -30]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -148,22 +164,48 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
             {/* Image/Avatar - Spans 4 cols */}
             <m.div
               variants={itemVariants}
-              className="md:col-span-4 relative group rounded-[2.5rem] overflow-hidden border border-edge-subtle h-[400px] md:h-auto shadow-2xl bg-bg-surface"
+              className="md:col-span-4 relative group rounded-[2.5rem] overflow-hidden border border-edge-subtle w-full max-w-[420px] aspect-[3/4] mx-auto md:mx-0 shadow-2xl bg-bg-surface md:self-center"
             >
               <div className="absolute inset-0 bg-brand-500/20 mix-blend-overlay z-10 group-hover:opacity-0 transition-opacity duration-700 pointer-events-none" />
               <m.div
+                ref={imageContainerRef}
                 style={{ y: y1 }}
-                className="w-full h-[130%] -top-[15%] relative"
+                className="w-full h-[115%] -top-[7.5%] relative"
               >
-                <Image
-                  src={ProfileImg}
-                  alt="Joren"
-                  fill
-                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out scale-[1.03] group-hover:scale-100 pointer-events-none select-none"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  priority
-                  draggable={false}
-                />
+                {/* Primary Image */}
+                <m.div
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: currentImageIndex === 0 ? 1 : 0 }}
+                  transition={{ duration: 1.2, ease: "easeInOut" }}
+                  className="absolute inset-0 w-full h-full"
+                >
+                  <Image
+                    src={ProfileImg1}
+                    alt="Joren - Portrait"
+                    fill
+                    className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700 ease-out scale-[1.03] group-hover:scale-100 pointer-events-none select-none"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    priority
+                    draggable={false}
+                  />
+                </m.div>
+
+                {/* Secondary Image */}
+                <m.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: currentImageIndex === 1 ? 1 : 0 }}
+                  transition={{ duration: 1.2, ease: "easeInOut" }}
+                  className="absolute inset-0 w-full h-full"
+                >
+                  <Image
+                    src={ProfileImg2}
+                    alt="Joren - Alternate Portrait"
+                    fill
+                    className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700 ease-out scale-[1.03] group-hover:scale-100 pointer-events-none select-none"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    draggable={false}
+                  />
+                </m.div>
               </m.div>
             </m.div>
 
@@ -366,10 +408,10 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                   that brings those designs to life.
                 </p>
                 <p>
-                  Today, my focus is strictly on the React ecosystem. I
-                  specialize in weaving together robust TypeScript
-                  architectures, scalable styling systems, and complex motion
-                  design to create products that transcend the ordinary web.
+                  Today, my focus is on the React ecosystem. I specialize in
+                  weaving together robust TypeScript architectures, scalable
+                  styling systems, and complex motion design to create products
+                  that transcend the ordinary web.
                 </p>
                 <p className="text-foreground font-medium">
                   For me, a successful project isn&apos;t just one that
