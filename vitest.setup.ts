@@ -1,5 +1,16 @@
 import "@testing-library/jest-dom";
-import { vi } from "vitest";
+import * as matchers from "@testing-library/jest-dom/matchers";
+import { vi, expect } from "vitest";
+import type { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers";
+
+// Extend Vitest's expect matchers type definitions
+declare module "vitest" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface Assertion<T> extends TestingLibraryMatchers<typeof expect.stringContaining, T> {}
+}
+
+// Extend Vitest's expect matchers at runtime
+expect.extend(matchers);
 
 // Mock Next.js cache functions globally
 vi.mock("next/cache", () => ({
@@ -15,7 +26,7 @@ class MockEventSource {
   onopen: (() => void) | null = null;
   onmessage: ((event: MessageEvent) => void) | null = null;
   onerror: (() => void) | null = null;
-  listeners: Record<string, Array<(e: any) => void>> = {};
+  listeners: Record<string, Array<(e: Event) => void>> = {};
   readyState: number = 0; // 0 = CONNECTING, 1 = OPEN, 2 = CLOSED
 
   static instances: MockEventSource[] = [];
@@ -25,14 +36,14 @@ class MockEventSource {
     MockEventSource.instances.push(this);
   }
 
-  addEventListener(event: string, cb: (e: any) => void) {
+  addEventListener(event: string, cb: (e: Event) => void) {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
     this.listeners[event].push(cb);
   }
 
-  removeEventListener(event: string, cb: (e: any) => void) {
+  removeEventListener(event: string, cb: (e: Event) => void) {
     if (!this.listeners[event]) return;
     this.listeners[event] = this.listeners[event].filter((x) => x !== cb);
   }
@@ -48,13 +59,14 @@ class MockEventSource {
       this.onopen();
     }
     const handlers = this.listeners["open"] || [];
-    handlers.forEach((h) => h({} as any));
+    const ev = new Event("open");
+    handlers.forEach((h) => h(ev));
   }
 
-  emitMessage(data: any) {
-    const ev = {
+  emitMessage(data: unknown) {
+    const ev = new MessageEvent("message", {
       data: typeof data === "string" ? data : JSON.stringify(data),
-    } as MessageEvent;
+    });
     if (this.onmessage) {
       this.onmessage(ev);
     }
@@ -67,7 +79,8 @@ class MockEventSource {
       this.onerror();
     }
     const handlers = this.listeners["error"] || [];
-    handlers.forEach((h) => h({} as any));
+    const ev = new Event("error");
+    handlers.forEach((h) => h(ev));
   }
 
   static clearInstances() {
@@ -75,8 +88,9 @@ class MockEventSource {
   }
 }
 
-global.EventSource = MockEventSource as any;
+global.EventSource = MockEventSource as unknown as typeof EventSource;
 // Expose on window for components running in JSDOM
 if (typeof window !== "undefined") {
-  (window as any).EventSource = MockEventSource;
+  (window as unknown as { EventSource: typeof EventSource }).EventSource = MockEventSource as unknown as typeof EventSource;
 }
+

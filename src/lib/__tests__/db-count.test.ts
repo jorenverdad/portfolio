@@ -1,6 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import fs from "fs/promises";
 import { getCount, incrementCount, subscribeToCount } from "../db-count";
+import type { EventEmitter } from "events";
+
+type DbState = {
+  count: number;
+  emitter: EventEmitter;
+  isLoaded: boolean;
+  writePromise: Promise<void>;
+};
 
 vi.mock("fs/promises", () => ({
   default: {
@@ -12,7 +20,7 @@ vi.mock("fs/promises", () => ({
 describe("db-count utility", () => {
   beforeEach(() => {
     // Reset the properties of the global state object in-place to ensure test isolation
-    const globalState = (globalThis as any).__count_db_state__;
+    const globalState = (globalThis as unknown as { __count_db_state__?: DbState }).__count_db_state__;
     if (globalState) {
       globalState.count = 0;
       globalState.isLoaded = false;
@@ -70,8 +78,10 @@ describe("db-count utility", () => {
 
       // Verify disk write was queued. Wait for potential promises to resolve in the background
       // since the write is done asynchronously in the queue without blocking the return.
-      const state = (globalThis as any).__count_db_state__;
-      await state.writePromise;
+      const state = (globalThis as unknown as { __count_db_state__?: DbState }).__count_db_state__;
+      if (state) {
+        await state.writePromise;
+      }
 
       expect(fs.writeFile).toHaveBeenCalledTimes(1);
       expect(fs.writeFile).toHaveBeenCalledWith(

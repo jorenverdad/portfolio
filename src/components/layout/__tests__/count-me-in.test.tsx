@@ -1,29 +1,35 @@
 import React from "react";
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import type { Mock } from "vitest";
+import {
+  render,
+  screen,
+  fireEvent,
+  act,
+} from "@testing-library/react";
 import { CountMeIn } from "../count-me-in";
 
 describe("CountMeIn Component", () => {
-  let mockFetch: any;
+  let mockFetch: Mock<typeof fetch>;
 
   beforeEach(() => {
     // Reset global EventSource mock instances
-    (global.EventSource as any).clearInstances();
+    (global.EventSource as unknown as { clearInstances: () => void }).clearInstances();
 
     // Setup global fetch mock
-    mockFetch = vi.fn().mockImplementation((url, options) => {
+    mockFetch = vi.fn().mockImplementation((url: string, options?: RequestInit) => {
       if (url === "/api/count") {
         if (options?.method === "POST") {
           return Promise.resolve({
             ok: true,
             json: async () => ({ count: 101 }),
-          });
+          } as Response);
         }
         // GET request
         return Promise.resolve({
           ok: true,
           json: async () => ({ count: 100 }),
-        });
+        } as Response);
       }
       return Promise.reject(new Error("Unknown URL"));
     });
@@ -56,9 +62,19 @@ describe("CountMeIn Component", () => {
     await screen.findByText("100");
 
     // EventSource should have been instantiated
-    const EventSourceClass = global.EventSource as any;
+    const EventSourceClass = global.EventSource as unknown as {
+      instances: Array<{
+        url: string;
+        emitOpen: () => void;
+        emitMessage: (data: unknown) => void;
+        emitError: () => void;
+      }>;
+    };
     expect(EventSourceClass.instances.length).toBe(1);
     const eventSourceInstance = EventSourceClass.instances[0];
+    if (!eventSourceInstance) {
+      throw new Error("EventSource instance not found");
+    }
     expect(eventSourceInstance.url).toBe("/api/count");
 
     // Simulate SSE connection open
@@ -92,9 +108,12 @@ describe("CountMeIn Component", () => {
     expect(screen.getByText("101")).toBeInTheDocument();
 
     // Verify POST was dispatched
-    expect(mockFetch).toHaveBeenCalledWith("/api/count", expect.objectContaining({
-      method: "POST",
-    }));
+    expect(mockFetch).toHaveBeenCalledWith(
+      "/api/count",
+      expect.objectContaining({
+        method: "POST",
+      }),
+    );
   });
 
   it("should fallback to polling when the SSE connection encounters an error", async () => {
@@ -103,8 +122,18 @@ describe("CountMeIn Component", () => {
     // Resolve initial fetch first
     await screen.findByText("100");
 
-    const EventSourceClass = global.EventSource as any;
+    const EventSourceClass = global.EventSource as unknown as {
+      instances: Array<{
+        url: string;
+        emitOpen: () => void;
+        emitMessage: (data: unknown) => void;
+        emitError: () => void;
+      }>;
+    };
     const eventSourceInstance = EventSourceClass.instances[0];
+    if (!eventSourceInstance) {
+      throw new Error("EventSource instance not found");
+    }
 
     // Enable fake timers specifically for the polling ticks
     vi.useFakeTimers();
@@ -135,3 +164,4 @@ describe("CountMeIn Component", () => {
     vi.useRealTimers();
   });
 });
+

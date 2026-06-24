@@ -54,11 +54,13 @@ describe("Count API Route Handlers", () => {
     it("should establish a text/event-stream and send initial and updated counts", async () => {
       vi.mocked(getCount).mockResolvedValue(100);
 
-      let changeCallback: ((count: number) => void) | null = null;
+      const callbackHolder = {
+        changeCallback: null as ((count: number) => void) | null,
+      };
       const mockUnsubscribe = vi.fn();
       
       vi.mocked(subscribeToCount).mockImplementation((cb) => {
-        changeCallback = cb;
+        callbackHolder.changeCallback = cb;
         return mockUnsubscribe;
       });
 
@@ -85,9 +87,9 @@ describe("Count API Route Handlers", () => {
       expect(subscribeToCount).toHaveBeenCalledTimes(1);
 
       // 2. Verify SSE enqueues new counts on event subscription trigger
-      expect(changeCallback).not.toBeNull();
-      if (changeCallback) {
-        changeCallback(101);
+      expect(callbackHolder.changeCallback).not.toBeNull();
+      if (callbackHolder.changeCallback) {
+        callbackHolder.changeCallback(101);
       }
 
       const secondChunk = await reader.read();
