@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { motion, AnimatePresence, Variants } from "motion/react";
-import { Download, Copy, Check } from "lucide-react";
+import { Download, Copy, Check, MapPin, Clock } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 export interface HeroProps {
@@ -34,9 +34,38 @@ const itemVariants: Variants = {
 
 export function HeroSection({ className }: HeroProps) {
   const [copied, setCopied] = useState(false);
+  const [time, setTime] = useState<string>("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone: "Asia/Manila",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      };
+      setTime(new Intl.DateTimeFormat("en-US", options).format(new Date()));
+    };
+
+    updateTime();
+    // Update every minute (aligning with the next minute boundary)
+    const now = new Date();
+    const delay = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    const timeoutId = setTimeout(() => {
+      updateTime();
+      intervalId = setInterval(updateTime, 60000);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, []);
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText("jorenverdad@example.com"); // Placeholder email, update as needed
+    navigator.clipboard.writeText("jorenverdad@gmail.com");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -59,12 +88,21 @@ export function HeroSection({ className }: HeroProps) {
           className="flex flex-col items-center"
         >
           <motion.div variants={itemVariants}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-edge-default bg-bg-surface/50 text-xs font-medium text-warm-500 mb-8 backdrop-blur-md">
-              <span className="relative flex size-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-warm-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full size-2 bg-warm-500"></span>
+            <div className="inline-flex items-center gap-3.5 px-4.5 py-2 rounded-full border border-edge-default bg-bg-surface/50 text-xs font-medium text-muted-foreground mb-8 backdrop-blur-md shadow-sm hover:border-brand-500/30 hover:bg-bg-surface/80 transition-all duration-300 group cursor-default">
+              <span className="flex items-center gap-2 text-foreground/90">
+                <MapPin className="size-3.5 text-brand-500 group-hover:scale-110 transition-transform duration-300" />
+                <span className="font-sans tracking-wide">Philippines</span>
               </span>
-              Available for new opportunities
+              <span className="w-px h-3.5 bg-edge-subtle" />
+              <span className="flex items-center gap-2">
+                <Clock className="size-3.5 text-brand-500 group-hover:rotate-12 transition-transform duration-300" />
+                <span className="font-sans">PHT (UTC+8)</span>
+                {time && (
+                  <span className="font-mono text-brand-400 bg-brand-500/10 px-2 py-0.5 rounded text-[10px] border border-brand-500/25 select-none">
+                    {time}
+                  </span>
+                )}
+              </span>
             </div>
           </motion.div>
 
