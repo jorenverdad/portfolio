@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, DM_Sans, Geist_Mono } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import "devicon/devicon.min.css";
 
@@ -39,6 +40,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col bg-bg-base text-foreground font-sans">
         {children}
+        <Analytics />
         <SpeedInsights />
       </body>
     </html>
