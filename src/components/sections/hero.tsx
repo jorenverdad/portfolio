@@ -50,7 +50,8 @@ function DownloadResumeButton() {
   return (
     <motion.a
       href="/pdfs/CV_JorenVerdad-2026.pdf"
-      download="CV_JorenVerdad-2026.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
       onMouseMove={handleMouseMove}
       initial="initial"
       whileHover="hover"
