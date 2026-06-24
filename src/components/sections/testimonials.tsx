@@ -33,8 +33,8 @@ const DEFAULT_TESTIMONIALS: ReadonlyArray<Testimonial> = [
   {
     quote:
       "Working with Joren was a game-changer. The codebase is incredibly maintainable, and the user experience is smoother than ever.",
-    author: "Elena Rodriguez",
-    role: "CTO at StartupX",
+    author: "Honey Mae Omela",
+    role: "UI/UX Designer",
   },
   {
     quote:
@@ -112,12 +112,12 @@ const TestimonialCard = React.memo(function TestimonialCard({
           <div className="flex items-center gap-4 mt-10 pt-6 border-t border-edge-subtle/50 group-hover:border-edge-subtle transition-colors duration-500">
             <div className="relative h-12 w-12 flex-shrink-0 rounded-full overflow-hidden border border-edge-subtle group-hover:border-brand-500/40 transition-colors duration-500">
               <div className="absolute inset-0 bg-bg-void group-hover:bg-brand-500/10 transition-colors duration-500" />
-              <div className="absolute inset-0 flex items-center justify-center font-heading text-base font-medium text-foreground/80 group-hover:text-brand-400 transition-colors duration-500 group-hover:scale-110">
+              <div className="absolute inset-0 flex items-center justify-center font-heading text-base font-medium text-foreground/80 group-hover:text-brand-100 transition-colors duration-500 group-hover:scale-110">
                 {testimonial.author.charAt(0)}
               </div>
             </div>
             <div className="flex flex-col">
-              <h4 className="font-semibold text-foreground text-sm tracking-wide group-hover:text-brand-400 transition-colors duration-500">
+              <h4 className="font-semibold text-foreground text-sm tracking-wide group-hover:text-brand-100 transition-colors duration-500">
                 {testimonial.author}
               </h4>
               <p className="text-xs text-muted-foreground uppercase tracking-widest font-medium mt-1 group-hover:text-brand-500/80 transition-colors duration-500">

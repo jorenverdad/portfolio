@@ -114,7 +114,7 @@ export function ContactSection() {
               href={`mailto:${email}`}
               className={cn(
                 buttonVariants({ size: "lg" }),
-                "h-16 px-12 text-xl rounded-full shadow-[0_0_40px_-10px_rgba(224,32,32,0.5)] bg-brand-500 hover:bg-brand-600 text-white transition-all duration-300 shimmer-btn border border-brand-400/20 inline-flex items-center gap-3 group/contact-btn cursor-pointer",
+                "h-16 px-12 text-xl rounded-full shadow-[0_0_40px_-10px_rgba(224,32,32,0.5)] bg-brand-500 hover:bg-brand-600 text-white transition-all duration-300 shimmer-btn border border-brand-100/20 inline-flex items-center gap-3 group/contact-btn cursor-pointer",
               )}
             >
               <Mail className="size-6 transition-transform duration-300 group-hover/contact-btn:scale-110" />

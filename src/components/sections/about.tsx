@@ -265,7 +265,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                       joren
                     </span>
                     <span className="text-zinc-500">@</span>
-                    <span className="text-brand-400">portfolio</span>
+                    <span className="text-brand-100">portfolio</span>
                     <span className="text-zinc-500">:</span>
                     <span className="text-blue-400">~/expertise</span>
                     <span className="text-zinc-500">$</span>
@@ -343,7 +343,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                       joren
                     </span>
                     <span className="text-zinc-500">@</span>
-                    <span className="text-brand-400">portfolio</span>
+                    <span className="text-brand-100">portfolio</span>
                     <span className="text-zinc-500">:</span>
                     <span className="text-blue-400">~/expertise</span>
                     <span className="text-zinc-500">$</span>
@@ -369,7 +369,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                     ].map((tech) => (
                       <span
                         key={tech}
-                        className="px-2.5 py-1 font-mono text-[10px] md:text-xs rounded border border-brand-500/20 bg-brand-500/5 text-brand-400 hover:bg-brand-500/10 hover:border-brand-500/40 hover:text-brand-300 hover:shadow-[0_0_12px_rgba(224,32,32,0.1)] transition-all duration-300 cursor-default select-none"
+                        className="px-2.5 py-1 font-mono text-[10px] md:text-xs rounded border border-brand-500/20 bg-brand-500/5 text-brand-100 hover:bg-brand-500/10 hover:border-brand-500/40 hover:text-brand-300 hover:shadow-[0_0_12px_rgba(224,32,32,0.1)] transition-all duration-300 cursor-default select-none"
                       >
                         {tech}
                       </span>
@@ -387,7 +387,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                 >
                   <span className="text-emerald-400 font-semibold">joren</span>
                   <span className="text-zinc-500">@</span>
-                  <span className="text-brand-400">portfolio</span>
+                  <span className="text-brand-100">portfolio</span>
                   <span className="text-zinc-500">:</span>
                   <span className="text-blue-400">~/expertise</span>
                   <span className="text-zinc-500">$</span>

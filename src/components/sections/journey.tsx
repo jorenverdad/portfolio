@@ -197,7 +197,7 @@ export function JourneySection({
                           )}
 
                           <Icon
-                            className={`size-5 relative z-10 transition-transform duration-300 group-hover:scale-110 ${isActive ? "text-brand-400" : "text-muted-foreground/60 group-hover:text-foreground"}`}
+                            className={`size-5 relative z-10 transition-transform duration-300 group-hover:scale-110 ${isActive ? "text-brand-100" : "text-muted-foreground/60 group-hover:text-foreground"}`}
                           />
 
                           <div className="absolute right-14 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
@@ -255,10 +255,10 @@ export function JourneySection({
                           )}
 
                           <Icon
-                            className={`size-4.5 relative z-10 ${isActive ? "text-brand-400" : "text-muted-foreground/60"}`}
+                            className={`size-4.5 relative z-10 ${isActive ? "text-brand-100" : "text-muted-foreground/60"}`}
                           />
                           {isActive && (
-                            <span className="relative z-10 font-mono text-[9px] font-bold uppercase tracking-wider text-brand-400 whitespace-nowrap">
+                            <span className="relative z-10 font-mono text-[9px] font-bold uppercase tracking-wider text-brand-100 whitespace-nowrap">
                               {item.label}
                             </span>
                           )}

@@ -50,9 +50,14 @@
   /* Custom design tokens from color-palette.md */
   --color-bg-void: oklch(0.07 0.012 17);
   --color-bg-surface: oklch(0.135 0.025 17);
+  --color-brand-200: oklch(0.8 0.215 25);
+  --color-brand-300: oklch(0.72 0.215 25);
   --color-brand-400: oklch(0.64 0.215 25);
   --color-brand-500: oklch(0.56 0.215 25);
   --color-brand-600: oklch(0.48 0.215 25);
+  --color-brand-700: oklch(0.4 0.215 25);
+  --color-brand-800: oklch(0.32 0.215 25);
+  --color-brand-900: oklch(0.24 0.215 25);
   --color-edge-subtle: oklch(0.15 0.025 17);
   --color-warm-500: oklch(0.62 0.17 45);
 
@@ -60,8 +65,12 @@
 }
 
 @keyframes marquee-right {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 :root {
@@ -103,32 +112,32 @@
   /* Mapped from color-palette.md */
   --background: oklch(0.095 0.018 17); /* bg-base */
   --foreground: oklch(0.92 0.018 55); /* text-primary */
-  
+
   --card: oklch(0.175 0.032 17); /* bg-card */
   --card-foreground: oklch(0.92 0.018 55); /* text-primary */
-  
+
   --popover: oklch(0.22 0.042 17); /* bg-elevated */
   --popover-foreground: oklch(0.92 0.018 55); /* text-primary */
-  
+
   --primary: oklch(0.56 0.215 25); /* brand-500 */
   --primary-foreground: oklch(1 0 0); /* white text on brand */
-  
+
   --secondary: oklch(0.22 0.042 17); /* bg-elevated */
   --secondary-foreground: oklch(0.92 0.018 55); /* text-primary */
-  
+
   --muted: oklch(0.135 0.025 17); /* bg-surface */
   --muted-foreground: oklch(0.46 0.044 25); /* text-muted */
-  
+
   --accent: oklch(0.62 0.17 45); /* warm-500 */
   --accent-foreground: oklch(0.92 0.018 55); /* text-primary */
-  
-  --destructive: oklch(0.50 0.195 25); /* brand-600 / red-600 */
+
+  --destructive: oklch(0.5 0.195 25); /* brand-600 / red-600 */
   --destructive-foreground: oklch(1 0 0);
-  
+
   --border: oklch(0.26 0.048 17); /* border-default */
   --input: oklch(0.26 0.048 17); /* border-default */
   --ring: oklch(0.56 0.215 25); /* brand-500 */
-  
+
   /* Sidebar mapped using surface colors */
   --sidebar: oklch(0.135 0.025 17); /* bg-surface */
   --sidebar-foreground: oklch(0.92 0.018 55);
@@ -138,7 +147,7 @@
   --sidebar-accent-foreground: oklch(0.92 0.018 55);
   --sidebar-border: oklch(0.15 0.025 17); /* edge-subtle */
   --sidebar-ring: oklch(0.56 0.215 25);
-  
+
   /* Retaining chart colors as they were for now, can adjust later if needed */
   --chart-1: oklch(0.56 0.215 25);
   --chart-2: oklch(0.62 0.17 45);
@@ -166,7 +175,7 @@
 }
 
 .shimmer-btn::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -150%;

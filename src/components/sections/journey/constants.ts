@@ -90,7 +90,7 @@ export const EDUCATION_ITEMS: readonly EducationItem[] = [
     degree: "B.S. in Information Technology",
     school: "Caraga State University - Main Campus",
     period: "August 2021 - June 2026",
-    gpa: "2.5",
+    gpa: "2.00",
     courses: [
       "Web Development",
       "Mobile Application Development",
@@ -105,18 +105,18 @@ export const EDUCATION_ITEMS: readonly EducationItem[] = [
       "AI and Intelligent Systems",
     ],
     highlights: [
-      "Graduated with honors, specializing in Web Application Development and Design.",
+      "Awarded Vice President's Lister for attaining a 1.38 GPA during the 1st Semester of Academic Year 2025-2026.",
       "Developed an AI-powered multilingual profanity detection Chrome extension for real-time web content filtering as a thesis project.",
-      "Won back-to-back Regional Championships at Hack4Gov (2024 & 2025) with CarSU CyberNinja, qualifying to represent the Caraga Region at the national level.",
-      "Secured 3rd place nationally at the DOST Level Up Game Dev Challenge 2024 and won the DICT Startup Challenge Regional Championship building 'Sinawali Showdown' frontend with Vue 3.",
+      "Represented the Caraga Region at the national level after winning back-to-back Regional Championships at Hack4Gov (2024 & 2025), a cybersecurity Capture The Flag competition, with team CarSU CyberNinja.",
+      "Secured 3rd place nationally at the DOST Level Up Game Dev Challenge 2024 building 'Sinawali Showdown' frontend with Vue 3.",
     ],
   },
 
   {
     degree: "Senior High School",
     school: "ACLC College Butuan",
-    period: "2015 - 2017",
-    gpa: "2.44",
+    period: "2018 - 2020",
+    gpa: "2.25",
     courses: ["Computer System Servicing (CSS) NCII"],
     highlights: [
       "Acquired technical skills in computer hardware and software troubleshooting and maintenance.",

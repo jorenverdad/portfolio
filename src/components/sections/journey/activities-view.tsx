@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { m, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { ChevronRight, Activity } from 'lucide-react';
-import { ActivitiesTelemetryDashboard } from './telemetry';
-import { ACTIVITY_ITEMS } from './constants';
-import { ActivityItem } from './types';
+import { useEffect, useRef, useState } from "react";
+import { m, AnimatePresence, useScroll, useTransform } from "motion/react";
+import { ChevronRight, Activity } from "lucide-react";
+import { ActivitiesTelemetryDashboard } from "./telemetry";
+import { ACTIVITY_ITEMS } from "./constants";
+import { ActivityItem } from "./types";
 
 export interface ActivitiesViewProps {
   readonly items?: ReadonlyArray<ActivityItem>;
 }
 
-export function ActivitiesView({ 
-  items = ACTIVITY_ITEMS 
+export function ActivitiesView({
+  items = ACTIVITY_ITEMS,
 }: ActivitiesViewProps) {
   const [activeActIndex, setActiveActIndex] = useState<number>(0);
   const activitiesRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -20,14 +20,14 @@ export function ActivitiesView({
 
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ['start center', 'end center']
+    offset: ["start center", "end center"],
   });
   const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '-25% 0px -45% 0px',
+      rootMargin: "-25% 0px -45% 0px",
       threshold: 0.1,
     };
 
@@ -35,7 +35,7 @@ export function ActivitiesView({
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const id = entry.target.id;
-          const index = parseInt(id.replace('activity-', ''), 10);
+          const index = parseInt(id.replace("activity-", ""), 10);
           if (!isNaN(index)) {
             setActiveActIndex(index);
           }
@@ -43,7 +43,10 @@ export function ActivitiesView({
       });
     };
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions,
+    );
     activitiesRefs.current.forEach((ref) => {
       if (ref) observer.observe(ref);
     });
@@ -65,7 +68,7 @@ export function ActivitiesView({
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
@@ -79,7 +82,8 @@ export function ActivitiesView({
             Active <span className="text-brand-500">Nodes.</span>
           </h2>
           <p className="text-muted-foreground text-base leading-relaxed font-sans max-w-md">
-            Open-source contributions, technical writing, and hackathon milestones.
+            Open-source contributions, technical writing, and hackathon
+            milestones.
           </p>
         </div>
 
@@ -88,7 +92,7 @@ export function ActivitiesView({
           <div className="absolute top-3 right-3 w-3.5 h-3.5 border-t-2 border-r-2 border-muted-foreground/20 group-hover:border-brand-500/40 transition-colors duration-500" />
           <div className="absolute bottom-3 left-3 w-3.5 h-3.5 border-b-2 border-l-2 border-muted-foreground/20 group-hover:border-brand-500/40 transition-colors duration-500" />
           <div className="absolute bottom-3 right-3 w-3.5 h-3.5 border-b-2 border-r-2 border-muted-foreground/20 group-hover:border-brand-500/40 transition-colors duration-500" />
-          
+
           <div className="flex flex-col gap-5">
             <div className="flex justify-between items-center border-b border-edge-subtle/30 pb-3.5 text-[10px] font-mono text-muted-foreground/50 font-bold uppercase tracking-wider">
               <div className="flex items-center gap-1.5">
@@ -107,20 +111,28 @@ export function ActivitiesView({
                   onClick={() => scrollToAct(index)}
                   className={`w-full flex items-center justify-between p-3.5 rounded-xl border font-mono text-xs text-left transition-all duration-300 cursor-pointer ${
                     activeActIndex === index
-                      ? 'border-brand-500/30 bg-brand-500/5 text-brand-400 font-bold shadow-[0_0_15px_rgba(224,32,32,0.06)]'
-                      : 'border-edge-subtle/40 hover:border-edge-subtle bg-transparent text-muted-foreground hover:text-foreground'
+                      ? "border-brand-500/30 bg-brand-500/5 text-brand-100 font-bold shadow-[0_0_15px_rgba(224,32,32,0.06)]"
+                      : "border-edge-subtle/40 hover:border-edge-subtle bg-transparent text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <span className={`text-[10px] ${activeActIndex === index ? 'text-brand-500' : 'text-muted-foreground/30'}`}>
+                    <span
+                      className={`text-[10px] ${activeActIndex === index ? "text-brand-500" : "text-muted-foreground/30"}`}
+                    >
                       0{index + 1}
                     </span>
                     <div className="flex flex-col">
-                      <span className="font-semibold tracking-wide truncate max-w-[150px] md:max-w-[200px]">{item.title}</span>
-                      <span className="text-[10px] font-normal text-muted-foreground/60">{item.period}</span>
+                      <span className="font-semibold tracking-wide truncate max-w-[150px] md:max-w-[200px]">
+                        {item.title}
+                      </span>
+                      <span className="text-[10px] font-normal text-muted-foreground/60">
+                        {item.period}
+                      </span>
                     </div>
                   </div>
-                  <ChevronRight className={`size-3.5 transition-transform duration-300 ${activeActIndex === index ? 'translate-x-0.5 text-brand-500' : 'text-muted-foreground/30'}`} />
+                  <ChevronRight
+                    className={`size-3.5 transition-transform duration-300 ${activeActIndex === index ? "translate-x-0.5 text-brand-500" : "text-muted-foreground/30"}`}
+                  />
                 </button>
               ))}
             </div>
@@ -128,11 +140,15 @@ export function ActivitiesView({
             <div className="grid grid-cols-2 gap-3 border-t border-edge-subtle/30 pt-4 font-mono text-center">
               <div className="flex flex-col">
                 <span className="text-lg font-bold text-foreground">45+</span>
-                <span className="text-[9px] text-muted-foreground/60 uppercase font-semibold">PRs Merged</span>
+                <span className="text-[9px] text-muted-foreground/60 uppercase font-semibold">
+                  PRs Merged
+                </span>
               </div>
               <div className="flex flex-col border-l border-edge-subtle/30">
                 <span className="text-lg font-bold text-foreground">50k+</span>
-                <span className="text-[9px] text-muted-foreground/60 uppercase font-semibold">Readers</span>
+                <span className="text-[9px] text-muted-foreground/60 uppercase font-semibold">
+                  Readers
+                </span>
               </div>
             </div>
           </div>
@@ -167,37 +183,56 @@ export function ActivitiesView({
                         initial={{ scale: 0.6, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1, rotate: 360 }}
                         exit={{ scale: 0.6, opacity: 0 }}
-                        transition={{ rotate: { duration: 8, ease: 'linear', repeat: Infinity }, default: { duration: 0.3 } }}
+                        transition={{
+                          rotate: {
+                            duration: 8,
+                            ease: "linear",
+                            repeat: Infinity,
+                          },
+                          default: { duration: 0.3 },
+                        }}
                         className="absolute size-9 md:size-[48px] text-brand-500/40"
                         viewBox="0 0 100 100"
                       >
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="10 8" />
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="45"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          strokeDasharray="10 8"
+                        />
                       </m.svg>
                     )}
                   </AnimatePresence>
-                  
-                  <div className={`absolute rounded-full transition-all duration-500 ${
-                    isActive 
-                      ? 'size-6 md:size-8 bg-brand-500/20 shadow-[0_0_15px_rgba(224,32,32,0.5)] scale-110' 
-                      : 'size-4 md:size-6 bg-transparent group-hover:bg-brand-500/10'
-                  }`} />
-                  
-                  <div className={`absolute rounded-full transition-all duration-500 ${
-                    isActive 
-                      ? 'size-2.5 md:size-3.5 bg-brand-500' 
-                      : 'size-2 md:size-3 bg-edge-subtle border-2 border-muted-foreground/30 group-hover:border-brand-500/50 group-hover:bg-bg-void'
-                  }`} />
+
+                  <div
+                    className={`absolute rounded-full transition-all duration-500 ${
+                      isActive
+                        ? "size-6 md:size-8 bg-brand-500/20 shadow-[0_0_15px_rgba(224,32,32,0.5)] scale-110"
+                        : "size-4 md:size-6 bg-transparent group-hover:bg-brand-500/10"
+                    }`}
+                  />
+
+                  <div
+                    className={`absolute rounded-full transition-all duration-500 ${
+                      isActive
+                        ? "size-2.5 md:size-3.5 bg-brand-500"
+                        : "size-2 md:size-3 bg-edge-subtle border-2 border-muted-foreground/30 group-hover:border-brand-500/50 group-hover:bg-bg-void"
+                    }`}
+                  />
                 </div>
 
                 <m.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-80px' }}
-                  transition={{ type: 'spring', stiffness: 80, damping: 20 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ type: "spring", stiffness: 80, damping: 20 }}
                   className={`border p-6 md:p-8 rounded-[2rem] bg-bg-surface/30 backdrop-blur-md shadow-2xl relative overflow-hidden transition-all duration-500 group/card ${
-                    isActive 
-                      ? 'border-brand-500/30 shadow-[0_0_35px_rgba(224,32,32,0.05)] bg-bg-surface/40' 
-                      : 'border-edge-subtle/40 hover:border-brand-500/20 hover:bg-bg-surface/35'
+                    isActive
+                      ? "border-brand-500/30 shadow-[0_0_35px_rgba(224,32,32,0.05)] bg-bg-surface/40"
+                      : "border-edge-subtle/40 hover:border-brand-500/20 hover:bg-bg-surface/35"
                   }`}
                 >
                   <div className="absolute top-4 right-4 text-[9px] font-mono text-muted-foreground/20 group-hover/card:text-brand-500/40 transition-colors duration-500 select-none">
@@ -206,14 +241,16 @@ export function ActivitiesView({
 
                   <div className="flex flex-col gap-1.5 mb-5 relative z-10">
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <h3 className="font-heading text-xl md:text-2xl font-bold tracking-tight text-foreground group-hover/card:text-brand-400 transition-colors duration-300">
+                      <h3 className="font-heading text-xl md:text-2xl font-bold tracking-tight text-foreground group-hover/card:text-brand-100 transition-colors duration-300">
                         {item.title}
                       </h3>
-                      <span className={`text-xs font-semibold px-3 py-1 rounded-full font-mono border transition-all duration-300 ${
-                        isActive
-                          ? 'text-brand-400 bg-brand-500/10 border-brand-500/20'
-                          : 'text-warm-500 bg-warm-500/5 border-warm-500/10 group-hover/card:border-warm-500/20'
-                      }`}>
+                      <span
+                        className={`text-xs font-semibold px-3 py-1 rounded-full font-mono border transition-all duration-300 ${
+                          isActive
+                            ? "text-brand-100 bg-brand-500/10 border-brand-500/20"
+                            : "text-warm-500 bg-warm-500/5 border-warm-500/10 group-hover/card:border-warm-500/20"
+                        }`}
+                      >
                         {item.period}
                       </span>
                     </div>
@@ -246,8 +283,13 @@ export function ActivitiesView({
 
                   <div className="space-y-3 mb-6 relative z-10">
                     {item.highlights.map((highlight, hIndex) => (
-                      <div key={hIndex} className="flex items-start gap-2.5 text-sm md:text-base text-muted-foreground leading-relaxed">
-                        <span className="text-brand-500/60 font-mono mt-1 text-[11px] select-none">&gt;</span>
+                      <div
+                        key={hIndex}
+                        className="flex items-start gap-2.5 text-sm md:text-base text-muted-foreground leading-relaxed"
+                      >
+                        <span className="text-brand-500/60 font-mono mt-1 text-[11px] select-none">
+                          &gt;
+                        </span>
                         <span>{highlight}</span>
                       </div>
                     ))}
@@ -258,7 +300,7 @@ export function ActivitiesView({
                       {item.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2.5 py-1 font-mono text-[10px] md:text-xs rounded-lg border border-edge-subtle/60 bg-bg-void/20 text-muted-foreground/80 hover:border-brand-500/20 hover:bg-brand-500/5 hover:text-brand-400 transition-all duration-300 cursor-default"
+                          className="px-2.5 py-1 font-mono text-[10px] md:text-xs rounded-lg border border-edge-subtle/60 bg-bg-void/20 text-muted-foreground/80 hover:border-brand-500/20 hover:bg-brand-500/5 hover:text-brand-100 transition-all duration-300 cursor-default"
                         >
                           {tag}
                         </span>
