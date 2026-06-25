@@ -289,7 +289,7 @@ export function HeroSection({ className }: HeroProps) {
           className="flex flex-col items-center"
         >
           <motion.div variants={itemVariants}>
-            <motion.div 
+            <motion.div
               onMouseMove={handleBadgeMouseMove}
               initial="initial"
               whileHover="hover"
@@ -353,9 +353,9 @@ export function HeroSection({ className }: HeroProps) {
             variants={itemVariants}
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-sans"
           >
-            I&apos;m a frontend engineer dedicated to building exceptional,
-            high-performance interfaces. Currently focused on shipping
-            accessible, human-centric products that feel as good as they look.
+            Full-stack engineer specializing in frontend development. I build
+            scalable applications from design to deployment, with a focus on
+            crafting interfaces that feel as good as they look.
           </motion.p>
 
           <motion.div
