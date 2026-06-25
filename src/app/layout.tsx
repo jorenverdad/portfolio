@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     description:
       "Full-stack engineer specializing in frontend development. I build scalable applications from design to deployment, with a focus on crafting interfaces that feel as good as they look.",
     url: "https://jorenverdad.dev",
-    siteName: "Joren Verdad Portfolio",
+    siteName: "Joren Verdad",
     images: [
       {
         url: "/og-image.png",
