@@ -225,11 +225,12 @@ export function JourneySection({
                     exit={{
                       opacity: 0,
                       y: 20,
+                      x: "-50%",
                       scale: 0.95,
                       transition: { duration: 0.5, ease: "easeInOut" },
                     }}
                     transition={{ type: "spring", stiffness: 200, damping: 22 }}
-                    className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex xl:hidden items-center gap-1.5 sm:gap-3 bg-bg-surface/75 backdrop-blur-xl border border-edge-subtle/80 px-2.5 py-1.5 sm:px-4 sm:py-2.5 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.5)] select-none max-w-[95vw]"
+                    className="fixed bottom-6 left-1/2 z-50 flex xl:hidden items-center gap-1.5 sm:gap-3 bg-bg-surface/75 backdrop-blur-xl border border-edge-subtle/80 px-2.5 py-1.5 sm:px-4 sm:py-2.5 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.5)] select-none max-w-[95vw]"
                   >
                     {MENU_ITEMS.map((item) => {
                       const Icon = item.icon;
