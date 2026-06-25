@@ -363,7 +363,7 @@ export function HeroSection({ className }: HeroProps) {
                 tap: { scale: 0.95 },
               }}
               transition={{ type: "spring", bounce: 0, duration: 0.3 }}
-              className="relative inline-flex items-center gap-3.5 px-4.5 py-2 rounded-full border border-edge-default bg-bg-surface/50 text-xs font-medium text-muted-foreground mb-8 backdrop-blur-md shadow-sm hover:border-brand-500/30 hover:bg-bg-surface/80 transition-all duration-300 group cursor-default hover:shadow-[0_0_20px_-5px_rgba(224,32,32,0.2)]"
+              className="relative inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3.5 px-3.5 sm:px-4.5 py-2 rounded-full border border-edge-default bg-bg-surface/50 text-xs font-medium text-muted-foreground mb-8 backdrop-blur-md shadow-sm hover:border-brand-500/30 hover:bg-bg-surface/80 transition-all duration-300 group cursor-default hover:shadow-[0_0_20px_-5px_rgba(224,32,32,0.2)]"
             >
               {/* Spotlight Border */}
               <motion.div
@@ -389,7 +389,7 @@ export function HeroSection({ className }: HeroProps) {
                 <MapPin className="size-3.5 text-brand-500 group-hover:scale-110 transition-transform duration-300" />
                 <span className="font-sans tracking-wide">Philippines</span>
               </span>
-              <span className="relative z-10 w-px h-3.5 bg-edge-subtle" />
+              <span className="relative z-10 w-px h-3.5 bg-edge-subtle hidden sm:block" />
               <span className="relative z-10 flex items-center gap-2">
                 <Clock className="size-3.5 text-brand-500 group-hover:rotate-12 transition-transform duration-300" />
                 <span className="font-sans">PHT (UTC+8)</span>
@@ -404,7 +404,7 @@ export function HeroSection({ className }: HeroProps) {
 
           <motion.h1
             variants={itemVariants}
-            className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground max-w-5xl mb-6"
+            className="font-heading text-4xl xs:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground max-w-5xl mb-6"
           >
             Engineering digital experiences with{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-brand-600">

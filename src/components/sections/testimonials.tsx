@@ -66,9 +66,9 @@ const TestimonialCard = React.memo(function TestimonialCard({
   readonly testimonial: Testimonial;
 }) {
   return (
-    <div className="pr-6 flex-shrink-0">
+    <div className="pr-4 sm:pr-6 flex-shrink-0">
       <div
-        className="relative w-[320px] md:w-[400px] h-full p-8 md:p-10 rounded-3xl bg-bg-surface border border-edge-subtle hover:border-brand-500/30 overflow-hidden flex flex-col group hover:-translate-y-2"
+        className="relative w-[280px] xs:w-[320px] md:w-[400px] h-full p-6 sm:p-8 md:p-10 rounded-3xl bg-bg-surface border border-edge-subtle hover:border-brand-500/30 overflow-hidden flex flex-col group hover:-translate-y-2"
         style={{
           transform: "translate3d(0, 0, 0)",
           backfaceVisibility: "hidden",
@@ -192,7 +192,7 @@ export function TestimonialsSection({
             viewport={{ once: true, amount: 0.8 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
               Client{" "}
               <span className="text-brand-500 font-serif italic font-normal">
                 Perspectives

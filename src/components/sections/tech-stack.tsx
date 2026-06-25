@@ -138,9 +138,9 @@ export function TechStackSection({ className }: { className?: string }) {
   }, []);
 
   const gridData = useMemo(() => {
-    // Increased grid dimensions to create a vast, expansive grid aesthetic.
-    const cols = isMobile ? 9 : 19;
-    const rows = isMobile ? 19 : 9;
+    // Adjusted grid dimensions for mobile to prevent horizontal overflow on 320px/375px screens
+    const cols = isMobile ? 5 : 19;
+    const rows = isMobile ? 13 : 9;
     
     const cx = Math.floor(cols / 2);
     const cy = Math.floor(rows / 2);

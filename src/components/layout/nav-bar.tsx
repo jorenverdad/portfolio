@@ -247,22 +247,26 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
 
           {/* Mobile Menu Trigger */}
           <Dialog.Root open={open} onOpenChange={setOpen}>
-            <Dialog.Trigger className="md:hidden flex h-10 w-10 items-center justify-center rounded-lg border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated text-foreground transition-all duration-200 active:scale-95 focus:outline-none">
+            <Dialog.Trigger className="md:hidden flex h-11 w-11 items-center justify-center rounded-lg border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated text-foreground transition-all duration-200 active:scale-95 focus:outline-none">
               <Menu className="size-5" />
             </Dialog.Trigger>
 
             <Dialog.Portal>
               {/* Backdrop */}
-              <Dialog.Backdrop className="fixed inset-0 z-50 bg-bg-void/80 backdrop-blur-sm transition-opacity duration-300 data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out" />
+              <Dialog.Backdrop className={`fixed inset-0 z-50 bg-bg-void/80 backdrop-blur-sm transition-opacity duration-300 ${
+                open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+              }`} />
 
               {/* Drawer Content */}
-              <Dialog.Popup className="fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-bg-surface border-l border-edge-subtle p-8 shadow-2xl flex flex-col justify-between transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] data-[state=open]:translate-x-0 data-[state=closed]:translate-x-full">
+              <Dialog.Popup className={`fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-bg-surface border-l border-edge-subtle p-8 shadow-2xl flex flex-col justify-between transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                open ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+              }`}>
                 <div>
                   <div className="flex items-center justify-between mb-12">
                     <span className="font-heading text-2xl font-bold tracking-tight text-foreground">
                       Menu<span className="text-brand-500">.</span>
                     </span>
-                    <Dialog.Close className="flex h-10 w-10 items-center justify-center rounded-lg border border-edge-default bg-bg-surface hover:bg-bg-elevated text-foreground transition-all duration-200 active:scale-95 focus:outline-none">
+                    <Dialog.Close className="flex h-11 w-11 items-center justify-center rounded-lg border border-edge-default bg-bg-surface hover:bg-bg-elevated text-foreground transition-all duration-200 active:scale-95 focus:outline-none">
                       <X className="size-5" />
                     </Dialog.Close>
                   </div>

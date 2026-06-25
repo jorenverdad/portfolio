@@ -399,7 +399,7 @@ const ProjectCard = React.memo(function ProjectCard({
             </span>
           </div>
 
-          <h3 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white leading-tight line-clamp-2">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white leading-tight line-clamp-2">
             {project.title}
           </h3>
 
@@ -537,7 +537,7 @@ export function ProjectsSection({
 
             {/* Accordion Layout */}
             <div
-              className="flex flex-col md:flex-row w-full h-[800px] md:h-[600px] gap-2 md:gap-3 items-center justify-center"
+              className="flex flex-col md:flex-row w-full h-[520px] sm:h-[620px] md:h-[600px] gap-2 md:gap-3 items-center justify-center"
               onMouseLeave={handleMouseLeave}
             >
               {projects.map((project, index) => {

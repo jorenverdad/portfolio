@@ -102,7 +102,7 @@ const ServiceRow = ({
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="group relative border-t border-edge-subtle py-12 md:py-20 transition-colors duration-500 overflow-hidden hover:bg-bg-surface/30"
+      className="group relative border-t border-edge-subtle py-8 sm:py-12 md:py-20 transition-colors duration-500 overflow-hidden hover:bg-bg-surface/30"
     >
       {/* Subtle Spotlight Effect */}
       <motion.div
@@ -128,7 +128,7 @@ const ServiceRow = ({
 
         {/* Title & Tags */}
         <div className="md:col-span-5 flex flex-col justify-start">
-          <motion.h3 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground mb-6 transition-transform duration-700 ease-out group-hover:translate-x-2">
+          <motion.h3 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground mb-6 transition-transform duration-700 ease-out group-hover:translate-x-2">
             {service.title}
           </motion.h3>
           {service.tags && (
