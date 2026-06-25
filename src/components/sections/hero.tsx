@@ -414,7 +414,7 @@ export function HeroSection({ className }: HeroProps) {
 
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-sans"
+            className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-sans"
           >
             Full-stack engineer specializing in frontend development. I build
             scalable applications from design to deployment, with a focus on

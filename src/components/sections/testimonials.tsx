@@ -198,7 +198,7 @@ export function TestimonialsSection({
                 Perspectives
               </span>
             </h2>
-            <p className="text-lg md:text-xl text-muted-foreground font-sans max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-sans max-w-2xl mx-auto">
               Don&apos;t just take my word for it. Here&apos;s what clients
               and collaborators say about my approach to building high-performance
               applications, polished interfaces, and complete digital products.

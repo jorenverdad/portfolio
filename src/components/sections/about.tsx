@@ -155,7 +155,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                 </span>
               </h2>
 
-              <p className="text-xl md:text-2xl text-muted-foreground font-sans leading-relaxed max-w-2xl font-light relative z-10">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground font-sans leading-relaxed max-w-2xl font-light relative z-10">
                 I build digital experiences with pixel-perfect precision and
                 uncompromising performance. I don&apos;t just write code; I
                 craft interfaces that feel alive.
@@ -402,7 +402,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
               className="md:col-span-8 rounded-3xl md:rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md p-6 sm:p-8 md:p-12 relative overflow-hidden group flex items-center shadow-2xl"
             >
               <div className="absolute bottom-[-20%] right-[-10%] w-96 h-96 bg-brand-500/10 rounded-full blur-[100px] group-hover:bg-brand-500/20 transition-colors duration-700 pointer-events-none" />
-              <div className="relative z-10 space-y-6 text-lg md:text-xl text-muted-foreground font-sans leading-relaxed">
+              <div className="relative z-10 space-y-6 text-base sm:text-lg md:text-xl text-muted-foreground font-sans leading-relaxed">
                 <p>
                   My journey began with an obsession for visual aesthetics,
                   which rapidly evolved into a deep passion for the engineering

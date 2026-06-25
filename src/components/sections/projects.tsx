@@ -512,7 +512,7 @@ export function ProjectsSection({
                   </span>
                 </h2>
 
-                <p className="text-lg md:text-xl text-muted-foreground font-sans max-w-2xl leading-relaxed mb-8">
+                <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-sans max-w-2xl leading-relaxed mb-8">
                   Explore full-stack applications, custom design systems, and
                   interactive web tools built to solve real problems and deliver
                   clean user experiences.

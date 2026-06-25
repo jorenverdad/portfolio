@@ -154,7 +154,7 @@ const ServiceRow = ({
 
         {/* Description */}
         <div className="md:col-span-5 md:pl-8 lg:pl-12 flex items-start">
-          <p className="text-lg md:text-xl text-muted-foreground font-sans leading-relaxed transition-colors duration-500 group-hover:text-foreground/90">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-sans leading-relaxed transition-colors duration-500 group-hover:text-foreground/90">
             {service.description}
           </p>
         </div>
@@ -212,7 +212,7 @@ export function ServicesSection({
             </span>
           </h2>
 
-          <p className="text-lg md:text-xl text-muted-foreground font-sans max-w-2xl leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-sans max-w-2xl leading-relaxed">
             Building high-performance web applications, reliable APIs,
             pixel-perfect user interfaces, and engaging digital content designed
             to scale your business.
