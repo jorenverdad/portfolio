@@ -78,9 +78,8 @@ export function JourneySection({
     // Scroll back to the top of the journey section when switching tabs
     if (sectionRef.current) {
       const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = sectionRef.current.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
+      const elementPosition = elementRect + window.scrollY;
       const offsetPosition = elementPosition - offset;
 
       window.scrollTo({

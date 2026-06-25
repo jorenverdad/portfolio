@@ -70,16 +70,24 @@ const ServiceRow = ({
 }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const rectRef = React.useRef<DOMRect | null>(null);
 
-  function handleMouseMove({
-    currentTarget,
-    clientX,
-    clientY,
-  }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
+  const handleMouseEnter = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    rectRef.current = e.currentTarget.getBoundingClientRect();
+  }, []);
+
+  const handleMouseMove = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!rectRef.current) {
+      rectRef.current = e.currentTarget.getBoundingClientRect();
+    }
+    const { left, top } = rectRef.current;
+    mouseX.set(e.clientX - left);
+    mouseY.set(e.clientY - top);
+  }, [mouseX, mouseY]);
+
+  const handleMouseLeave = React.useCallback(() => {
+    rectRef.current = null;
+  }, []);
 
   return (
     <motion.div
@@ -91,7 +99,9 @@ const ServiceRow = ({
         delay: index * 0.1,
         ease: [0.21, 0.47, 0.32, 0.98],
       }}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className="group relative border-t border-edge-subtle py-12 md:py-20 transition-colors duration-500 overflow-hidden hover:bg-bg-surface/30"
     >
       {/* Subtle Spotlight Effect */}

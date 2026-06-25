@@ -121,12 +121,24 @@ export function CountMeIn() {
     };
   }, [fetchCurrentCount, connectSSE, startPolling, updateStatus]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    rectRef.current = e.currentTarget.getBoundingClientRect();
+  }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!rectRef.current) {
+      rectRef.current = e.currentTarget.getBoundingClientRect();
+    }
+    const rect = rectRef.current;
     mouseX.set(e.clientX - rect.left);
     mouseY.set(e.clientY - rect.top);
-  };
+  }, [mouseX, mouseY]);
+
+  const handleMouseLeave = useCallback(() => {
+    rectRef.current = null;
+  }, []);
 
   const handleTap = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (isTapping) return;
@@ -167,7 +179,9 @@ export function CountMeIn() {
   return (
     <div 
       ref={containerRef}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className="group relative flex items-center rounded-full bg-bg-surface/30 p-1.5 border border-edge-subtle/40 backdrop-blur-xl transition-all duration-500 hover:border-brand-500/30 overflow-hidden"
     >
       {/* Interactive Spotlight background effect */}
