@@ -70,16 +70,24 @@ const ServiceRow = ({
 }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const rectRef = React.useRef<DOMRect | null>(null);
 
-  function handleMouseMove({
-    currentTarget,
-    clientX,
-    clientY,
-  }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
+  const handleMouseEnter = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    rectRef.current = e.currentTarget.getBoundingClientRect();
+  }, []);
+
+  const handleMouseMove = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!rectRef.current) {
+      rectRef.current = e.currentTarget.getBoundingClientRect();
+    }
+    const { left, top } = rectRef.current;
+    mouseX.set(e.clientX - left);
+    mouseY.set(e.clientY - top);
+  }, [mouseX, mouseY]);
+
+  const handleMouseLeave = React.useCallback(() => {
+    rectRef.current = null;
+  }, []);
 
   return (
     <motion.div
@@ -91,8 +99,10 @@ const ServiceRow = ({
         delay: index * 0.1,
         ease: [0.21, 0.47, 0.32, 0.98],
       }}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
-      className="group relative border-t border-edge-subtle py-12 md:py-20 transition-colors duration-500 overflow-hidden hover:bg-bg-surface/30"
+      onMouseLeave={handleMouseLeave}
+      className="group relative border-t border-edge-subtle py-8 sm:py-12 md:py-20 transition-colors duration-500 overflow-hidden hover:bg-bg-surface/30"
     >
       {/* Subtle Spotlight Effect */}
       <motion.div
@@ -118,7 +128,7 @@ const ServiceRow = ({
 
         {/* Title & Tags */}
         <div className="md:col-span-5 flex flex-col justify-start">
-          <motion.h3 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground mb-6 transition-transform duration-700 ease-out group-hover:translate-x-2">
+          <motion.h3 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground mb-6 transition-transform duration-700 ease-out group-hover:translate-x-2">
             {service.title}
           </motion.h3>
           {service.tags && (
@@ -144,7 +154,7 @@ const ServiceRow = ({
 
         {/* Description */}
         <div className="md:col-span-5 md:pl-8 lg:pl-12 flex items-start">
-          <p className="text-lg md:text-xl text-muted-foreground font-sans leading-relaxed transition-colors duration-500 group-hover:text-foreground/90">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-sans leading-relaxed transition-colors duration-500 group-hover:text-foreground/90">
             {service.description}
           </p>
         </div>
@@ -202,7 +212,7 @@ export function ServicesSection({
             </span>
           </h2>
 
-          <p className="text-lg md:text-xl text-muted-foreground font-sans max-w-2xl leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-sans max-w-2xl leading-relaxed">
             Building high-performance web applications, reliable APIs,
             pixel-perfect user interfaces, and engaging digital content designed
             to scale your business.

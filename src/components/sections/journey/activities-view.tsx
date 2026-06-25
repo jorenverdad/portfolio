@@ -61,9 +61,8 @@ export function ActivitiesView({
     const element = document.getElementById(`activity-${index}`);
     if (element) {
       const offset = 120;
-      const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
+      const elementPosition = elementRect + window.scrollY;
       const offsetPosition = elementPosition - offset;
 
       window.scrollTo({

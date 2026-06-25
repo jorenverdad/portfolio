@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import {
   motion,
@@ -40,19 +40,33 @@ const itemVariants: Variants = {
 function DownloadResumeButton() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const rectRef = useRef<DOMRect | null>(null);
 
-  function handleMouseMove(event: React.MouseEvent<HTMLAnchorElement>) {
-    const rect = event.currentTarget.getBoundingClientRect();
+  const handleMouseEnter = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    rectRef.current = event.currentTarget.getBoundingClientRect();
+  }, []);
+
+  const handleMouseMove = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!rectRef.current) {
+      rectRef.current = event.currentTarget.getBoundingClientRect();
+    }
+    const rect = rectRef.current;
     x.set(event.clientX - rect.left);
     y.set(event.clientY - rect.top);
-  }
+  }, [x, y]);
+
+  const handleMouseLeave = useCallback(() => {
+    rectRef.current = null;
+  }, []);
 
   return (
     <motion.a
       href="/pdfs/CV_JorenVerdad-2026.pdf"
       target="_blank"
       rel="noopener noreferrer"
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       initial="initial"
       whileHover="hover"
       whileTap="tap"
@@ -134,21 +148,35 @@ function SocialIconButton({
   const [isHovered, setIsHovered] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const rectRef = useRef<DOMRect | null>(null);
 
-  function handleMouseMove(event: React.MouseEvent<HTMLAnchorElement>) {
-    const rect = event.currentTarget.getBoundingClientRect();
+  const handleMouseEnter = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    setIsHovered(true);
+    rectRef.current = event.currentTarget.getBoundingClientRect();
+  }, []);
+
+  const handleMouseMove = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!rectRef.current) {
+      rectRef.current = event.currentTarget.getBoundingClientRect();
+    }
+    const rect = rectRef.current;
     x.set(event.clientX - rect.left);
     y.set(event.clientY - rect.top);
-  }
+  }, [x, y]);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    rectRef.current = null;
+  }, []);
 
   return (
     <motion.a
       href={href}
       target="_blank"
       rel="noreferrer"
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={handleMouseLeave}
       initial="initial"
       whileHover="hover"
       whileTap="tap"
@@ -265,11 +293,44 @@ export function HeroSection({ className }: HeroProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleBadgeMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
+  const badgeRectRef = useRef<DOMRect | null>(null);
+  const copyRectRef = useRef<DOMRect | null>(null);
+
+  const handleBadgeMouseEnter = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    badgeRectRef.current = event.currentTarget.getBoundingClientRect();
+  }, []);
+
+  const handleBadgeMouseMove = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    if (!badgeRectRef.current) {
+      badgeRectRef.current = event.currentTarget.getBoundingClientRect();
+    }
+    const rect = badgeRectRef.current;
     badgeX.set(event.clientX - rect.left);
     badgeY.set(event.clientY - rect.top);
-  };
+  }, [badgeX, badgeY]);
+
+  const handleBadgeMouseLeave = useCallback(() => {
+    badgeRectRef.current = null;
+  }, []);
+
+  const handleCopyMouseEnter = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    setIsHovered(true);
+    copyRectRef.current = event.currentTarget.getBoundingClientRect();
+  }, []);
+
+  const handleCopyMouseMove = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    if (!copyRectRef.current) {
+      copyRectRef.current = event.currentTarget.getBoundingClientRect();
+    }
+    const rect = copyRectRef.current;
+    copyX.set(event.clientX - rect.left);
+    copyY.set(event.clientY - rect.top);
+  }, [copyX, copyY]);
+
+  const handleCopyMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    copyRectRef.current = null;
+  }, []);
 
   return (
     <section
@@ -290,7 +351,9 @@ export function HeroSection({ className }: HeroProps) {
         >
           <motion.div variants={itemVariants}>
             <motion.div
+              onMouseEnter={handleBadgeMouseEnter}
               onMouseMove={handleBadgeMouseMove}
+              onMouseLeave={handleBadgeMouseLeave}
               initial="initial"
               whileHover="hover"
               whileTap="tap"
@@ -300,7 +363,7 @@ export function HeroSection({ className }: HeroProps) {
                 tap: { scale: 0.95 },
               }}
               transition={{ type: "spring", bounce: 0, duration: 0.3 }}
-              className="relative inline-flex items-center gap-3.5 px-4.5 py-2 rounded-full border border-edge-default bg-bg-surface/50 text-xs font-medium text-muted-foreground mb-8 backdrop-blur-md shadow-sm hover:border-brand-500/30 hover:bg-bg-surface/80 transition-all duration-300 group cursor-default hover:shadow-[0_0_20px_-5px_rgba(224,32,32,0.2)]"
+              className="relative inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3.5 px-3.5 sm:px-4.5 py-2 rounded-full border border-edge-default bg-bg-surface/50 text-xs font-medium text-muted-foreground mb-8 backdrop-blur-md shadow-sm hover:border-brand-500/30 hover:bg-bg-surface/80 transition-all duration-300 group cursor-default hover:shadow-[0_0_20px_-5px_rgba(224,32,32,0.2)]"
             >
               {/* Spotlight Border */}
               <motion.div
@@ -326,7 +389,7 @@ export function HeroSection({ className }: HeroProps) {
                 <MapPin className="size-3.5 text-brand-500 group-hover:scale-110 transition-transform duration-300" />
                 <span className="font-sans tracking-wide">Philippines</span>
               </span>
-              <span className="relative z-10 w-px h-3.5 bg-edge-subtle" />
+              <span className="relative z-10 w-px h-3.5 bg-edge-subtle hidden sm:block" />
               <span className="relative z-10 flex items-center gap-2">
                 <Clock className="size-3.5 text-brand-500 group-hover:rotate-12 transition-transform duration-300" />
                 <span className="font-sans">PHT (UTC+8)</span>
@@ -341,7 +404,7 @@ export function HeroSection({ className }: HeroProps) {
 
           <motion.h1
             variants={itemVariants}
-            className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground max-w-5xl mb-6"
+            className="font-heading text-4xl xs:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground max-w-5xl mb-6"
           >
             Engineering digital experiences with{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-brand-600">
@@ -351,7 +414,7 @@ export function HeroSection({ className }: HeroProps) {
 
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-sans"
+            className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed font-sans"
           >
             Full-stack engineer specializing in frontend development. I build
             scalable applications from design to deployment, with a focus on
@@ -385,13 +448,9 @@ export function HeroSection({ className }: HeroProps) {
               />
               <motion.button
                 onClick={handleCopyEmail}
-                onMouseMove={(event: React.MouseEvent<HTMLButtonElement>) => {
-                  const rect = event.currentTarget.getBoundingClientRect();
-                  copyX.set(event.clientX - rect.left);
-                  copyY.set(event.clientY - rect.top);
-                }}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                onMouseEnter={handleCopyMouseEnter}
+                onMouseMove={handleCopyMouseMove}
+                onMouseLeave={handleCopyMouseLeave}
                 initial="initial"
                 whileHover="hover"
                 whileTap="tap"

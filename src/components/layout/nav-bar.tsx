@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { WorkInProgress } from "@/components/ui/work-in-progress";
+import { motion } from "motion/react";
 
 export interface NavBarLink {
   readonly label: string;
@@ -54,17 +55,8 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  // const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [resizeKey, setResizeKey] = useState(0);
-
-  const [pillStyle, setPillStyle] = useState({
-    left: 0,
-    width: 0,
-    opacity: 0,
-  });
 
   const navRef = useRef<HTMLDivElement>(null);
-  const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   // // Theme synchronization and handler
   // useEffect(() => {
@@ -101,12 +93,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
   //   }
   // };
 
-  // Resize listener to re-evaluate pill position
-  useEffect(() => {
-    const handleResize = () => setResizeKey((prev) => prev + 1);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -163,35 +150,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
     };
   }, [links]);
 
-  useEffect(() => {
-    const targetIndex =
-      hoveredIndex !== null
-        ? hoveredIndex
-        : links.findIndex((l) => {
-            const href = l.href.replace("#", "");
-            return (
-              activeSection === href || activeSection.startsWith(href + "-")
-            );
-          });
 
-    if (targetIndex !== -1 && linkRefs.current[targetIndex] && navRef.current) {
-      const targetEl = linkRefs.current[targetIndex];
-      const navEl = navRef.current;
-      if (targetEl && navEl) {
-        const targetRect = targetEl.getBoundingClientRect();
-        const navRect = navEl.getBoundingClientRect();
-
-        setPillStyle({
-          left: targetRect.left - navRect.left,
-          width: targetRect.width,
-          opacity: 1,
-        });
-        return;
-      }
-    }
-
-    setPillStyle((prev) => ({ ...prev, opacity: 0 }));
-  }, [hoveredIndex, activeSection, links, resizeKey]);
 
   return (
     <header
@@ -221,21 +180,11 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
             onMouseLeave={() => setHoveredIndex(null)}
             className="hidden md:flex items-center gap-1 relative py-2"
           >
-            {/* Sliding Pill Backdrop */}
-            <span
-              className="absolute h-8 bg-brand-500/10 rounded-full transition-all duration-300 ease-out pointer-events-none"
-              style={{
-                left: pillStyle.left,
-                width: pillStyle.width,
-                opacity: pillStyle.opacity,
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-            />
             {links.map((link, idx) => {
               const href = link.href.replace("#", "");
               const isActive =
                 activeSection === href || activeSection.startsWith(href + "-");
+              const isPillActive = hoveredIndex !== null ? hoveredIndex === idx : isActive;
               return (
                 <a
                   key={link.label}
@@ -243,9 +192,6 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                   onClick={(e) =>
                     scrollToSection(link.href.replace("#", ""), e)
                   }
-                  ref={(el) => {
-                    linkRefs.current[idx] = el;
-                  }}
                   onMouseEnter={() => setHoveredIndex(idx)}
                   className={`relative z-10 px-4 py-1.5 text-sm font-medium rounded-full transition-colors duration-300 ${
                     isActive
@@ -253,6 +199,17 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
+                  {isPillActive && (
+                    <motion.span
+                      layoutId="nav-pill"
+                      className="absolute inset-0 bg-brand-500/10 rounded-full -z-10"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
                   {link.label}
                 </a>
               );
@@ -290,22 +247,26 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
 
           {/* Mobile Menu Trigger */}
           <Dialog.Root open={open} onOpenChange={setOpen}>
-            <Dialog.Trigger className="md:hidden flex h-10 w-10 items-center justify-center rounded-lg border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated text-foreground transition-all duration-200 active:scale-95 focus:outline-none">
+            <Dialog.Trigger className="md:hidden flex h-11 w-11 items-center justify-center rounded-lg border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated text-foreground transition-all duration-200 active:scale-95 focus:outline-none">
               <Menu className="size-5" />
             </Dialog.Trigger>
 
             <Dialog.Portal>
               {/* Backdrop */}
-              <Dialog.Backdrop className="fixed inset-0 z-50 bg-bg-void/80 backdrop-blur-sm transition-opacity duration-300 data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out" />
+              <Dialog.Backdrop className={`fixed inset-0 z-50 bg-bg-void/80 backdrop-blur-sm transition-opacity duration-300 ${
+                open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+              }`} />
 
               {/* Drawer Content */}
-              <Dialog.Popup className="fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-bg-surface border-l border-edge-subtle p-8 shadow-2xl flex flex-col justify-between transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] data-[state=open]:translate-x-0 data-[state=closed]:translate-x-full">
+              <Dialog.Popup className={`fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-bg-surface border-l border-edge-subtle p-8 shadow-2xl flex flex-col justify-between transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                open ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+              }`}>
                 <div>
                   <div className="flex items-center justify-between mb-12">
                     <span className="font-heading text-2xl font-bold tracking-tight text-foreground">
                       Menu<span className="text-brand-500">.</span>
                     </span>
-                    <Dialog.Close className="flex h-10 w-10 items-center justify-center rounded-lg border border-edge-default bg-bg-surface hover:bg-bg-elevated text-foreground transition-all duration-200 active:scale-95 focus:outline-none">
+                    <Dialog.Close className="flex h-11 w-11 items-center justify-center rounded-lg border border-edge-default bg-bg-surface hover:bg-bg-elevated text-foreground transition-all duration-200 active:scale-95 focus:outline-none">
                       <X className="size-5" />
                     </Dialog.Close>
                   </div>

@@ -141,12 +141,12 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
             {/* Header Typography - Spans 8 cols */}
             <m.div
               variants={itemVariants}
-              className="md:col-span-8 flex flex-col justify-center border border-edge-subtle bg-bg-surface/30 backdrop-blur-md p-8 md:p-12 rounded-[2.5rem] relative overflow-hidden group shadow-2xl"
+              className="md:col-span-8 flex flex-col justify-center border border-edge-subtle bg-bg-surface/30 backdrop-blur-md p-6 sm:p-8 md:p-12 rounded-3xl md:rounded-[2.5rem] relative overflow-hidden group shadow-2xl"
             >
               {/* Inner glow on hover */}
               <div className="absolute inset-0 bg-brand-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-              <h2 className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-foreground leading-[0.85] uppercase mb-8 relative z-10">
+              <h2 className="font-heading text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-foreground leading-[0.85] uppercase mb-8 relative z-10">
                 Engineering{" "}
                 <span className="text-muted-foreground block">The Unseen.</span>
                 <span className="block mt-4 md:mt-2">
@@ -155,7 +155,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                 </span>
               </h2>
 
-              <p className="text-xl md:text-2xl text-muted-foreground font-sans leading-relaxed max-w-2xl font-light relative z-10">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground font-sans leading-relaxed max-w-2xl font-light relative z-10">
                 I build digital experiences with pixel-perfect precision and
                 uncompromising performance. I don&apos;t just write code; I
                 craft interfaces that feel alive.
@@ -165,7 +165,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
             {/* Image/Avatar - Spans 4 cols */}
             <m.div
               variants={itemVariants}
-              className="md:col-span-4 relative group rounded-[2.5rem] overflow-hidden border border-edge-subtle w-full aspect-[3/4] md:aspect-auto shadow-2xl bg-bg-surface"
+              className="md:col-span-4 relative group rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-edge-subtle w-full aspect-[3/4] md:aspect-auto shadow-2xl bg-bg-surface"
             >
               <div className="absolute inset-0 bg-brand-500/20 mix-blend-overlay z-10 group-hover:opacity-0 transition-opacity duration-700 pointer-events-none" />
               <m.div
@@ -213,13 +213,13 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
             {/* Bento Box: Stats/Details - Spans 4 cols */}
             <m.div
               variants={itemVariants}
-              className="md:col-span-4 rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md flex flex-col justify-start relative group shadow-2xl overflow-hidden min-h-[460px]"
+              className="md:col-span-4 rounded-3xl md:rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md flex flex-col justify-start relative group shadow-2xl overflow-hidden min-h-[400px] md:min-h-[460px]"
             >
               {/* Background glowing orb for depth */}
               <div className="absolute -top-24 -right-24 w-48 h-48 bg-brand-500/10 rounded-full blur-[60px] group-hover:bg-brand-500/20 transition-colors duration-700 pointer-events-none" />
 
               {/* Header bar */}
-              <div className="flex items-center justify-between border-b border-edge-subtle/30 px-6 py-4 bg-bg-surface/10 select-none relative z-10">
+              <div className="flex items-center justify-between border-b border-edge-subtle/30 px-4 py-3 sm:px-6 sm:py-4 bg-bg-surface/10 select-none relative z-10">
                 <div className="flex items-center gap-1.5 group/dots">
                   <span className="w-3 h-3 rounded-full bg-[#ff5f56] flex items-center justify-center text-[7px] text-[#4c0002] font-semibold cursor-pointer relative">
                     <span className="absolute opacity-0 group-hover/dots:opacity-100 transition-opacity duration-150 select-none">
@@ -257,7 +257,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
               </div>
 
               {/* Terminal Body */}
-              <div className="p-6 md:p-8 font-mono text-xs md:text-sm text-left flex-1 flex flex-col gap-5 relative z-10">
+              <div className="p-4 sm:p-6 md:p-8 font-mono text-[11px] sm:text-xs md:text-sm text-left flex-1 flex flex-col gap-4 sm:gap-5 relative z-10">
                 {/* Command 1: cat expertise.ts */}
                 <div className="space-y-2">
                   <div className="flex items-center flex-wrap font-mono">
@@ -399,10 +399,10 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
             {/* Bento Box: Narrative - Spans 8 cols */}
             <m.div
               variants={itemVariants}
-              className="md:col-span-8 rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md p-8 md:p-12 relative overflow-hidden group flex items-center shadow-2xl"
+              className="md:col-span-8 rounded-3xl md:rounded-[2.5rem] border border-edge-subtle bg-bg-surface/30 backdrop-blur-md p-6 sm:p-8 md:p-12 relative overflow-hidden group flex items-center shadow-2xl"
             >
               <div className="absolute bottom-[-20%] right-[-10%] w-96 h-96 bg-brand-500/10 rounded-full blur-[100px] group-hover:bg-brand-500/20 transition-colors duration-700 pointer-events-none" />
-              <div className="relative z-10 space-y-6 text-lg md:text-xl text-muted-foreground font-sans leading-relaxed">
+              <div className="relative z-10 space-y-6 text-base sm:text-lg md:text-xl text-muted-foreground font-sans leading-relaxed">
                 <p>
                   My journey began with an obsession for visual aesthetics,
                   which rapidly evolved into a deep passion for the engineering

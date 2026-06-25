@@ -98,7 +98,7 @@ export function ContactSection() {
             </span>
           </h2>
 
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             I&apos;m always open to discussing product design work or
             partnership opportunities. Reach out and let&apos;s create the next
             big thing together.

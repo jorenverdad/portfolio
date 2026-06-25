@@ -78,9 +78,8 @@ export function JourneySection({
     // Scroll back to the top of the journey section when switching tabs
     if (sectionRef.current) {
       const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = sectionRef.current.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
+      const elementPosition = elementRect + window.scrollY;
       const offsetPosition = elementPosition - offset;
 
       window.scrollTo({
@@ -226,11 +225,12 @@ export function JourneySection({
                     exit={{
                       opacity: 0,
                       y: 20,
+                      x: "-50%",
                       scale: 0.95,
                       transition: { duration: 0.5, ease: "easeInOut" },
                     }}
                     transition={{ type: "spring", stiffness: 200, damping: 22 }}
-                    className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex xl:hidden items-center gap-3 bg-bg-surface/75 backdrop-blur-xl border border-edge-subtle/80 px-4 py-2.5 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.5)] select-none max-w-[95vw]"
+                    className="fixed bottom-6 left-1/2 z-50 flex xl:hidden items-center gap-1.5 sm:gap-3 bg-bg-surface/75 backdrop-blur-xl border border-edge-subtle/80 px-2.5 py-1.5 sm:px-4 sm:py-2.5 rounded-full shadow-[0_0_30px_rgba(0,0,0,0.5)] select-none max-w-[95vw]"
                   >
                     {MENU_ITEMS.map((item) => {
                       const Icon = item.icon;
@@ -240,7 +240,7 @@ export function JourneySection({
                           key={item.id}
                           onClick={() => switchTab(item.id)}
                           aria-label={`Switch to ${item.label}`}
-                          className="group relative px-3 py-2 rounded-full flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                          className="group relative p-2.5 sm:px-3 sm:py-2 rounded-full flex items-center gap-1 sm:gap-1.5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                         >
                           {isActive && (
                             <m.div
@@ -258,7 +258,7 @@ export function JourneySection({
                             className={`size-4.5 relative z-10 ${isActive ? "text-brand-100" : "text-muted-foreground/60"}`}
                           />
                           {isActive && (
-                            <span className="relative z-10 font-mono text-[9px] font-bold uppercase tracking-wider text-brand-100 whitespace-nowrap">
+                            <span className="relative z-10 font-mono text-[9px] font-bold uppercase tracking-wider text-brand-100 whitespace-nowrap hidden sm:inline-block">
                               {item.label}
                             </span>
                           )}
