@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Dialog } from "@base-ui/react/dialog";
 import { Menu, X } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
@@ -55,20 +56,24 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   const navRef = useRef<HTMLDivElement>(null);
 
-  // // Theme synchronization and handler
-  // useEffect(() => {
-  //   const savedTheme = localStorage.getItem("theme") || "dark";
-  //   // eslint-disable-next-line react-hooks/set-state-in-effect
-  //   setTheme(savedTheme as "light" | "dark");
-  //   if (savedTheme === "light") {
-  //     document.documentElement.classList.remove("dark");
-  //   } else {
-  //     document.documentElement.classList.add("dark");
-  //   }
-  // }, []);
+  // Theme synchronization and handler
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    if (savedTheme === "light") {
+      document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+    }
+    // Update theme state asynchronously to avoid synchronous cascading renders
+    const timer = setTimeout(() => {
+      setTheme(savedTheme as "light" | "dark");
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -81,19 +86,17 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  // const toggleTheme = () => {
-  //   const nextTheme = theme === "dark" ? "light" : "dark";
-  //   setTheme(nextTheme);
-  //   if (nextTheme === "light") {
-  //     document.documentElement.classList.remove("dark");
-  //     localStorage.setItem("theme", "light");
-  //   } else {
-  //     document.documentElement.classList.add("dark");
-  //     localStorage.setItem("theme", "dark");
-  //   }
-  // };
-
-
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    if (nextTheme === "light") {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -150,8 +153,6 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
     };
   }, [links]);
 
-
-
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 flex justify-center pointer-events-none ${className ?? ""}`}
@@ -166,12 +167,28 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
         <div className="w-full flex items-center justify-between container mx-auto">
           <Link
             href="/"
-            className="group font-heading text-2xl font-bold tracking-tight text-foreground transition-opacity hover:opacity-90"
+            className="flex items-center transition-opacity hover:opacity-90"
           >
-            Joren
-            <span className="inline-block text-brand-500 transition-transform duration-300 ease-out group-hover:scale-130 group-hover:rotate-12 group-hover:translate-x-0.5">
-              .
-            </span>
+            <Image
+              src="/logo-white.gif"
+              alt="Joren"
+              width={139}
+              height={40}
+              priority
+              unoptimized
+              className="h-10 w-auto object-contain hidden dark:block"
+              draggable={false}
+            />
+            <Image
+              src="/logo-black.gif"
+              alt="Joren"
+              width={139}
+              height={40}
+              priority
+              unoptimized
+              className="h-10 w-auto object-contain block dark:hidden"
+              draggable={false}
+            />
           </Link>
 
           {/* Desktop Nav */}
@@ -184,7 +201,8 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
               const href = link.href.replace("#", "");
               const isActive =
                 activeSection === href || activeSection.startsWith(href + "-");
-              const isPillActive = hoveredIndex !== null ? hoveredIndex === idx : isActive;
+              const isPillActive =
+                hoveredIndex !== null ? hoveredIndex === idx : isActive;
               return (
                 <a
                   key={link.label}
@@ -234,6 +252,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
               <button
                 type="button"
                 aria-label="Toggle dark mode"
+                onClick={toggleTheme}
                 className="h-10 w-10 rounded-full flex items-center justify-center border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-foreground transition-all duration-300 active:scale-95 cursor-pointer relative overflow-hidden group shadow-sm"
               >
                 <div className="absolute inset-0 rounded-full bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
@@ -253,14 +272,22 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
 
             <Dialog.Portal>
               {/* Backdrop */}
-              <Dialog.Backdrop className={`fixed inset-0 z-50 bg-bg-void/80 backdrop-blur-sm transition-opacity duration-300 ${
-                open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-              }`} />
+              <Dialog.Backdrop
+                className={`fixed inset-0 z-50 bg-bg-void/80 backdrop-blur-sm transition-opacity duration-300 ${
+                  open
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none"
+                }`}
+              />
 
               {/* Drawer Content */}
-              <Dialog.Popup className={`fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-bg-surface border-l border-edge-subtle p-8 shadow-2xl flex flex-col justify-between transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                open ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-              }`}>
+              <Dialog.Popup
+                className={`fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-bg-surface border-l border-edge-subtle p-8 shadow-2xl flex flex-col justify-between transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  open
+                    ? "translate-x-0 opacity-100"
+                    : "translate-x-full opacity-0"
+                }`}
+              >
                 <div>
                   <div className="flex items-center justify-between mb-12">
                     <span className="font-heading text-2xl font-bold tracking-tight text-foreground">
@@ -332,6 +359,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                     <button
                       type="button"
                       aria-label="Toggle dark mode"
+                      onClick={toggleTheme}
                       className="h-12 w-12 rounded-xl flex items-center justify-center border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-foreground transition-all duration-300 active:scale-95 cursor-pointer relative overflow-hidden group"
                     >
                       <div className="absolute inset-0 rounded-xl bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />

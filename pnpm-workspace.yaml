@@ -4,3 +4,8 @@ allowBuilds:
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+minimumReleaseAgeExclude:
+  - postcss@8.5.10
+  - hono@4.12.25
+overrides:
+  postcss@<8.5.10: ^8.5.10
