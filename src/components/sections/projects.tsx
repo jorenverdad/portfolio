@@ -235,8 +235,8 @@ const ProjectCard = React.memo(function ProjectCard({
         {project.video ? (
           <video
             ref={videoRef}
-            src={hasBeenActive ? project.video : undefined}
-            preload={isActive ? "auto" : "none"}
+            src={project.video}
+            preload="metadata"
             loop
             muted
             playsInline
