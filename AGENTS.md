@@ -11,8 +11,8 @@ This project keeps a persistent knowledge base in `.wiki` (an Obsidian-compatibl
 
 ## Folder schema
 
-- `index.md` — catalog of every page in the vault. Every write must add or update an entry here.
-- `log.md` — append-only timeline, one line per operation: `## [YYYY-MM-DD] <op> | <title>`
+- `index.md` — catalog of every page in the vault (automatically updated via sync script).
+- `log.md` — append-only timeline, one line per operation (automatically updated via sync script).
 - `entities/` — one page per person, org, tool, or library
 - `concepts/` — ideas, frameworks, mental models
 - `decisions/` — architecture/technical decisions: what was chosen, what was rejected, and why
@@ -23,14 +23,14 @@ This project keeps a persistent knowledge base in `.wiki` (an Obsidian-compatibl
 ## Rules
 
 - **Never edit `raw/`.** It's the record of what was actually said or written. Everything the agent writes goes in the other folders.
-- **Every write updates `index.md` and `log.md`.** A page that exists but isn't cataloged or logged is effectively lost — the next session won't know to look for it.
+- **Every write updates `index.md` and `log.md` via the sync script.** Run `node .wiki/scripts/sync-wiki.cjs` (with optional `--msg` for custom details) at the end of your task. Skipping this causes catalog mismatch and wastes LLM tokens on manual file edits.
 - **Check before creating.** Search `index.md` and the relevant folder for an existing page on the same topic before writing a new one.
 - **Cross-link with `[[wikilinks]]`.** Connections between pages are most of the value here — an unlinked page is much less useful than a linked one.
 - **One entity/concept/decision per page.** Keep pages atomic so they can be linked to cleanly.
 
 ## Typical requests this vault should handle
 
-- "Log this decision" / "remember why we did X" → new or updated page in `decisions/` or `concepts/`, then update `index.md` + `log.md`.
-- "Add this article/transcript to the wiki" → file goes in `raw/`, agent writes a summary page in `sources/`, updates `entities/`/`concepts/` as needed, then `index.md` + `log.md`.
+- "Log this decision" / "remember why we did X" → new or updated page in `decisions/` or `concepts/`, then run `node .wiki/scripts/sync-wiki.cjs`.
+- "Add this article/transcript to the wiki" → file goes in `raw/`, agent writes a summary page in `sources/`, updates `entities/`/`concepts/` as needed, then run `node .wiki/scripts/sync-wiki.cjs`.
 - "What do we know about X" / "why did we choose Y" → check `index.md`, read the relevant page(s), answer citing the page(s).
 - "How's the wiki looking" → report page counts, recent log entries, and any orphaned pages (not linked, not in the index).
