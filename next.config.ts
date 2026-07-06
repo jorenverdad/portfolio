@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       'lucide-react',
       'motion',
       'motion/react',
+      'tech-stack-icons',
     ],
   },
   images: {
