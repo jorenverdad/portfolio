@@ -497,17 +497,16 @@ function TechStackList({ isDark }: { isDark: boolean }) {
 const cellVariants: Variants = {
   hidden: {
     opacity: 0,
-    scale: 0.5,
-    filter: 'blur(10px)',
+    scale: 0.7,
+    y: 10,
   },
   show: (delay: number) => ({ 
     opacity: 1, 
     scale: 1, 
-    filter: 'blur(0px)',
+    y: 0,
     transition: { 
-      type: 'spring',
-      stiffness: 260,
-      damping: 20,
+      duration: 0.4,
+      ease: [0.16, 1, 0.3, 1],
       delay
     }
   })
@@ -543,7 +542,6 @@ const Cell = React.memo(function Cell({ cell, isDark }: { cell: CellInfo; isDark
         border border-white/[0.08] dark:border-white/[0.08]
         shadow-[0_4px_12px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.1)]
         dark:shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)]
-        backdrop-blur-md
         transition-colors transition-shadow duration-300
         hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]
         dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]
