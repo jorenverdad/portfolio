@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import "@fontsource-variable/bricolage-grotesque";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import {
   m,
@@ -407,7 +408,7 @@ export function HeroSection({ className }: HeroProps) {
 
             <m.h1
               variants={itemVariants}
-              className="font-heading text-4xl xs:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-foreground max-w-5xl mb-6"
+              className="font-bricolage text-4xl xs:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-foreground max-w-5xl mb-6"
             >
               Engineering digital experiences with{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-brand-600">
