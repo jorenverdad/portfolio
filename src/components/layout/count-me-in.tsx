@@ -39,12 +39,12 @@ export function CountMeIn() {
     try {
       const res = await fetch('/api/count');
       if (res.ok) {
-        const data = await res.json() as { count: number };
+        const data = (await res.json()) as { count: number };
         setCount(data.count);
         return data.count;
       }
-    } catch (err) {
-      console.error('Failed to fetch count via REST:', err);
+    } catch {
+      // Ignore transient network errors during polling / HMR dev reloads
     }
     return null;
   }, []);
@@ -159,9 +159,11 @@ export function CountMeIn() {
     try {
       const res = await fetch('/api/count', { method: 'POST' });
       if (res.ok) {
-        const data = await res.json() as { count: number };
+        const data = (await res.json()) as { count: number };
         setCount(data.count);
       }
+    } catch {
+      // Ignore network errors on tap
     } finally {
       setTimeout(() => setIsTapping(false), 150);
     }

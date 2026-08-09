@@ -72,18 +72,24 @@ const ServiceRow = ({
   const mouseY = useMotionValue(0);
   const rectRef = React.useRef<DOMRect | null>(null);
 
-  const handleMouseEnter = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    rectRef.current = e.currentTarget.getBoundingClientRect();
-  }, []);
-
-  const handleMouseMove = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!rectRef.current) {
+  const handleMouseEnter = React.useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
       rectRef.current = e.currentTarget.getBoundingClientRect();
-    }
-    const { left, top } = rectRef.current;
-    mouseX.set(e.clientX - left);
-    mouseY.set(e.clientY - top);
-  }, [mouseX, mouseY]);
+    },
+    [],
+  );
+
+  const handleMouseMove = React.useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!rectRef.current) {
+        rectRef.current = e.currentTarget.getBoundingClientRect();
+      }
+      const { left, top } = rectRef.current;
+      mouseX.set(e.clientX - left);
+      mouseY.set(e.clientY - top);
+    },
+    [mouseX, mouseY],
+  );
 
   const handleMouseLeave = React.useCallback(() => {
     rectRef.current = null;

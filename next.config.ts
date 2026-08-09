@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: path.resolve("."),
+  },
   reactCompiler: true,
   cacheComponents: true,
   experimental: {
@@ -9,6 +13,7 @@ const nextConfig: NextConfig = {
       'lucide-react',
       'motion',
       'motion/react',
+      'tech-stack-icons',
     ],
   },
   images: {

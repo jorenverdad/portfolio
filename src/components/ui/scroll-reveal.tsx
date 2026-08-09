@@ -1,68 +1,84 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useMemo } from "react";
+import {
+  m,
+  LazyMotion,
+  domAnimation,
+  useReducedMotion,
+  type Variants,
+} from "motion/react";
 import { cn } from "@/lib/utils";
 
 export interface ScrollRevealProps {
   readonly children: React.ReactNode;
   readonly className?: string;
+  readonly delay?: number;
+  readonly duration?: number;
+  readonly yOffset?: number;
+  readonly blur?: number;
   readonly threshold?: number;
   readonly rootMargin?: string;
-  readonly initialTransform?: string;
-  readonly duration?: string;
+  readonly once?: boolean;
 }
 
 export function ScrollReveal({
   children,
   className,
+  delay = 0,
+  duration = 0.8,
+  yOffset = 30,
+  blur = 10,
   threshold = 0.1,
   rootMargin = "0px 0px -50px 0px",
-  initialTransform = "translate-y-8",
-  duration = "duration-[1000ms]",
+  once = true,
 }: ScrollRevealProps) {
-  const [hasRevealed, setHasRevealed] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    const element = elementRef.current;
-    if (!element) return;
-
-    // Skip observer if we've already revealed it
-    if (hasRevealed) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry && entry.isIntersecting) {
-          setHasRevealed(true);
-          observer.unobserve(element);
-        }
+  const variants: Variants = useMemo(
+    () => ({
+      hidden: {
+        opacity: 0,
+        y: shouldReduceMotion ? 0 : yOffset,
+        filter: shouldReduceMotion ? "none" : `blur(${blur}px)`,
       },
-      {
-        threshold,
-        rootMargin,
+      show: {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        transition: shouldReduceMotion
+          ? { duration: 0.3 }
+          : {
+              type: "spring",
+              bounce: 0,
+              duration,
+              delay,
+            },
       },
-    );
+    }),
+    [shouldReduceMotion, yOffset, blur, duration, delay],
+  );
 
-    observer.observe(element);
-
-    return () => {
-      observer.unobserve(element);
-    };
-  }, [threshold, rootMargin, hasRevealed]);
+  const viewportConfig = useMemo(
+    () => ({
+      once,
+      amount: threshold,
+      margin: rootMargin,
+    }),
+    [once, threshold, rootMargin],
+  );
 
   return (
-    <div
-      ref={elementRef}
-      className={cn(
-        "transition-all ease-[cubic-bezier(0.16,1,0.3,1)] transform motion-reduce:transition-none motion-reduce:transform-none",
-        duration,
-        hasRevealed
-          ? "opacity-100 translate-y-0 scale-100"
-          : cn("opacity-0 scale-[0.98]", initialTransform),
-        className,
-      )}
-    >
-      {children}
-    </div>
+    <LazyMotion features={domAnimation}>
+      <m.div
+        variants={variants}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportConfig}
+        className={cn(className)}
+      >
+        {children}
+      </m.div>
+    </LazyMotion>
   );
 }
