@@ -94,3 +94,25 @@ if (typeof window !== "undefined") {
   (window as unknown as { EventSource: typeof EventSource }).EventSource = MockEventSource as unknown as typeof EventSource;
 }
 
+// Mock IntersectionObserver globally for JSDOM
+class MockIntersectionObserver implements IntersectionObserver {
+  readonly root: Element | Document | null = null;
+  readonly rootMargin: string = "0px";
+  readonly thresholds: readonly number[] = [0];
+
+  disconnect = vi.fn();
+  observe = vi.fn();
+  takeRecords = vi.fn(() => []);
+  unobserve = vi.fn();
+
+  constructor(
+    public callback?: IntersectionObserverCallback,
+    public options?: IntersectionObserverInit
+  ) {}
+}
+
+global.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+if (typeof window !== "undefined") {
+  (window as unknown as { IntersectionObserver: typeof IntersectionObserver }).IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+}
+
