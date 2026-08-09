@@ -48,10 +48,24 @@ describe('TechStackSection', () => {
   });
 
   it('exports valid categories and tech stack data constants', () => {
-    expect(CATEGORIES).toHaveLength(7);
+    expect(CATEGORIES).toHaveLength(8);
     expect(CATEGORIES).toContain('Frontend');
     expect(CATEGORIES).toContain('Backend');
-    expect(TECH_STACK.length).toBeGreaterThan(30);
+    expect(CATEGORIES).toContain('Tools');
+    expect(CATEGORIES).toContain('AI');
+    expect(TECH_STACK.length).toBe(44);
+  });
+
+  it('includes newly added tech-stack-icons (Vitest, Sentry, Antigravity, Claude Code, Codex, Cursor, Copilot) without Husky', () => {
+    const names = TECH_STACK.map((t) => t.name);
+    expect(names).toContain('Vitest');
+    expect(names).toContain('Sentry');
+    expect(names).toContain('Antigravity');
+    expect(names).toContain('Claude Code');
+    expect(names).toContain('Codex');
+    expect(names).toContain('Cursor');
+    expect(names).toContain('Copilot');
+    expect(names).not.toContain('Husky');
   });
 
   it('renders section title, description and toggle buttons', () => {
@@ -65,10 +79,10 @@ describe('TechStackSection', () => {
   it('renders grid view with tech stack items by default', () => {
     render(<TechStackSection />);
 
-    // Should find tech items (e.g. TypeScript, React, Next.js) in the grid view
     expect(screen.getAllByText('TypeScript').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('React').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('Next.js').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Vitest').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Antigravity').length).toBeGreaterThanOrEqual(1);
   });
 
   it('switches to list view and displays categories when list button is clicked', async () => {
@@ -80,12 +94,11 @@ describe('TechStackSection', () => {
       fireEvent.click(listButton);
     });
 
-    // In list view, all categories should be displayed
+    // In list view, all categories including AI should be displayed
     CATEGORIES.forEach((cat) => {
       expect(screen.getByText(cat)).toBeInTheDocument();
     });
 
-    // Check localStorage persistence
     expect(window.localStorage.setItem).toHaveBeenCalledWith('tech-stack-view', 'list');
   });
 
@@ -94,8 +107,7 @@ describe('TechStackSection', () => {
 
     render(<TechStackSection />);
 
-    // Should render in list view directly
     expect(screen.getByText('Languages')).toBeInTheDocument();
-    expect(screen.getByText('Frontend')).toBeInTheDocument();
+    expect(screen.getByText('AI')).toBeInTheDocument();
   });
 });

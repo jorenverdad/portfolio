@@ -1,19 +1,26 @@
-'use client';
+"use client";
 
-import React, { useState, useSyncExternalStore } from 'react';
-import { LazyMotion, m, Variants, AnimatePresence, MotionConfig } from 'motion/react';
-import StackIcon, { IconName } from 'tech-stack-icons';
+import React, { useState, useSyncExternalStore } from "react";
+import {
+  LazyMotion,
+  m,
+  Variants,
+  AnimatePresence,
+  MotionConfig,
+} from "motion/react";
+import StackIcon, { IconName } from "tech-stack-icons";
 
-const loadFeatures = () => import('motion/react').then((res) => res.domMax);
+const loadFeatures = () => import("motion/react").then((res) => res.domMax);
 
 export const CATEGORIES = [
-  'Languages',
-  'Frontend',
-  'Mobile',
-  'Backend',
-  'Database',
-  'Tools',
-  'OS',
+  "Languages",
+  "Frontend",
+  "Mobile",
+  "Backend",
+  "Database",
+  "Tools",
+  "Agentic IDEs",
+  "OS",
 ] as const;
 
 export type TechCategory = (typeof CATEGORIES)[number];
@@ -26,74 +33,313 @@ export type TechItem = {
   readonly preferred?: boolean;
   readonly iconName?: IconName;
   readonly iconClass?: string;
-  readonly icon?: React.ComponentType<{ style?: React.CSSProperties; size?: number }>;
 };
 
 export const TECH_STACK: readonly TechItem[] = [
   // ==========================================
   // LANGUAGES
   // ==========================================
-  { name: 'HTML5', iconName: 'html5', color: '#E34F26' },
-  { name: 'CSS3', iconName: 'css3', color: '#1572B6' },
-  { name: 'JavaScript', iconName: 'js', color: '#F7DF1E', category: 'Languages' },
-  { name: 'TypeScript', iconName: 'typescript', color: '#3178C6', category: 'Languages', preferred: true },
-  { name: 'Python', iconName: 'python', color: '#3776AB', category: 'Languages' },
+  { name: "HTML5", iconName: "html5", color: "#E34F26" },
+  { name: "CSS3", iconName: "css3", color: "#1572B6" },
+  {
+    name: "JavaScript",
+    iconName: "js",
+    color: "#F7DF1E",
+    category: "Languages",
+  },
+  {
+    name: "TypeScript",
+    iconName: "typescript",
+    color: "#3178C6",
+    category: "Languages",
+    preferred: true,
+  },
+  {
+    name: "Python",
+    iconName: "python",
+    color: "#3776AB",
+    category: "Languages",
+  },
 
   // ==========================================
   // FRONTEND
   // ==========================================
-  { name: 'React', iconName: 'react', color: '#61DAFB', category: 'Frontend' },
-  { name: 'Next.js', iconName: 'nextjs2', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
-  { name: 'Vue.js', iconName: 'vuejs', color: '#4FC08D', category: 'Frontend' },
-  { name: 'Tailwind CSS', iconName: 'tailwindcss', color: '#06B6D4', category: 'Frontend', preferred: true },
-  { name: 'Shadcn UI', iconName: 'shadcnui', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
-  { name: 'Bootstrap', iconName: 'bootstrap5', color: '#7952B3', category: 'Frontend' },
-  { name: 'Motion', iconName: 'motion', color: '#000000', darkColor: '#FFFFFF', category: 'Frontend', preferred: true },
-  { name: 'Zustand', iconName: 'zustand', color: '#443E38', darkColor: '#F4F4F5', category: 'Frontend' },
+  {
+    name: "Bootstrap",
+    iconName: "bootstrap5",
+    color: "#7952B3",
+    category: "Frontend",
+  },
+  {
+    name: "Electron",
+    iconName: "electron",
+    color: "#2E3242",
+    category: "Frontend",
+  },
+  { name: "React", iconName: "react", color: "#61DAFB", category: "Frontend" },
+  {
+    name: "Next.js",
+    iconName: "nextjs2",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "Frontend",
+    preferred: true,
+  },
+  { name: "Vue.js", iconName: "vuejs", color: "#4FC08D", category: "Frontend" },
+  {
+    name: "Tailwind CSS",
+    iconName: "tailwindcss",
+    color: "#06B6D4",
+    category: "Frontend",
+    preferred: true,
+  },
+
+  {
+    name: "Shadcn UI",
+    iconName: "shadcnui",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "Frontend",
+    preferred: true,
+  },
+  {
+    name: "Motion",
+    iconName: "motion",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "Frontend",
+    preferred: true,
+  },
+  {
+    name: "Zustand",
+    iconName: "zustand",
+    color: "#443E38",
+    darkColor: "#F4F4F5",
+    category: "Frontend",
+  },
 
   // ==========================================
   // MOBILE
   // ==========================================
-  { name: 'React Native', iconName: 'reactnative', color: '#61DAFB', category: 'Mobile' },
-  { name: 'Capacitor', iconName: 'ionic', color: '#119EFF', category: 'Mobile' },
+  {
+    name: "Capacitor",
+    iconName: "ionic",
+    color: "#119EFF",
+    category: "Mobile",
+  },
+  {
+    name: "React Native",
+    iconName: "reactnative",
+    color: "#61DAFB",
+    category: "Mobile",
+  },
 
   // ==========================================
   // BACKEND (Servers, BaaS, & ORMs)
   // ==========================================
-  { name: 'Node.js', iconName: 'nodejs', color: '#339933', category: 'Backend', preferred: true },
-  { name: 'Django', iconName: 'django', color: '#092E20', darkColor: '#44B78B', category: 'Backend' },
-  { name: 'Laravel', iconName: 'laravel', color: '#FF2D20', category: 'Backend' },
-  { name: 'Supabase', iconName: 'supabase', color: '#3ECF8E', category: 'Backend', preferred: true },
-  { name: 'Firebase', iconName: 'firebase', color: '#FFCA28', category: 'Backend' },
-  { name: 'Prisma ORM', iconName: 'prisma', color: '#2D3748', darkColor: '#FFFFFF', category: 'Backend', preferred: true },
+  {
+    name: "Node.js",
+    iconName: "nodejs",
+    color: "#339933",
+    category: "Backend",
+    preferred: true,
+  },
+  {
+    name: "Django",
+    iconName: "django",
+    color: "#092E20",
+    darkColor: "#44B78B",
+    category: "Backend",
+  },
+  {
+    name: "Firebase",
+    iconName: "firebase",
+    color: "#FFCA28",
+    category: "Backend",
+  },
+  {
+    name: "Laravel",
+    iconName: "laravel",
+    color: "#FF2D20",
+    category: "Backend",
+  },
+  {
+    name: "Supabase",
+    iconName: "supabase",
+    color: "#3ECF8E",
+    category: "Backend",
+    preferred: true,
+  },
+  {
+    name: "Prisma ORM",
+    iconName: "prisma",
+    color: "#2D3748",
+    darkColor: "#FFFFFF",
+    category: "Backend",
+    preferred: true,
+  },
 
   // ==========================================
   // DATABASE (Raw Storage & Caching)
   // ==========================================
-  { name: 'PostgreSQL', iconName: 'postgresql', color: '#4169E1', category: 'Database', preferred: true },
-  { name: 'MySQL', iconName: 'mysql', color: '#4479A1', category: 'Database' },
-  { name: 'Redis', iconName: 'redis', color: '#EE0000', category: 'Database' },
+  {
+    name: "PostgreSQL",
+    iconName: "postgresql",
+    color: "#4169E1",
+    category: "Database",
+    preferred: true,
+  },
+  { name: "MySQL", iconName: "mysql", color: "#4479A1", category: "Database" },
+  { name: "Redis", iconName: "redis", color: "#EE0000", category: "Database" },
 
   // ==========================================
   // TOOLS
   // ==========================================
-  { name: 'Vite', iconName: 'vitejs', color: '#646CFF', category: 'Tools' },
-  { name: 'Figma', iconName: 'figma', color: '#F24E1E', category: 'Tools', preferred: true },
-  { name: 'Git', iconName: 'git', color: '#F05032', category: 'Tools' },
-  { name: 'GitHub', iconName: 'github', color: '#000000', darkColor: '#FFFFFF', category: 'Tools', preferred: true },
-  { name: 'Vercel', iconName: 'vercel', color: '#000000', darkColor: '#FFFFFF', category: 'Tools', preferred: true },
-  { name: 'Docker', iconName: 'docker', color: '#2496ED', category: 'Tools' },
-  { name: 'Postman', iconName: 'postman', color: '#FF6C37', category: 'Tools' },
-  { name: 'Playwright', iconName: 'playwright', color: '#2EAD33', category: 'Tools' },
-  { name: 'ESLint', iconName: 'eslint', color: '#4B32C3', category: 'Tools' },
-  { name: 'Prettier', iconName: 'prettier', color: '#F7B93E', category: 'Tools' },
+  { name: "Docker", iconName: "docker", color: "#2496ED", category: "Tools" },
+  { name: "ESLint", iconName: "eslint", color: "#4B32C3", category: "Tools" },
+  {
+    name: "Figma",
+    iconName: "figma",
+    color: "#F24E1E",
+    category: "Tools",
+    preferred: true,
+  },
+  {
+    name: "Git",
+    iconName: "git",
+    color: "#F05032",
+    category: "Tools",
+    preferred: true,
+  },
+  {
+    name: "GitHub",
+    iconName: "github",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "Tools",
+    preferred: true,
+  },
+  {
+    name: "NPM",
+    iconName: "npm",
+    color: "#CB3837",
+    darkColor: "#CB3837",
+    category: "Tools",
+  },
+  {
+    name: "Playwright",
+    iconName: "playwright",
+    color: "#2EAD33",
+    category: "Tools",
+  },
+  {
+    name: "PNPM",
+    iconName: "pnpm",
+    color: "#F69220",
+    darkColor: "#F69220",
+    category: "Tools",
+    preferred: true,
+  },
+  { name: "Postman", iconName: "postman", color: "#FF6C37", category: "Tools" },
+  {
+    name: "Prettier",
+    iconName: "prettier",
+    color: "#F7B93E",
+    category: "Tools",
+  },
+  {
+    name: "Sentry",
+    iconName: "sentry",
+    color: "#362D59",
+    darkColor: "#FFFFFF",
+    category: "Tools",
+  },
+  {
+    name: "Vercel",
+    iconName: "vercel",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "Tools",
+    preferred: true,
+  },
+  { name: "Vite", iconName: "vitejs", color: "#646CFF", category: "Tools" },
+  {
+    name: "Vitest",
+    iconName: "vitest",
+    color: "#FCC72B",
+    category: "Tools",
+  },
+
+  // ==========================================
+  // Agentic IDEs & CODING ASSISTANTS
+  // ==========================================
+  {
+    name: "Antigravity",
+    iconName: "antigravity",
+    color: "#4285F4",
+    darkColor: "#8AB4F8",
+    category: "Agentic IDEs",
+    preferred: true,
+  },
+  {
+    name: "Claude Code",
+    iconName: "claude",
+    color: "#DA7756",
+    darkColor: "#F59E0B",
+    category: "Agentic IDEs",
+  },
+  {
+    name: "Cursor",
+    iconName: "cursor",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "Agentic IDEs",
+  },
+  {
+    name: "Copilot",
+    iconName: "copilotgithub",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "Agentic IDEs",
+  },
+  {
+    name: "Codex",
+    iconName: "openai",
+    color: "#10A37F",
+    darkColor: "#10A37F",
+    category: "Agentic IDEs",
+  },
+  {
+    name: "VS Code",
+    iconName: "vscode",
+    color: "#007ACC",
+    darkColor: "#007ACC",
+    category: "Agentic IDEs",
+  },
 
   // ==========================================
   // OPERATING SYSTEMS
   // ==========================================
-  { name: 'Windows', iconName: 'windows11', color: '#0078D4', category: 'OS' },
-  { name: 'Linux', iconName: 'linux', color: '#FCC624', category: 'OS', preferred: true },
-  { name: 'Kali Linux', iconClass: 'devicon-kalilinux-original', color: '#557C94', category: 'OS' },
+  {
+    name: "Kali Linux",
+    iconClass: "devicon-kalilinux-original",
+    color: "#557C94",
+    category: "OS",
+  },
+  {
+    name: "Linux",
+    iconName: "linux",
+    color: "#FCC624",
+    category: "OS",
+  },
+  {
+    name: "Ubuntu",
+    iconName: "ubuntu",
+    color: "#E95420",
+    darkColor: "#E95420",
+    category: "OS",
+  },
+  { name: "Windows", iconName: "windows11", color: "#0078D4", category: "OS" },
 ];
 
 export type CellInfo = {
@@ -111,7 +357,11 @@ export type GridData = {
   readonly cells: readonly CellInfo[];
 };
 
-function computeGridData(cols: number, rows: number, isMobile: boolean): GridData {
+function computeGridData(
+  cols: number,
+  rows: number,
+  isMobile: boolean,
+): GridData {
   const cx = Math.floor(cols / 2);
   const cy = Math.floor(rows / 2);
 
@@ -128,9 +378,7 @@ function computeGridData(cols: number, rows: number, isMobile: boolean): GridDat
     for (let x = 0; x < cols; x++) {
       const dx = x - cx;
       const dy = y - cy;
-      const distance = isMobile
-        ? dx * dx * 5 + dy * dy
-        : dx * dx + dy * dy * 5;
+      const distance = isMobile ? dx * dx * 5 + dy * dy : dx * dx + dy * dy * 5;
 
       cells.push({ x, y, distance, index: y * cols + x, delay: 0 });
     }
@@ -168,14 +416,16 @@ export type CategorizedGroup = {
   readonly items: readonly TechItem[];
 };
 
-const CATEGORIZED_STACK: readonly CategorizedGroup[] = CATEGORIES.map((category) => ({
-  category,
-  items: TECH_STACK.filter((t) => t.category === category).sort(
-    (a, b) => (b.preferred ? 1 : 0) - (a.preferred ? 1 : 0)
-  ),
-})).filter((group) => group.items.length > 0);
+const CATEGORIZED_STACK: readonly CategorizedGroup[] = CATEGORIES.map(
+  (category) => ({
+    category,
+    items: TECH_STACK.filter((t) => t.category === category).sort(
+      (a, b) => (b.preferred ? 1 : 0) - (a.preferred ? 1 : 0),
+    ),
+  }),
+).filter((group) => group.items.length > 0);
 
-export type ViewMode = 'grid' | 'list';
+export type ViewMode = "grid" | "list";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -219,7 +469,7 @@ const rowVariants: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: 'tween',
+      type: "tween",
       ease: [0.16, 1, 0.3, 1],
       duration: 0.4,
     },
@@ -232,18 +482,18 @@ function useMounted() {
   return useSyncExternalStore(
     emptySubscribe,
     () => true,
-    () => false
+    () => false,
   );
 }
 
 function subscribeMediaQuery(callback: () => void) {
-  const mql = window.matchMedia('(max-width: 767px)');
-  mql.addEventListener('change', callback);
-  return () => mql.removeEventListener('change', callback);
+  const mql = window.matchMedia("(max-width: 767px)");
+  mql.addEventListener("change", callback);
+  return () => mql.removeEventListener("change", callback);
 }
 
 function getMobileSnapshot() {
-  return window.matchMedia('(max-width: 767px)').matches;
+  return window.matchMedia("(max-width: 767px)").matches;
 }
 
 function getServerMobileSnapshot() {
@@ -252,12 +502,15 @@ function getServerMobileSnapshot() {
 
 function subscribeDarkMode(callback: () => void) {
   const observer = new MutationObserver(callback);
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
   return () => observer.disconnect();
 }
 
 function getDarkSnapshot() {
-  return document.documentElement.classList.contains('dark');
+  return document.documentElement.classList.contains("dark");
 }
 
 function getServerDarkSnapshot() {
@@ -265,24 +518,40 @@ function getServerDarkSnapshot() {
 }
 
 function subscribeStorage(callback: () => void) {
-  window.addEventListener('storage', callback);
-  return () => window.removeEventListener('storage', callback);
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
 }
 
 function getStoredViewModeSnapshot(): ViewMode {
-  const saved = localStorage.getItem('tech-stack-view');
-  return saved === 'list' ? 'list' : 'grid';
+  const saved = localStorage.getItem("tech-stack-view");
+  return saved === "list" ? "list" : "grid";
 }
 
 function getServerViewModeSnapshot(): ViewMode {
-  return 'grid';
+  return "grid";
 }
 
-export function TechStackSection({ className }: { readonly className?: string }) {
+export function TechStackSection({
+  className,
+}: {
+  readonly className?: string;
+}) {
   const mounted = useMounted();
-  const isMobile = useSyncExternalStore(subscribeMediaQuery, getMobileSnapshot, getServerMobileSnapshot);
-  const isDark = useSyncExternalStore(subscribeDarkMode, getDarkSnapshot, getServerDarkSnapshot);
-  const storedViewMode = useSyncExternalStore(subscribeStorage, getStoredViewModeSnapshot, getServerViewModeSnapshot);
+  const isMobile = useSyncExternalStore(
+    subscribeMediaQuery,
+    getMobileSnapshot,
+    getServerMobileSnapshot,
+  );
+  const isDark = useSyncExternalStore(
+    subscribeDarkMode,
+    getDarkSnapshot,
+    getServerDarkSnapshot,
+  );
+  const storedViewMode = useSyncExternalStore(
+    subscribeStorage,
+    getStoredViewModeSnapshot,
+    getServerViewModeSnapshot,
+  );
 
   const [activeViewMode, setActiveViewMode] = useState<ViewMode | null>(null);
   const viewMode = activeViewMode ?? storedViewMode;
@@ -290,7 +559,7 @@ export function TechStackSection({ className }: { readonly className?: string })
   const handleViewModeChange = (mode: ViewMode) => {
     setActiveViewMode(mode);
     try {
-      localStorage.setItem('tech-stack-view', mode);
+      localStorage.setItem("tech-stack-view", mode);
     } catch {
       // Ignore storage write errors in private browsing/sandboxes
     }
@@ -302,7 +571,7 @@ export function TechStackSection({ className }: { readonly className?: string })
     return (
       <section
         id="tech-stack"
-        className={`py-32 md:py-48 bg-bg-base relative overflow-hidden min-h-[800px] flex flex-col items-center justify-center ${className ?? ''}`}
+        className={`py-32 md:py-48 bg-bg-base relative overflow-hidden min-h-[800px] flex flex-col items-center justify-center ${className ?? ""}`}
       >
         <div className="container mx-auto px-6 relative z-10 w-full">
           <div className="mb-8 text-center flex flex-col items-center">
@@ -310,7 +579,9 @@ export function TechStackSection({ className }: { readonly className?: string })
               The <span className="text-brand-500">Stack.</span>
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed font-sans">
-              A curated collection of languages, frameworks, and tools calibrated for sub-second performance, strict type-safety, and interactive fluidity.
+              A curated collection of languages, frameworks, and tools
+              calibrated for sub-second performance, strict type-safety, and
+              interactive fluidity.
             </p>
           </div>
         </div>
@@ -321,7 +592,7 @@ export function TechStackSection({ className }: { readonly className?: string })
   return (
     <section
       id="tech-stack"
-      className={`py-32 md:py-48 bg-bg-base relative overflow-hidden flex flex-col items-center justify-center ${className ?? ''}`}
+      className={`py-32 md:py-48 bg-bg-base relative overflow-hidden flex flex-col items-center justify-center ${className ?? ""}`}
     >
       <LazyMotion features={loadFeatures}>
         <MotionConfig reducedMotion="user">
@@ -331,7 +602,7 @@ export function TechStackSection({ className }: { readonly className?: string })
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.1, duration: 0.5, ease: 'easeOut' }}
+                transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
                 className="font-heading text-4xl md:text-6xl font-extrabold tracking-tight uppercase mb-6 text-foreground"
               >
                 The <span className="text-brand-500">Stack.</span>
@@ -344,7 +615,9 @@ export function TechStackSection({ className }: { readonly className?: string })
                 transition={{ delay: 0.2, duration: 0.5 }}
                 className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed font-sans"
               >
-                A curated collection of languages, frameworks, and tools calibrated for sub-second performance, strict type-safety, and interactive fluidity.
+                A curated collection of languages, frameworks, and tools
+                calibrated for sub-second performance, strict type-safety, and
+                interactive fluidity.
               </m.p>
 
               <m.div
@@ -354,24 +627,30 @@ export function TechStackSection({ className }: { readonly className?: string })
                 transition={{ delay: 0.3, duration: 0.5 }}
                 className="mt-8 flex items-center p-1.5 bg-muted/40 border border-border/60 rounded-full backdrop-blur-md shadow-sm"
               >
-                {(['grid', 'list'] as const).map((mode) => (
+                {(["grid", "list"] as const).map((mode) => (
                   <button
                     key={mode}
                     onClick={() => handleViewModeChange(mode)}
                     className={`relative px-8 py-2.5 rounded-full text-sm font-bold transition-colors ${
                       viewMode === mode
-                        ? 'text-background'
-                        : 'text-muted-foreground hover:text-foreground'
+                        ? "text-background"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     {viewMode === mode && (
                       <m.div
                         layoutId="active-pill"
                         className="absolute inset-0 bg-foreground rounded-full shadow-md"
-                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 25,
+                        }}
                       />
                     )}
-                    <span className="relative z-10 capitalize tracking-wide">{mode}</span>
+                    <span className="relative z-10 capitalize tracking-wide">
+                      {mode}
+                    </span>
                   </button>
                 ))}
               </m.div>
@@ -380,13 +659,13 @@ export function TechStackSection({ className }: { readonly className?: string })
 
           <div className="w-full relative min-h-[600px] flex flex-col items-center">
             <AnimatePresence mode="wait">
-              {viewMode === 'grid' && (
+              {viewMode === "grid" && (
                 <m.div
                   key="grid-view"
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="w-full flex justify-center items-center relative z-20 pointer-events-none overflow-visible flex-1"
                 >
                   <div className="relative">
@@ -394,7 +673,7 @@ export function TechStackSection({ className }: { readonly className?: string })
                       variants={containerVariants}
                       initial="hidden"
                       whileInView="show"
-                      viewport={{ once: true, margin: '-100px' }}
+                      viewport={{ once: true, margin: "-100px" }}
                       className="grid gap-2 md:gap-3 lg:gap-4 pointer-events-auto w-max"
                       style={{
                         gridTemplateColumns: `repeat(${gridData.cols}, max-content)`,
@@ -410,11 +689,8 @@ export function TechStackSection({ className }: { readonly className?: string })
                             isDark={isDark}
                           />
                         ) : (
-                          <EmptyCell
-                            key={cell.index}
-                            delay={cell.delay}
-                          />
-                        )
+                          <EmptyCell key={cell.index} delay={cell.delay} />
+                        ),
                       )}
                     </m.div>
 
@@ -424,8 +700,8 @@ export function TechStackSection({ className }: { readonly className?: string })
                       className="absolute inset-0 pointer-events-none z-10"
                       style={{
                         background:
-                          'radial-gradient(ellipse 55% 60% at 50% 50%, transparent 0%, oklch(0.095 0.018 17 / 0.0) 20%, oklch(0.095 0.018 17 / 0.45) 50%, oklch(0.095 0.018 17 / 0.85) 70%, oklch(0.095 0.018 17) 90%)',
-                        transform: 'translateZ(0)',
+                          "radial-gradient(ellipse 55% 60% at 50% 50%, transparent 0%, oklch(0.095 0.018 17 / 0.0) 20%, oklch(0.095 0.018 17 / 0.45) 50%, oklch(0.095 0.018 17 / 0.85) 70%, oklch(0.095 0.018 17) 90%)",
+                        transform: "translateZ(0)",
                       }}
                     />
                     {/* Left edge fade */}
@@ -433,8 +709,8 @@ export function TechStackSection({ className }: { readonly className?: string })
                       className="absolute inset-y-0 left-0 w-[25%] pointer-events-none z-10"
                       style={{
                         background:
-                          'linear-gradient(to right, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)',
-                        transform: 'translateZ(0)',
+                          "linear-gradient(to right, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)",
+                        transform: "translateZ(0)",
                       }}
                     />
                     {/* Right edge fade */}
@@ -442,8 +718,8 @@ export function TechStackSection({ className }: { readonly className?: string })
                       className="absolute inset-y-0 right-0 w-[25%] pointer-events-none z-10"
                       style={{
                         background:
-                          'linear-gradient(to left, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)',
-                        transform: 'translateZ(0)',
+                          "linear-gradient(to left, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)",
+                        transform: "translateZ(0)",
                       }}
                     />
                     {/* Top edge fade */}
@@ -451,8 +727,8 @@ export function TechStackSection({ className }: { readonly className?: string })
                       className="absolute inset-x-0 top-0 h-[30%] pointer-events-none z-10"
                       style={{
                         background:
-                          'linear-gradient(to bottom, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)',
-                        transform: 'translateZ(0)',
+                          "linear-gradient(to bottom, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)",
+                        transform: "translateZ(0)",
                       }}
                     />
                     {/* Bottom edge fade */}
@@ -460,21 +736,21 @@ export function TechStackSection({ className }: { readonly className?: string })
                       className="absolute inset-x-0 bottom-0 h-[30%] pointer-events-none z-10"
                       style={{
                         background:
-                          'linear-gradient(to top, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)',
-                        transform: 'translateZ(0)',
+                          "linear-gradient(to top, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)",
+                        transform: "translateZ(0)",
                       }}
                     />
                   </div>
                 </m.div>
               )}
 
-              {viewMode === 'list' && (
+              {viewMode === "list" && (
                 <m.div
                   key="list-view"
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                   className="w-full max-w-5xl mx-auto relative z-20 px-6 py-12"
                 >
                   <TechStackList isDark={isDark} />
@@ -488,9 +764,18 @@ export function TechStackSection({ className }: { readonly className?: string })
   );
 }
 
-const TechStackList = React.memo(function TechStackList({ isDark }: { readonly isDark: boolean }) {
+const TechStackList = React.memo(function TechStackList({
+  isDark,
+}: {
+  readonly isDark: boolean;
+}) {
   return (
-    <m.div variants={listContainerVariants} initial="hidden" animate="show" className="flex flex-col w-full">
+    <m.div
+      variants={listContainerVariants}
+      initial="hidden"
+      animate="show"
+      className="flex flex-col w-full"
+    >
       {CATEGORIZED_STACK.map(({ category, items }, index) => {
         const isLast = index === CATEGORIZED_STACK.length - 1;
 
@@ -498,7 +783,7 @@ const TechStackList = React.memo(function TechStackList({ isDark }: { readonly i
           <m.div
             key={category}
             variants={rowVariants}
-            className={`flex flex-col md:flex-row md:items-start gap-4 md:gap-12 py-8 md:py-10 ${!isLast ? 'border-b border-black/5 dark:border-white/[0.05]' : ''}`}
+            className={`flex flex-col md:flex-row md:items-start gap-4 md:gap-12 py-8 md:py-10 ${!isLast ? "border-b border-black/5 dark:border-white/[0.05]" : ""}`}
           >
             <div className="md:w-48 flex-shrink-0 pt-2">
               <h3 className="text-xs font-mono font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.25em]">
@@ -540,15 +825,17 @@ const TechStackList = React.memo(function TechStackList({ isDark }: { readonly i
                     {tech.iconName ? (
                       <StackIcon
                         name={tech.iconName}
-                        variant={isDark ? 'dark' : 'light'}
-                        className={`w-full h-full ${tech.iconName === 'nextjs' ? 'dark:invert' : ''}`}
+                        variant={isDark ? "dark" : "light"}
+                        className={`w-full h-full ${tech.iconName === "nextjs" ? "dark:invert" : ""}`}
                       />
                     ) : tech.iconClass ? (
-                      <i className={tech.iconClass} style={{ color: tech.darkColor ?? tech.color, fontSize: '1.25rem' }} />
-                    ) : tech.icon ? (
-                      <React.Fragment>
-                        {React.createElement(tech.icon, { style: { color: tech.darkColor ?? tech.color }, size: 20 })}
-                      </React.Fragment>
+                      <i
+                        className={tech.iconClass}
+                        style={{
+                          color: tech.darkColor ?? tech.color,
+                          fontSize: "1.25rem",
+                        }}
+                      />
                     ) : null}
                   </div>
 
@@ -603,7 +890,7 @@ const EmptyCell = React.memo(function EmptyCell({ delay }: EmptyCellProps) {
         animate-cell-empty"
       style={{
         animationDelay: `${delay}s`,
-        animationFillMode: 'both',
+        animationFillMode: "both",
       }}
     />
   );
@@ -615,7 +902,11 @@ type TechCellProps = {
   readonly isDark: boolean;
 };
 
-const TechCell = React.memo(function TechCell({ tech, delay, isDark }: TechCellProps) {
+const TechCell = React.memo(function TechCell({
+  tech,
+  delay,
+  isDark,
+}: TechCellProps) {
   return (
     <m.div
       variants={cellVariants}
@@ -643,15 +934,14 @@ const TechCell = React.memo(function TechCell({ tech, delay, isDark }: TechCellP
         {tech.iconName ? (
           <StackIcon
             name={tech.iconName}
-            variant={isDark ? 'dark' : 'light'}
-            className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 ${tech.iconName === 'nextjs' ? 'dark:invert' : ''}`}
+            variant={isDark ? "dark" : "light"}
+            className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 ${tech.iconName === "nextjs" ? "dark:invert" : ""}`}
           />
         ) : tech.iconClass ? (
-          <i className={tech.iconClass} style={{ color: tech.darkColor ?? tech.color }} />
-        ) : tech.icon ? (
-          <React.Fragment>
-            {React.createElement(tech.icon, { style: { color: tech.darkColor ?? tech.color } })}
-          </React.Fragment>
+          <i
+            className={tech.iconClass}
+            style={{ color: tech.darkColor ?? tech.color }}
+          />
         ) : null}
       </div>
 
@@ -679,12 +969,14 @@ const TechCell = React.memo(function TechCell({ tech, delay, isDark }: TechCellP
       )}
 
       {/* Tooltip */}
-      <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 z-[60] px-3.5 py-2 
+      <div
+        className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 z-[60] px-3.5 py-2 
         bg-zinc-950 dark:bg-white text-white dark:text-zinc-900 
         rounded-xl opacity-0 scale-90 pointer-events-none 
         transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 whitespace-nowrap 
         shadow-[0_8px_24px_rgba(0,0,0,0.3)] dark:shadow-[0_8px_24px_rgba(0,0,0,0.15)]
-        border border-white/10 dark:border-black/5 flex flex-col items-center justify-center">
+        border border-white/10 dark:border-black/5 flex flex-col items-center justify-center"
+      >
         <span className="text-[10px] md:text-xs font-mono font-bold tracking-wider">
           {tech.name}
         </span>
@@ -693,8 +985,10 @@ const TechCell = React.memo(function TechCell({ tech, delay, isDark }: TechCellP
             (Preferred)
           </span>
         )}
-        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 
-          bg-zinc-950 dark:bg-white rotate-45 border-r border-b border-white/10 dark:border-black/5" />
+        <div
+          className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 
+          bg-zinc-950 dark:bg-white rotate-45 border-r border-b border-white/10 dark:border-black/5"
+        />
       </div>
     </m.div>
   );
