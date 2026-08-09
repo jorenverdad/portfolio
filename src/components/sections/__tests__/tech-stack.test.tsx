@@ -48,12 +48,13 @@ describe('TechStackSection', () => {
   });
 
   it('exports valid categories and tech stack data constants', () => {
-    expect(CATEGORIES).toHaveLength(8);
+    expect(CATEGORIES).toHaveLength(9);
     expect(CATEGORIES).toContain('Frontend');
     expect(CATEGORIES).toContain('Backend');
     expect(CATEGORIES).toContain('Tools');
-    expect(CATEGORIES).toContain('AI');
-    expect(TECH_STACK.length).toBe(44);
+    expect(CATEGORIES).toContain('Agentic IDEs');
+    expect(CATEGORIES).toContain('OS');
+    expect(TECH_STACK.length).toBe(49);
   });
 
   it('includes newly added tech-stack-icons (Vitest, Sentry, Antigravity, Claude Code, Codex, Cursor, Copilot) without Husky', () => {
@@ -94,7 +95,7 @@ describe('TechStackSection', () => {
       fireEvent.click(listButton);
     });
 
-    // In list view, all categories including AI should be displayed
+    // In list view, all categories including Agentic IDEs should be displayed
     CATEGORIES.forEach((cat) => {
       expect(screen.getByText(cat)).toBeInTheDocument();
     });
@@ -108,6 +109,6 @@ describe('TechStackSection', () => {
     render(<TechStackSection />);
 
     expect(screen.getByText('Languages')).toBeInTheDocument();
-    expect(screen.getByText('AI')).toBeInTheDocument();
+    expect(screen.getByText('Agentic IDEs')).toBeInTheDocument();
   });
 });
