@@ -15,9 +15,10 @@ const loadFeatures = () => import("motion/react").then((res) => res.domMax);
 export const CATEGORIES = [
   "Languages",
   "Frontend",
-  "Mobile",
   "Backend",
   "Database",
+  "Mobile",
+  "Desktop",
   "Tools",
   "Agentic IDEs",
   "OS",
@@ -70,12 +71,6 @@ export const TECH_STACK: readonly TechItem[] = [
     color: "#7952B3",
     category: "Frontend",
   },
-  {
-    name: "Electron",
-    iconName: "electron",
-    color: "#2E3242",
-    category: "Frontend",
-  },
   { name: "React", iconName: "react", color: "#61DAFB", category: "Frontend" },
   {
     name: "Next.js",
@@ -93,7 +88,6 @@ export const TECH_STACK: readonly TechItem[] = [
     category: "Frontend",
     preferred: true,
   },
-
   {
     name: "Shadcn UI",
     iconName: "shadcnui",
@@ -116,22 +110,6 @@ export const TECH_STACK: readonly TechItem[] = [
     color: "#443E38",
     darkColor: "#F4F4F5",
     category: "Frontend",
-  },
-
-  // ==========================================
-  // MOBILE
-  // ==========================================
-  {
-    name: "Capacitor",
-    iconName: "ionic",
-    color: "#119EFF",
-    category: "Mobile",
-  },
-  {
-    name: "React Native",
-    iconName: "reactnative",
-    color: "#61DAFB",
-    category: "Mobile",
   },
 
   // ==========================================
@@ -170,14 +148,6 @@ export const TECH_STACK: readonly TechItem[] = [
     category: "Backend",
     preferred: true,
   },
-  {
-    name: "Prisma ORM",
-    iconName: "prisma",
-    color: "#2D3748",
-    darkColor: "#FFFFFF",
-    category: "Backend",
-    preferred: true,
-  },
 
   // ==========================================
   // DATABASE (Raw Storage & Caching)
@@ -190,7 +160,40 @@ export const TECH_STACK: readonly TechItem[] = [
     preferred: true,
   },
   { name: "MySQL", iconName: "mysql", color: "#4479A1", category: "Database" },
+  {
+    name: "Prisma ORM",
+    iconName: "prisma",
+    color: "#2D3748",
+    darkColor: "#FFFFFF",
+    category: "Database",
+  },
   { name: "Redis", iconName: "redis", color: "#EE0000", category: "Database" },
+
+  // ==========================================
+  // MOBILE
+  // ==========================================
+  {
+    name: "Capacitor",
+    iconName: "ionic",
+    color: "#119EFF",
+    category: "Mobile",
+  },
+  {
+    name: "React Native",
+    iconName: "reactnative",
+    color: "#61DAFB",
+    category: "Mobile",
+  },
+
+  // ==========================================
+  // DESKTOP
+  // ==========================================
+  {
+    name: "Electron",
+    iconName: "electron",
+    color: "#2E3242",
+    category: "Desktop",
+  },
 
   // ==========================================
   // TOOLS
@@ -202,7 +205,6 @@ export const TECH_STACK: readonly TechItem[] = [
     iconName: "figma",
     color: "#F24E1E",
     category: "Tools",
-    preferred: true,
   },
   {
     name: "Git",
