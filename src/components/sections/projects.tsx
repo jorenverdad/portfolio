@@ -506,10 +506,7 @@ export function ProjectsSection({
                 className="max-w-4xl mx-auto flex flex-col items-center text-center relative z-30"
               >
                 <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
-                  Featured{" "}
-                  <span className="text-brand-500 font-serif italic font-normal">
-                    Projects.
-                  </span>
+                  Featured <span className="text-brand-500">Projects.</span>
                 </h2>
 
                 <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-sans max-w-2xl leading-relaxed mb-8">

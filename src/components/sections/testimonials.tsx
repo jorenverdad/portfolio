@@ -193,14 +193,11 @@ export function TestimonialsSection({
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
-              Client{" "}
-              <span className="text-brand-500 font-serif italic font-normal">
-                Perspectives
-              </span>
+              Client <span className="text-brand-500">Perspectives</span>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-sans max-w-2xl mx-auto">
-              Don&apos;t just take my word for it. Here&apos;s what clients
-              and collaborators say about my approach to building high-performance
+              Don&apos;t just take my word for it. Here&apos;s what clients and
+              collaborators say about my approach to building high-performance
               applications, polished interfaces, and complete digital products.
             </p>
           </motion.div>
