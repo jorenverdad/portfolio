@@ -20,7 +20,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 11.5.1
+          version: 11.18.0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -44,10 +44,10 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "security: resolve package vulnerabilities via pnpm audit"
+          commit-message: "build(deps): resolve package vulnerabilities via pnpm audit"
           branch: pnpm-security-updates
           delete-branch: true
-          title: "security: resolve package vulnerabilities"
+          title: "build(deps): resolve package vulnerabilities"
           body: |
             This is an automated pull request to resolve security vulnerabilities detected in dependencies.
 
