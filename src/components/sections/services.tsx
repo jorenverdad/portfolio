@@ -19,24 +19,37 @@ export interface ServicesProps {
 const DEFAULT_SERVICES: ReadonlyArray<Service> = [
   {
     id: "01",
+    title: "Software Engineering",
+    description:
+      "Architect, develop, and deploy resilient software systems from database schemas to production infrastructure. I build robust backend services, secure APIs, and automated deployment pipelines engineered for high availability and scale.",
+    tags: [
+      "System Architecture",
+      "Backend Systems",
+      "Database Design",
+      "API Design",
+      "DevOps & Deployment",
+      "Scalability",
+    ],
+  },
+  {
+    id: "02",
     title: "Web Application Development",
     description:
       "Build fast, type-safe web applications that scale. I construct clean architectures using modern frameworks, prioritizing load speed and codebase longevity so your product handles growth without friction.",
     tags: ["Next.js", "React", "TypeScript", "Web Performance"],
   },
   {
-    id: "02",
-    title: "Design Engineering",
-    description:
-      "Convert Figma designs into pixel-perfect frontend code. I build responsive, highly accessible interfaces that respect your design system's integrity while ensuring fluid user interactions.",
-    tags: ["Tailwind CSS", "Figma", "Design Systems", "Accessibility"],
-  },
-  {
     id: "03",
-    title: "Full-Stack Engineering",
+    title: "UI/UX & Product Design",
     description:
-      "Launch secure, database-driven products from the schema up. I develop robust backends, design secure APIs, and optimize SQL databases so your platform runs fast under heavy traffic.",
-    tags: ["Laravel", "Supabase", "PostgreSQL", "API Design", "Vercel"],
+      "Design intuitive user experiences, scalable design systems, and high-fidelity interactive prototypes. I transform complex requirements into elegant, accessible interfaces that maintain visual hierarchy and brand consistency.",
+    tags: [
+      "Figma",
+      "UI/UX Design",
+      "Design Systems",
+      "Prototyping",
+      "Accessibility",
+    ],
   },
   {
     id: "04",
