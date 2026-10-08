@@ -45,18 +45,24 @@ function DownloadResumeButton() {
   const y = useMotionValue(0);
   const rectRef = useRef<DOMRect | null>(null);
 
-  const handleMouseEnter = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    rectRef.current = event.currentTarget.getBoundingClientRect();
-  }, []);
-
-  const handleMouseMove = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!rectRef.current) {
+  const handleMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
       rectRef.current = event.currentTarget.getBoundingClientRect();
-    }
-    const rect = rectRef.current;
-    x.set(event.clientX - rect.left);
-    y.set(event.clientY - rect.top);
-  }, [x, y]);
+    },
+    [],
+  );
+
+  const handleMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (!rectRef.current) {
+        rectRef.current = event.currentTarget.getBoundingClientRect();
+      }
+      const rect = rectRef.current;
+      x.set(event.clientX - rect.left);
+      y.set(event.clientY - rect.top);
+    },
+    [x, y],
+  );
 
   const handleMouseLeave = useCallback(() => {
     rectRef.current = null;
@@ -64,7 +70,7 @@ function DownloadResumeButton() {
 
   return (
     <m.a
-      href="/pdfs/CV_JorenVerdad-2026.pdf"
+      href="/pdfs/Verdad_CV_2026.pdf"
       target="_blank"
       rel="noopener noreferrer"
       onMouseEnter={handleMouseEnter}
@@ -153,19 +159,25 @@ function SocialIconButton({
   const y = useMotionValue(0);
   const rectRef = useRef<DOMRect | null>(null);
 
-  const handleMouseEnter = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    setIsHovered(true);
-    rectRef.current = event.currentTarget.getBoundingClientRect();
-  }, []);
-
-  const handleMouseMove = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!rectRef.current) {
+  const handleMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      setIsHovered(true);
       rectRef.current = event.currentTarget.getBoundingClientRect();
-    }
-    const rect = rectRef.current;
-    x.set(event.clientX - rect.left);
-    y.set(event.clientY - rect.top);
-  }, [x, y]);
+    },
+    [],
+  );
+
+  const handleMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (!rectRef.current) {
+        rectRef.current = event.currentTarget.getBoundingClientRect();
+      }
+      const rect = rectRef.current;
+      x.set(event.clientX - rect.left);
+      y.set(event.clientY - rect.top);
+    },
+    [x, y],
+  );
 
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
@@ -299,36 +311,48 @@ export function HeroSection({ className }: HeroProps) {
   const badgeRectRef = useRef<DOMRect | null>(null);
   const copyRectRef = useRef<DOMRect | null>(null);
 
-  const handleBadgeMouseEnter = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    badgeRectRef.current = event.currentTarget.getBoundingClientRect();
-  }, []);
-
-  const handleBadgeMouseMove = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    if (!badgeRectRef.current) {
+  const handleBadgeMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
       badgeRectRef.current = event.currentTarget.getBoundingClientRect();
-    }
-    const rect = badgeRectRef.current;
-    badgeX.set(event.clientX - rect.left);
-    badgeY.set(event.clientY - rect.top);
-  }, [badgeX, badgeY]);
+    },
+    [],
+  );
+
+  const handleBadgeMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!badgeRectRef.current) {
+        badgeRectRef.current = event.currentTarget.getBoundingClientRect();
+      }
+      const rect = badgeRectRef.current;
+      badgeX.set(event.clientX - rect.left);
+      badgeY.set(event.clientY - rect.top);
+    },
+    [badgeX, badgeY],
+  );
 
   const handleBadgeMouseLeave = useCallback(() => {
     badgeRectRef.current = null;
   }, []);
 
-  const handleCopyMouseEnter = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    setIsHovered(true);
-    copyRectRef.current = event.currentTarget.getBoundingClientRect();
-  }, []);
-
-  const handleCopyMouseMove = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    if (!copyRectRef.current) {
+  const handleCopyMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setIsHovered(true);
       copyRectRef.current = event.currentTarget.getBoundingClientRect();
-    }
-    const rect = copyRectRef.current;
-    copyX.set(event.clientX - rect.left);
-    copyY.set(event.clientY - rect.top);
-  }, [copyX, copyY]);
+    },
+    [],
+  );
+
+  const handleCopyMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (!copyRectRef.current) {
+        copyRectRef.current = event.currentTarget.getBoundingClientRect();
+      }
+      const rect = copyRectRef.current;
+      copyX.set(event.clientX - rect.left);
+      copyY.set(event.clientY - rect.top);
+    },
+    [copyX, copyY],
+  );
 
   const handleCopyMouseLeave = useCallback(() => {
     setIsHovered(false);
