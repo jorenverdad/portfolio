@@ -1,0 +1,1 @@
+git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD | grep -E 'pnpm-lock.yaml' && pnpm install || true

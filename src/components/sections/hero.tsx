@@ -31,11 +31,10 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
+  hidden: { opacity: 0, y: 30 },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: { type: "spring", bounce: 0, duration: 0.8 },
   },
 };
@@ -45,18 +44,24 @@ function DownloadResumeButton() {
   const y = useMotionValue(0);
   const rectRef = useRef<DOMRect | null>(null);
 
-  const handleMouseEnter = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    rectRef.current = event.currentTarget.getBoundingClientRect();
-  }, []);
-
-  const handleMouseMove = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!rectRef.current) {
+  const handleMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
       rectRef.current = event.currentTarget.getBoundingClientRect();
-    }
-    const rect = rectRef.current;
-    x.set(event.clientX - rect.left);
-    y.set(event.clientY - rect.top);
-  }, [x, y]);
+    },
+    [],
+  );
+
+  const handleMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (!rectRef.current) {
+        rectRef.current = event.currentTarget.getBoundingClientRect();
+      }
+      const rect = rectRef.current;
+      x.set(event.clientX - rect.left);
+      y.set(event.clientY - rect.top);
+    },
+    [x, y],
+  );
 
   const handleMouseLeave = useCallback(() => {
     rectRef.current = null;
@@ -64,7 +69,7 @@ function DownloadResumeButton() {
 
   return (
     <m.a
-      href="/pdfs/CV_JorenVerdad-2026.pdf"
+      href="/pdfs/Verdad_CV_2026.pdf"
       target="_blank"
       rel="noopener noreferrer"
       onMouseEnter={handleMouseEnter}
@@ -153,19 +158,25 @@ function SocialIconButton({
   const y = useMotionValue(0);
   const rectRef = useRef<DOMRect | null>(null);
 
-  const handleMouseEnter = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    setIsHovered(true);
-    rectRef.current = event.currentTarget.getBoundingClientRect();
-  }, []);
-
-  const handleMouseMove = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!rectRef.current) {
+  const handleMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      setIsHovered(true);
       rectRef.current = event.currentTarget.getBoundingClientRect();
-    }
-    const rect = rectRef.current;
-    x.set(event.clientX - rect.left);
-    y.set(event.clientY - rect.top);
-  }, [x, y]);
+    },
+    [],
+  );
+
+  const handleMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (!rectRef.current) {
+        rectRef.current = event.currentTarget.getBoundingClientRect();
+      }
+      const rect = rectRef.current;
+      x.set(event.clientX - rect.left);
+      y.set(event.clientY - rect.top);
+    },
+    [x, y],
+  );
 
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
@@ -299,36 +310,48 @@ export function HeroSection({ className }: HeroProps) {
   const badgeRectRef = useRef<DOMRect | null>(null);
   const copyRectRef = useRef<DOMRect | null>(null);
 
-  const handleBadgeMouseEnter = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    badgeRectRef.current = event.currentTarget.getBoundingClientRect();
-  }, []);
-
-  const handleBadgeMouseMove = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    if (!badgeRectRef.current) {
+  const handleBadgeMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
       badgeRectRef.current = event.currentTarget.getBoundingClientRect();
-    }
-    const rect = badgeRectRef.current;
-    badgeX.set(event.clientX - rect.left);
-    badgeY.set(event.clientY - rect.top);
-  }, [badgeX, badgeY]);
+    },
+    [],
+  );
+
+  const handleBadgeMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!badgeRectRef.current) {
+        badgeRectRef.current = event.currentTarget.getBoundingClientRect();
+      }
+      const rect = badgeRectRef.current;
+      badgeX.set(event.clientX - rect.left);
+      badgeY.set(event.clientY - rect.top);
+    },
+    [badgeX, badgeY],
+  );
 
   const handleBadgeMouseLeave = useCallback(() => {
     badgeRectRef.current = null;
   }, []);
 
-  const handleCopyMouseEnter = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    setIsHovered(true);
-    copyRectRef.current = event.currentTarget.getBoundingClientRect();
-  }, []);
-
-  const handleCopyMouseMove = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    if (!copyRectRef.current) {
+  const handleCopyMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setIsHovered(true);
       copyRectRef.current = event.currentTarget.getBoundingClientRect();
-    }
-    const rect = copyRectRef.current;
-    copyX.set(event.clientX - rect.left);
-    copyY.set(event.clientY - rect.top);
-  }, [copyX, copyY]);
+    },
+    [],
+  );
+
+  const handleCopyMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (!copyRectRef.current) {
+        copyRectRef.current = event.currentTarget.getBoundingClientRect();
+      }
+      const rect = copyRectRef.current;
+      copyX.set(event.clientX - rect.left);
+      copyY.set(event.clientY - rect.top);
+    },
+    [copyX, copyY],
+  );
 
   const handleCopyMouseLeave = useCallback(() => {
     setIsHovered(false);
@@ -343,8 +366,24 @@ export function HeroSection({ className }: HeroProps) {
         {/* Background Grid Pattern */}
         <GridPattern className="opacity-30 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)]" />
 
-        {/* Subtle Glow at the top */}
-        <div className="absolute top-0 inset-x-0 h-64 bg-brand-500/10 blur-[120px] pointer-events-none" />
+        {/* Natural Ambient Top Glow - Organic radial falloff, zero-blur GPU performance */}
+        <div
+          aria-hidden="true"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[640px] pointer-events-none select-none opacity-40 dark:opacity-100"
+          style={{
+            background:
+              "radial-gradient(ellipse 90% 65% at 50% -15%, color-mix(in oklch, var(--color-brand-500) 28%, transparent) 0%, color-mix(in oklch, var(--color-brand-500) 12%, transparent) 40%, color-mix(in oklch, var(--color-brand-500) 3%, transparent) 75%, transparent 100%)",
+          }}
+        />
+        {/* Concentrated soft beacon at the navigation apex */}
+        <div
+          aria-hidden="true"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[840px] h-[320px] pointer-events-none select-none opacity-30 dark:opacity-85"
+          style={{
+            background:
+              "radial-gradient(ellipse 65% 55% at 50% 0%, color-mix(in oklch, var(--color-brand-500) 22%, transparent) 0%, color-mix(in oklch, var(--color-brand-500) 6%, transparent) 60%, transparent 100%)",
+          }}
+        />
 
         <div className="container relative z-10 mx-auto px-6 flex flex-col items-center text-center">
           <m.div

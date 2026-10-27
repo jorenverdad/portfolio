@@ -137,7 +137,7 @@ export function ContactSection() {
 
             <motion.div
               onMouseLeave={() => setHoveredSocial(null)}
-              className="flex items-center gap-2 md:gap-4 p-2 md:p-3 rounded-full border border-white/[0.05] border-t-white/10 bg-white/[0.02] backdrop-blur-xl shadow-2xl relative"
+              className="flex items-center gap-2 md:gap-4 p-2 md:p-3 rounded-full border border-edge-subtle dark:border-white/[0.05] dark:border-t-white/10 bg-bg-surface/60 dark:bg-white/[0.02] backdrop-blur-xl shadow-xl relative"
             >
               {SOCIALS.map((social, idx) => {
                 const Icon = social.icon;

@@ -6,6 +6,7 @@ import { ChevronRight, Briefcase, MapPin } from "lucide-react";
 import { TelemetryRadar } from "./telemetry";
 import { JourneyMilestone } from "./types";
 import { DEFAULT_MILESTONES } from "./constants";
+import { calculateDuration } from "./utils";
 
 export interface ExperienceViewProps {
   readonly milestones?: ReadonlyArray<JourneyMilestone>;
@@ -120,12 +121,12 @@ export function ExperienceView({
                     >
                       0{index + 1}
                     </span>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col min-w-0">
                       <span className="font-semibold tracking-wide truncate max-w-[150px] md:max-w-[200px]">
                         {milestone.role}
                       </span>
-                      <span className="text-[10px] font-normal text-muted-foreground/60">
-                        {milestone.year}
+                      <span className="text-[10px] font-normal text-muted-foreground/60 truncate max-w-[150px] md:max-w-[200px]">
+                        {milestone.company}
                       </span>
                     </div>
                   </div>
@@ -144,13 +145,15 @@ export function ExperienceView({
                 </span>
               </div>
               <div className="flex flex-col border-x border-edge-subtle/30">
-                <span className="text-lg font-bold text-foreground">3</span>
+                <span className="text-lg font-bold text-foreground">
+                  {milestones.length}
+                </span>
                 <span className="text-[9px] text-muted-foreground/60 uppercase font-semibold">
-                  Companies
+                  Milestones
                 </span>
               </div>
               <div className="flex flex-col">
-                <span className="text-lg font-bold text-foreground">15+</span>
+                <span className="text-lg font-bold text-foreground">20+</span>
                 <span className="text-[9px] text-muted-foreground/60 uppercase font-semibold">
                   Builds
                 </span>
@@ -177,6 +180,15 @@ export function ExperienceView({
             const tags = milestone.tags ?? [];
             const location = milestone.location ?? "";
             const isActive = activeIndex === index;
+            const duration = milestone.startDate
+              ? calculateDuration(milestone.startDate, milestone.endDate)
+              : "";
+            const dateText = milestone.period || milestone.year || "";
+            const dateDisplay = duration
+              ? `${dateText} · ${duration}`
+              : dateText;
+            const displayRole = milestone.role || milestone.title || "";
+            const displayCompany = milestone.company || milestone.role || "";
 
             return (
               <div
@@ -261,7 +273,7 @@ export function ExperienceView({
                   <div className="flex flex-col gap-1.5 mb-5 relative z-10">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <h3 className="font-heading text-xl md:text-2xl font-bold tracking-tight text-foreground group-hover/card:text-brand-100 transition-colors duration-300">
-                        {milestone.title}
+                        {displayRole}
                       </h3>
                       <span
                         className={`text-xs font-semibold px-3 py-1 rounded-full font-mono border transition-all duration-300 ${
@@ -270,14 +282,14 @@ export function ExperienceView({
                             : "text-warm-500 bg-warm-500/5 border-warm-500/10 group-hover/card:border-warm-500/20"
                         }`}
                       >
-                        {milestone.year}
+                        {dateDisplay}
                       </span>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-4 text-xs md:text-sm font-medium text-brand-500">
                       <div className="flex items-center gap-1.5">
                         <Briefcase className="size-3.5 text-brand-500/60" />
-                        {milestone.role}
+                        {displayCompany}
                       </div>
                       {location && (
                         <div className="flex items-center gap-1.5 text-muted-foreground/60 font-mono text-[11px] md:text-xs">
@@ -322,9 +334,9 @@ export function ExperienceView({
 
                   {isRich && tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 pt-4 border-t border-edge-subtle/30 relative z-10 select-none">
-                      {tags.map((tag) => (
+                      {tags.map((tag, tIndex) => (
                         <span
-                          key={tag}
+                          key={`${tag}-${tIndex}`}
                           className="px-2.5 py-1 font-mono text-[10px] md:text-xs rounded-lg border border-edge-subtle/60 bg-bg-void/20 text-muted-foreground/80 hover:border-brand-500/20 hover:bg-brand-500/5 hover:text-brand-100 hover:shadow-[0_0_12px_rgba(224,32,32,0.05)] transition-all duration-300 cursor-default"
                         >
                           {tag}

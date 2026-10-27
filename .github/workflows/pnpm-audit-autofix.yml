@@ -20,7 +20,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 11.5.1
+          version: 11.18.0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -30,31 +30,36 @@ jobs:
 
       - name: Run audit & fix (update dependencies)
         run: |
-          pnpm audit --fix=update || true
+          pnpm audit --fix update || true
 
       - name: Run audit & fix (override nested dependencies)
         run: |
-          pnpm audit --fix=override || true
+          pnpm audit --fix override || true
 
       - name: Regenerate Lockfile and Install
         run: |
           pnpm install --no-frozen-lockfile
 
+      - name: Verify Unit Tests
+        run: |
+          pnpm test:run
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "security: resolve package vulnerabilities via pnpm audit"
+          commit-message: "build(deps): resolve package vulnerabilities via pnpm audit"
           branch: pnpm-security-updates
           delete-branch: true
-          title: "security: resolve package vulnerabilities"
+          title: "build(deps): resolve package vulnerabilities"
           body: |
             This is an automated pull request to resolve security vulnerabilities detected in dependencies.
 
             ### Actions Taken:
-            1. Ran `pnpm audit --fix=update` to upgrade direct dependencies within their semantic ranges.
-            2. Ran `pnpm audit --fix=override` to add overrides for transitive (nested) dependencies in `pnpm-workspace.yaml`.
+            1. Ran `pnpm audit --fix update` to upgrade direct dependencies within their semantic ranges.
+            2. Ran `pnpm audit --fix override` to add overrides for transitive (nested) dependencies in `pnpm-workspace.yaml`.
             3. Regenerated the `pnpm-lock.yaml` file using `pnpm install --no-frozen-lockfile`.
+            4. Verified that all unit tests pass with `pnpm test:run`.
 
             Please review the changes, verify the lockfile updates, and ensure all tests pass before merging.
           labels: |

@@ -13,7 +13,7 @@ export function Footer({
     <footer className={`bg-bg-base border-t border-edge-subtle pt-12 pb-8 relative overflow-hidden ${className ?? ''}`}>
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center">
         <div className="w-full flex justify-center pointer-events-none select-none overflow-hidden mb-2">
-          <span className="text-[28vw] md:text-[22vw] lg:text-[20vw] font-black leading-none tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white/10 via-white/5 to-transparent/0">
+          <span className="text-[28vw] md:text-[22vw] lg:text-[20vw] font-black leading-none tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground/10 via-foreground/5 to-transparent/0">
             JOREN
           </span>
         </div>

@@ -15,7 +15,7 @@ const SKILLS = [
   "CTF Player",
 ];
 
-const MARQUEE_ITEMS = [...SKILLS, ...SKILLS, ...SKILLS, ...SKILLS];
+const MARQUEE_ITEMS = [...SKILLS, ...SKILLS];
 
 export function SkillsMarquee() {
   return (
@@ -31,12 +31,7 @@ export function SkillsMarquee() {
                 <span className="relative z-10 block text-4xl text-center md:text-6xl lg:text-7xl font-heading font-black tracking-tighter uppercase text-transparent [-webkit-text-stroke:1px_var(--color-muted-foreground)] opacity-70 transition-all duration-500 group-hover/item:opacity-100 group-hover/item:text-brand-500 group-hover/item:[-webkit-text-stroke:0px_transparent] group-hover/item:-skew-x-12 cursor-default select-none">
                   {skill}
                 </span>
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 z-0 block text-4xl text-center md:text-6xl lg:text-7xl font-heading font-black tracking-tighter uppercase text-brand-500 opacity-0 blur-[24px] transition-all duration-500 group-hover/item:-skew-x-12 group-hover/item:opacity-70 cursor-default select-none pointer-events-none"
-                >
-                  {skill}
-                </span>
+                
               </div>
               <span className="text-2xl md:text-4xl text-warm-500/30 font-light select-none">
                 ✦

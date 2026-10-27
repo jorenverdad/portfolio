@@ -1,7 +1,11 @@
 export interface JourneyMilestone {
-  readonly year: string;
-  readonly title: string;
   readonly role: string;
+  readonly company: string;
+  readonly startDate: string; // ISO format "YYYY-MM"
+  readonly endDate?: string; // ISO format "YYYY-MM" | "present"
+  readonly period?: string;
+  readonly year?: string;
+  readonly title?: string;
   readonly description: string;
   readonly location?: string;
   readonly tags?: readonly string[];

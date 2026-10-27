@@ -6,9 +6,8 @@ import Image from "next/image";
 import { Dialog } from "@base-ui/react/dialog";
 import { Menu, X } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
-import { FiSun, FiMoon } from "react-icons/fi";
-import { WorkInProgress } from "@/components/ui/work-in-progress";
 import { motion } from "motion/react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export interface NavBarLink {
   readonly label: string;
@@ -56,47 +55,8 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   const navRef = useRef<HTMLDivElement>(null);
-
-  // Theme synchronization and handler
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    if (savedTheme === "light") {
-      document.documentElement.classList.remove("dark");
-    } else {
-      document.documentElement.classList.add("dark");
-    }
-    // Update theme state asynchronously to avoid synchronous cascading renders
-    const timer = setTimeout(() => {
-      setTheme(savedTheme as "light" | "dark");
-    }, 0);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(
-          new CustomEvent("lazy-mount-trigger", { detail: "all" }),
-        );
-      }
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const toggleTheme = () => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    if (nextTheme === "light") {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -158,7 +118,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
       className={`fixed top-0 inset-x-0 z-50 flex justify-center pointer-events-none ${className ?? ""}`}
     >
       <div
-        className={`pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center bg-bg-surface/65 backdrop-blur-xl backdrop-saturate-150 border border-edge-subtle ${
+        className={`pointer-events-auto transition-[width,height,border-radius,margin,padding,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center bg-bg-surface/65 backdrop-blur-xl backdrop-saturate-150 border border-edge-subtle ${
           isScrolled
             ? "w-[calc(100%-2rem)] xl:w-[1024px] mt-4 h-16 rounded-full shadow-lg shadow-black/10 px-6 md:px-8"
             : "w-full h-20 rounded-none border-t-transparent border-x-transparent px-6"
@@ -240,7 +200,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
               href="https://github.com/jorenverdad"
               target="_blank"
               rel="noopener noreferrer"
-              className="relative overflow-hidden flex items-center gap-2 h-10 px-4 rounded-full border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-brand-500 text-sm font-medium transition-all duration-300 group shadow-sm hover:shadow-[0_0_15px_rgba(224,32,32,0.05)] active:scale-95"
+              className="relative overflow-hidden flex items-center gap-2 h-10 px-4 rounded-full border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-brand-500 text-sm font-medium transition-[color,background-color,border-color,box-shadow,transform] duration-200 group shadow-sm hover:shadow-[0_0_15px_rgba(224,32,32,0.05)] active:scale-95"
             >
               <div className="absolute inset-0 rounded-full bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
               <FaGithub className="relative z-10 size-4.5 transition-all duration-300 group-hover:scale-115 group-hover:rotate-6 text-foreground group-hover:text-brand-500" />
@@ -248,25 +208,12 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                 GitHub
               </span>
             </a>
-            <WorkInProgress position="bottom">
-              <button
-                type="button"
-                aria-label="Toggle dark mode"
-                onClick={toggleTheme}
-                className="h-10 w-10 rounded-full flex items-center justify-center border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-foreground transition-all duration-300 active:scale-95 cursor-pointer relative overflow-hidden group shadow-sm"
-              >
-                <div className="absolute inset-0 rounded-full bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
-                <div className="relative h-5 w-5 flex flex-col items-center justify-center transition-transform duration-500 group-hover:rotate-90">
-                  <FiMoon className="size-4.5 absolute transition-all duration-300 opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-50 text-foreground" />
-                  <FiSun className="size-4.5 absolute transition-all duration-300 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-brand-500" />
-                </div>
-              </button>
-            </WorkInProgress>
+            <ThemeToggle size="md" variant="circle" />
           </div>
 
           {/* Mobile Menu Trigger */}
           <Dialog.Root open={open} onOpenChange={setOpen}>
-            <Dialog.Trigger className="md:hidden flex h-11 w-11 items-center justify-center rounded-lg border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated text-foreground transition-all duration-200 active:scale-95 focus:outline-none">
+            <Dialog.Trigger className="md:hidden flex h-11 w-11 items-center justify-center rounded-lg border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated text-foreground transition-colors duration-200 active:scale-95 focus:outline-none">
               <Menu className="size-5" />
             </Dialog.Trigger>
 
@@ -344,7 +291,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                     href="https://github.com/jorenverdad"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative overflow-hidden flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-brand-500 text-base font-medium transition-all duration-300 group"
+                    className="relative overflow-hidden flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-brand-500 text-base font-medium transition-[color,background-color,border-color,box-shadow,transform] duration-200 group"
                   >
                     <div className="absolute inset-0 rounded-xl bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
                     <FaGithub className="relative z-10 size-5 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 text-muted-foreground group-hover:text-brand-500" />
@@ -352,23 +299,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                       jorenverdad
                     </span>
                   </a>
-                  <WorkInProgress
-                    position="top"
-                    className="bottom-full mb-3 -translate-x-[15%]"
-                  >
-                    <button
-                      type="button"
-                      aria-label="Toggle dark mode"
-                      onClick={toggleTheme}
-                      className="h-12 w-12 rounded-xl flex items-center justify-center border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-foreground transition-all duration-300 active:scale-95 cursor-pointer relative overflow-hidden group"
-                    >
-                      <div className="absolute inset-0 rounded-xl bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
-                      <div className="relative h-5 w-5 flex flex-col items-center justify-center transition-transform duration-500 group-hover:rotate-90">
-                        <FiMoon className="size-5 absolute transition-all duration-300 opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-50 text-foreground" />
-                        <FiSun className="size-5 absolute transition-all duration-300 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 text-brand-500" />
-                      </div>
-                    </button>
-                  </WorkInProgress>
+                  <ThemeToggle size="lg" variant="rounded" />
                 </div>
               </Dialog.Popup>
             </Dialog.Portal>

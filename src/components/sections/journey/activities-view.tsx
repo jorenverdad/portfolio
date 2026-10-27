@@ -81,8 +81,7 @@ export function ActivitiesView({
             Active <span className="text-brand-500">Nodes.</span>
           </h2>
           <p className="text-muted-foreground text-base leading-relaxed font-sans max-w-md">
-            Open-source contributions, technical writing, and hackathon
-            milestones.
+            Cybersecurity CTFs, competitive game development, and collegiate leadership.
           </p>
         </div>
 
@@ -96,9 +95,9 @@ export function ActivitiesView({
             <div className="flex justify-between items-center border-b border-edge-subtle/30 pb-3.5 text-[10px] font-mono text-muted-foreground/50 font-bold uppercase tracking-wider">
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                CONTRIBUTIONS ACTIVE
+                LEADERSHIP ACTIVE
               </div>
-              <div>GIT: ACTIVE</div>
+              <div>STATUS: VERIFIED</div>
             </div>
 
             <ActivitiesTelemetryDashboard />
@@ -138,15 +137,15 @@ export function ActivitiesView({
 
             <div className="grid grid-cols-2 gap-3 border-t border-edge-subtle/30 pt-4 font-mono text-center">
               <div className="flex flex-col">
-                <span className="text-lg font-bold text-foreground">45+</span>
+                <span className="text-lg font-bold text-foreground">2x</span>
                 <span className="text-[9px] text-muted-foreground/60 uppercase font-semibold">
-                  PRs Merged
+                  Regional Champs
                 </span>
               </div>
               <div className="flex flex-col border-l border-edge-subtle/30">
-                <span className="text-lg font-bold text-foreground">50k+</span>
+                <span className="text-lg font-bold text-foreground">3rd</span>
                 <span className="text-[9px] text-muted-foreground/60 uppercase font-semibold">
-                  Readers
+                  National DOST
                 </span>
               </div>
             </div>
@@ -296,9 +295,9 @@ export function ActivitiesView({
 
                   {item.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 pt-4 border-t border-edge-subtle/30 relative z-10 select-none">
-                      {item.tags.map((tag) => (
+                      {item.tags.map((tag, tIndex) => (
                         <span
-                          key={tag}
+                          key={`${tag}-${tIndex}`}
                           className="px-2.5 py-1 font-mono text-[10px] md:text-xs rounded-lg border border-edge-subtle/60 bg-bg-void/20 text-muted-foreground/80 hover:border-brand-500/20 hover:bg-brand-500/5 hover:text-brand-100 transition-all duration-300 cursor-default"
                         >
                           {tag}
