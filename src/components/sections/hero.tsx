@@ -366,8 +366,24 @@ export function HeroSection({ className }: HeroProps) {
         {/* Background Grid Pattern */}
         <GridPattern className="opacity-30 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)]" />
 
-        {/* Subtle Glow at the top */}
-        <div className="absolute top-0 inset-x-0 h-64 bg-brand-500/10 blur-[48px] pointer-events-none" />
+        {/* Natural Ambient Top Glow - Organic radial falloff, zero-blur GPU performance */}
+        <div
+          aria-hidden="true"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[640px] pointer-events-none select-none opacity-40 dark:opacity-100"
+          style={{
+            background:
+              "radial-gradient(ellipse 90% 65% at 50% -15%, color-mix(in oklch, var(--color-brand-500) 28%, transparent) 0%, color-mix(in oklch, var(--color-brand-500) 12%, transparent) 40%, color-mix(in oklch, var(--color-brand-500) 3%, transparent) 75%, transparent 100%)",
+          }}
+        />
+        {/* Concentrated soft beacon at the navigation apex */}
+        <div
+          aria-hidden="true"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[840px] h-[320px] pointer-events-none select-none opacity-30 dark:opacity-85"
+          style={{
+            background:
+              "radial-gradient(ellipse 65% 55% at 50% 0%, color-mix(in oklch, var(--color-brand-500) 22%, transparent) 0%, color-mix(in oklch, var(--color-brand-500) 6%, transparent) 60%, transparent 100%)",
+          }}
+        />
 
         <div className="container relative z-10 mx-auto px-6 flex flex-col items-center text-center">
           <m.div
