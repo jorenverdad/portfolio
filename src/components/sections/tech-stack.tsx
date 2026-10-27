@@ -696,13 +696,13 @@ export function TechStackSection({
                       )}
                     </m.div>
 
-                    {/* Gradient fade overlays — blend grid edges into the background */}
+                    {/* Gradient fade overlays — blend grid edges into the active theme background */}
                     {/* Radial vignette */}
                     <div
                       className="absolute inset-0 pointer-events-none z-10"
                       style={{
                         background:
-                          "radial-gradient(ellipse 55% 60% at 50% 50%, transparent 0%, oklch(0.095 0.018 17 / 0.0) 20%, oklch(0.095 0.018 17 / 0.45) 50%, oklch(0.095 0.018 17 / 0.85) 70%, oklch(0.095 0.018 17) 90%)",
+                          "radial-gradient(ellipse 60% 64% at 50% 50%, transparent 0%, color-mix(in oklch, var(--background) 0%, transparent) 20%, color-mix(in oklch, var(--background) 35%, transparent) 55%, color-mix(in oklch, var(--background) 75%, transparent) 75%, var(--background) 92%)",
                         transform: "translateZ(0)",
                       }}
                     />
@@ -711,7 +711,7 @@ export function TechStackSection({
                       className="absolute inset-y-0 left-0 w-[25%] pointer-events-none z-10"
                       style={{
                         background:
-                          "linear-gradient(to right, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)",
+                          "linear-gradient(to right, var(--background) 0%, color-mix(in oklch, var(--background) 70%, transparent) 40%, transparent 100%)",
                         transform: "translateZ(0)",
                       }}
                     />
@@ -720,7 +720,7 @@ export function TechStackSection({
                       className="absolute inset-y-0 right-0 w-[25%] pointer-events-none z-10"
                       style={{
                         background:
-                          "linear-gradient(to left, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.7) 40%, transparent 100%)",
+                          "linear-gradient(to left, var(--background) 0%, color-mix(in oklch, var(--background) 70%, transparent) 40%, transparent 100%)",
                         transform: "translateZ(0)",
                       }}
                     />
@@ -729,7 +729,7 @@ export function TechStackSection({
                       className="absolute inset-x-0 top-0 h-[30%] pointer-events-none z-10"
                       style={{
                         background:
-                          "linear-gradient(to bottom, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)",
+                          "linear-gradient(to bottom, var(--background) 0%, color-mix(in oklch, var(--background) 60%, transparent) 40%, transparent 100%)",
                         transform: "translateZ(0)",
                       }}
                     />
@@ -738,7 +738,7 @@ export function TechStackSection({
                       className="absolute inset-x-0 bottom-0 h-[30%] pointer-events-none z-10"
                       style={{
                         background:
-                          "linear-gradient(to top, oklch(0.095 0.018 17) 0%, oklch(0.095 0.018 17 / 0.6) 40%, transparent 100%)",
+                          "linear-gradient(to top, var(--background) 0%, color-mix(in oklch, var(--background) 60%, transparent) 40%, transparent 100%)",
                         transform: "translateZ(0)",
                       }}
                     />
@@ -886,9 +886,12 @@ const EmptyCell = React.memo(function EmptyCell({ delay }: EmptyCellProps) {
   return (
     <div
       className="w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] rounded-xl md:rounded-2xl 
-        border border-black/[0.04] dark:border-white/[0.02] 
-        bg-black/[0.01] dark:bg-white/[0.01]
-        transition-colors duration-500 hover:bg-black/[0.03] dark:hover:bg-white/[0.04]
+        border border-black/[0.08] dark:border-white/[0.02] 
+        bg-black/[0.015] dark:bg-white/[0.01]
+        shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)] dark:shadow-none
+        transition-colors duration-500 
+        hover:border-black/15 dark:hover:border-white/[0.04]
+        hover:bg-black/[0.03] dark:hover:bg-white/[0.04]
         animate-cell-empty"
       style={{
         animationDelay: `${delay}s`,
@@ -916,14 +919,15 @@ const TechCell = React.memo(function TechCell({
       whileHover={{ scale: 1.12 }}
       whileTap={{ scale: 0.95 }}
       className="relative z-10 hover:z-50 group w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] flex items-center justify-center rounded-xl md:rounded-2xl cursor-pointer
-        bg-black/[0.02] dark:bg-white/[0.04]
-        border border-black/[0.08] dark:border-white/[0.08]
-        shadow-[0_4px_12px_rgba(0,0,0,0.04)]
+        bg-white/90 dark:bg-white/[0.04]
+        border border-black/[0.06] dark:border-white/[0.08]
+        shadow-[0_2px_8px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)]
         dark:shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)]
-        transition-colors transition-shadow duration-300
-        hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)]
-        dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]
-        hover:border-black/20 dark:hover:border-white/[0.15]"
+        transition-all duration-300
+        hover:bg-white dark:hover:bg-white/[0.06]
+        hover:border-black/15 dark:hover:border-white/[0.15]
+        hover:shadow-[0_12px_28px_rgba(0,0,0,0.08),0_2px_6px_rgba(0,0,0,0.04)]
+        dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
     >
       {/* Subtle colorful aura behind the icon on hover */}
       <div
