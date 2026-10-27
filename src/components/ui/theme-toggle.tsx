@@ -178,7 +178,7 @@ export function ThemeToggle({
   }[size];
 
   const shapeClass = variant === "circle" ? "rounded-full" : "rounded-xl";
-  const iconSize = size === "lg" ? 22 : 19;
+  const iconSize = size === "lg" ? 20 : size === "sm" ? 16 : 18;
   const isDark = theme === "dark";
 
   return (
@@ -187,93 +187,85 @@ export function ThemeToggle({
       aria-label="Toggle dark mode"
       onClick={toggleTheme}
       className={`group relative flex items-center justify-center cursor-pointer select-none
-        border transition-all duration-300 ease-out active:scale-90
+        border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500
+        text-muted-foreground hover:text-brand-500
+        transition-all duration-300 shadow-sm hover:shadow-[0_0_15px_rgba(224,32,32,0.05)] active:scale-95
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background
-        /* Dark mode styling: rich specular glass with subtle glow */
-        dark:bg-white/[0.04] dark:hover:bg-white/[0.08] dark:border-white/10 dark:hover:border-brand-500/50
-        dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.35)]
-        dark:hover:shadow-[0_0_20px_rgba(224,32,32,0.2),inset_0_1px_1px_rgba(255,255,255,0.18)]
-        /* Light mode styling: warm architectural frosted stone */
-        bg-black/[0.03] hover:bg-black/[0.06] border-black/[0.08] hover:border-brand-500/50
-        shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_2px_8px_rgba(0,0,0,0.04)]
-        hover:shadow-[0_0_18px_rgba(224,32,32,0.15)]
-        backdrop-blur-md overflow-hidden ${shapeClass} ${sizeClasses} ${className}`}
+        overflow-hidden ${shapeClass} ${sizeClasses} ${className}`}
     >
-      {/* Ambient background bloom on hover */}
+      {/* Ambient background bloom on hover matching GitHub button */}
       <div
-        className={`absolute inset-0 bg-radial from-brand-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none blur-xs ${shapeClass}`}
+        className={`absolute inset-0 ${shapeClass} bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm pointer-events-none`}
       />
 
-      {/* SVG Morph: Sun / Moon */}
-      <motion.svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        width={iconSize}
-        height={iconSize}
-        className="relative z-10 overflow-visible"
-        animate={{
-          rotate: mounted ? (isDark ? 40 : 0) : 40,
-        }}
-        transition={{ type: "spring", stiffness: 220, damping: 18 }}
-      >
-        <defs>
-          <mask id={maskId}>
-            <rect x="0" y="0" width="100%" height="100%" fill="white" />
-            <motion.circle
-              initial={false}
-              animate={{
-                cx: mounted ? (isDark ? 16 : 28) : 16,
-                cy: mounted ? (isDark ? 7 : 0) : 7,
-                r: mounted ? (isDark ? 7.5 : 0) : 7.5,
-              }}
-              transition={{ type: "spring", stiffness: 240, damping: 20 }}
-              fill="black"
-            />
-          </mask>
-        </defs>
-
-        {/* Central Core (Sun Disc <-> Crescent Moon) */}
-        <motion.circle
-          initial={false}
-          cx="12"
-          cy="12"
+      {/* SVG Morph: Sun / Moon with matching icon scale, tilt, and crimson hover styling */}
+      <div className="relative z-10 flex items-center justify-center transition-all duration-300 group-hover:scale-115 group-hover:rotate-6 text-foreground group-hover:text-brand-500 pointer-events-none">
+        <motion.svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          width={iconSize}
+          height={iconSize}
+          className="overflow-visible"
           animate={{
-            r: mounted ? (isDark ? 8.5 : 4.5) : 8.5,
+            rotate: mounted ? (isDark ? 40 : 0) : 40,
           }}
-          transition={{ type: "spring", stiffness: 240, damping: 20 }}
-          fill="currentColor"
-          mask={`url(#${maskId})`}
-          className={
-            isDark
-              ? "text-zinc-100 transition-colors duration-200 group-hover:text-white"
-              : "text-brand-500 transition-colors duration-200 group-hover:text-brand-600"
-          }
-        />
-
-        {/* Sun Rays (Expand/Contract & Spin) */}
-        <motion.g
-          initial={false}
-          animate={{
-            scale: mounted ? (isDark ? 0 : 1) : 0,
-            opacity: mounted ? (isDark ? 0 : 1) : 0,
-            rotate: mounted ? (isDark ? 60 : 0) : 0,
-          }}
-          transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          className="text-brand-500 origin-center"
+          transition={{ type: "spring", stiffness: 220, damping: 18 }}
         >
-          <line x1="12" y1="1.5" x2="12" y2="3.5" />
-          <line x1="12" y1="20.5" x2="12" y2="22.5" />
-          <line x1="4.57" y1="4.57" x2="5.99" y2="5.99" />
-          <line x1="18.01" y1="18.01" x2="19.43" y2="19.43" />
-          <line x1="1.5" y1="12" x2="3.5" y2="12" />
-          <line x1="20.5" y1="12" x2="22.5" y2="12" />
-          <line x1="4.57" y1="19.43" x2="5.99" y2="18.01" />
-          <line x1="18.01" y1="5.99" x2="19.43" y2="4.57" />
-        </motion.g>
-      </motion.svg>
+          <defs>
+            <mask id={maskId}>
+              <rect x="0" y="0" width="100%" height="100%" fill="white" />
+              <motion.circle
+                initial={false}
+                animate={{
+                  cx: mounted ? (isDark ? 16 : 28) : 16,
+                  cy: mounted ? (isDark ? 7 : 0) : 7,
+                  r: mounted ? (isDark ? 7.5 : 0) : 7.5,
+                }}
+                transition={{ type: "spring", stiffness: 240, damping: 20 }}
+                fill="black"
+              />
+            </mask>
+          </defs>
+
+          {/* Central Core (Sun Disc <-> Crescent Moon) */}
+          <motion.circle
+            initial={false}
+            cx="12"
+            cy="12"
+            animate={{
+              r: mounted ? (isDark ? 8.5 : 4.5) : 8.5,
+            }}
+            transition={{ type: "spring", stiffness: 240, damping: 20 }}
+            fill="currentColor"
+            mask={`url(#${maskId})`}
+            className="transition-colors duration-300"
+          />
+
+          {/* Sun Rays (Expand/Contract & Spin) */}
+          <motion.g
+            initial={false}
+            animate={{
+              scale: mounted ? (isDark ? 0 : 1) : 0,
+              opacity: mounted ? (isDark ? 0 : 1) : 0,
+              rotate: mounted ? (isDark ? 60 : 0) : 0,
+            }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            className="origin-center transition-colors duration-300"
+          >
+            <line x1="12" y1="1.5" x2="12" y2="3.5" />
+            <line x1="12" y1="20.5" x2="12" y2="22.5" />
+            <line x1="4.57" y1="4.57" x2="5.99" y2="5.99" />
+            <line x1="18.01" y1="18.01" x2="19.43" y2="19.43" />
+            <line x1="1.5" y1="12" x2="3.5" y2="12" />
+            <line x1="20.5" y1="12" x2="22.5" y2="12" />
+            <line x1="4.57" y1="19.43" x2="5.99" y2="18.01" />
+            <line x1="18.01" y1="5.99" x2="19.43" y2="4.57" />
+          </motion.g>
+        </motion.svg>
+      </div>
     </button>
   );
 }
