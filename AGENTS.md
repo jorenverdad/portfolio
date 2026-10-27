@@ -34,3 +34,13 @@ This project keeps a persistent knowledge base in `.wiki` (an Obsidian-compatibl
 - "Add this article/transcript to the wiki" → file goes in `raw/`, agent writes a summary page in `sources/`, updates `entities/`/`concepts/` as needed, then run `node .wiki/scripts/sync-wiki.cjs`.
 - "What do we know about X" / "why did we choose Y" → check `index.md`, read the relevant page(s), answer citing the page(s).
 - "How's the wiki looking" → report page counts, recent log entries, and any orphaned pages (not linked, not in the index).
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
