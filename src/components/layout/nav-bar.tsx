@@ -118,7 +118,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
       className={`fixed top-0 inset-x-0 z-50 flex justify-center pointer-events-none ${className ?? ""}`}
     >
       <div
-        className={`pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center bg-bg-surface/65 backdrop-blur-xl backdrop-saturate-150 border border-edge-subtle ${
+        className={`pointer-events-auto transition-[width,height,border-radius,margin,padding,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center bg-bg-surface/65 backdrop-blur-xl backdrop-saturate-150 border border-edge-subtle ${
           isScrolled
             ? "w-[calc(100%-2rem)] xl:w-[1024px] mt-4 h-16 rounded-full shadow-lg shadow-black/10 px-6 md:px-8"
             : "w-full h-20 rounded-none border-t-transparent border-x-transparent px-6"
@@ -200,7 +200,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
               href="https://github.com/jorenverdad"
               target="_blank"
               rel="noopener noreferrer"
-              className="relative overflow-hidden flex items-center gap-2 h-10 px-4 rounded-full border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-brand-500 text-sm font-medium transition-all duration-300 group shadow-sm hover:shadow-[0_0_15px_rgba(224,32,32,0.05)] active:scale-95"
+              className="relative overflow-hidden flex items-center gap-2 h-10 px-4 rounded-full border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-brand-500 text-sm font-medium transition-[color,background-color,border-color,box-shadow,transform] duration-200 group shadow-sm hover:shadow-[0_0_15px_rgba(224,32,32,0.05)] active:scale-95"
             >
               <div className="absolute inset-0 rounded-full bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
               <FaGithub className="relative z-10 size-4.5 transition-all duration-300 group-hover:scale-115 group-hover:rotate-6 text-foreground group-hover:text-brand-500" />
@@ -213,7 +213,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
 
           {/* Mobile Menu Trigger */}
           <Dialog.Root open={open} onOpenChange={setOpen}>
-            <Dialog.Trigger className="md:hidden flex h-11 w-11 items-center justify-center rounded-lg border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated text-foreground transition-all duration-200 active:scale-95 focus:outline-none">
+            <Dialog.Trigger className="md:hidden flex h-11 w-11 items-center justify-center rounded-lg border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated text-foreground transition-colors duration-200 active:scale-95 focus:outline-none">
               <Menu className="size-5" />
             </Dialog.Trigger>
 
@@ -291,7 +291,7 @@ export function NavBar({ links = DEFAULT_LINKS, className }: NavBarProps) {
                     href="https://github.com/jorenverdad"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative overflow-hidden flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-brand-500 text-base font-medium transition-all duration-300 group"
+                    className="relative overflow-hidden flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border border-edge-default bg-bg-surface hover:bg-bg-elevated hover:border-brand-500 text-muted-foreground hover:text-brand-500 text-base font-medium transition-[color,background-color,border-color,box-shadow,transform] duration-200 group"
                   >
                     <div className="absolute inset-0 rounded-xl bg-brand-500/0 group-hover:bg-brand-500/5 transition-all duration-300 blur-sm" />
                     <FaGithub className="relative z-10 size-5 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 text-muted-foreground group-hover:text-brand-500" />

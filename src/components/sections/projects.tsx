@@ -233,19 +233,25 @@ const ProjectCard = React.memo(function ProjectCard({
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
         {project.video ? (
-          <video
-            ref={videoRef}
-            src={project.video}
-            preload="metadata"
-            loop
-            muted
-            playsInline
-            className={`object-cover w-full h-full absolute inset-0 transition-[filter] duration-700 ease-out ${
-              isActive
-                ? "grayscale-0 brightness-100"
-                : "grayscale brightness-[0.4]"
-            }`}
-          />
+          (hasBeenActive || isActive) ? (
+            <video
+              ref={videoRef}
+              src={project.video}
+              preload="none"
+              loop
+              muted
+              playsInline
+              className={`object-cover w-full h-full absolute inset-0 transition-[filter] duration-700 ease-out ${
+                isActive
+                  ? "grayscale-0 brightness-100"
+                  : "grayscale brightness-[0.4]"
+              }`}
+            />
+          ) : (
+            <div className="object-cover w-full h-full absolute inset-0 bg-bg-surface flex items-center justify-center pointer-events-none">
+              <div className="w-10 h-10 rounded-full border border-edge-subtle/50 bg-bg-void/40 flex items-center justify-center opacity-40" />
+            </div>
+          )
         ) : project.image || (images && images.length > 0) ? (
           <>
             {/* Grayscale Base Image */}

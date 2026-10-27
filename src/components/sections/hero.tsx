@@ -31,11 +31,10 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
+  hidden: { opacity: 0, y: 30 },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: { type: "spring", bounce: 0, duration: 0.8 },
   },
 };
@@ -368,7 +367,7 @@ export function HeroSection({ className }: HeroProps) {
         <GridPattern className="opacity-30 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_10%,transparent_100%)]" />
 
         {/* Subtle Glow at the top */}
-        <div className="absolute top-0 inset-x-0 h-64 bg-brand-500/10 blur-[120px] pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-64 bg-brand-500/10 blur-[48px] pointer-events-none" />
 
         <div className="container relative z-10 mx-auto px-6 flex flex-col items-center text-center">
           <m.div

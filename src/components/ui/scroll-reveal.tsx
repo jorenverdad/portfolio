@@ -28,7 +28,6 @@ export function ScrollReveal({
   delay = 0,
   duration = 0.8,
   yOffset = 30,
-  blur = 10,
   threshold = 0.1,
   rootMargin = "0px 0px -50px 0px",
   once = true,
@@ -40,12 +39,10 @@ export function ScrollReveal({
       hidden: {
         opacity: 0,
         y: shouldReduceMotion ? 0 : yOffset,
-        filter: shouldReduceMotion ? "none" : `blur(${blur}px)`,
       },
       show: {
         opacity: 1,
         y: 0,
-        filter: "blur(0px)",
         transition: shouldReduceMotion
           ? { duration: 0.3 }
           : {
@@ -56,7 +53,7 @@ export function ScrollReveal({
             },
       },
     }),
-    [shouldReduceMotion, yOffset, blur, duration, delay],
+    [shouldReduceMotion, yOffset, duration, delay],
   );
 
   const viewportConfig = useMemo(

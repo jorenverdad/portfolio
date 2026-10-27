@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { NavBar } from "@/components/layout/nav-bar";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/sections/hero";
@@ -12,9 +13,12 @@ import { ServicesSection } from "@/components/sections/services";
 import { TestimonialsSection } from "@/components/sections/testimonials";
 import { ContactSection } from "@/components/sections/contact";
 
-export default async function Home() {
+async function AboutWithStats() {
   const githubStats = await fetchGitHubStats();
+  return <AboutSection stats={githubStats} />;
+}
 
+export default function Home() {
   return (
     <>
       <NavBar />
@@ -25,7 +29,13 @@ export default async function Home() {
 
         <LazyMount id="about">
           <ScrollReveal>
-            <AboutSection stats={githubStats} />
+            <Suspense
+              fallback={
+                <div className="min-h-[400px] w-full animate-pulse bg-bg-surface/20 rounded-3xl" />
+              }
+            >
+              <AboutWithStats />
+            </Suspense>
           </ScrollReveal>
         </LazyMount>
 
