@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useState, useSyncExternalStore, useCallback } from "react";
+import React, {
+  useState,
+  useSyncExternalStore,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import Image from "next/image";
 import {
   m,
@@ -8,6 +14,7 @@ import {
   LazyMotion,
   domMax,
   MotionConfig,
+  useReducedMotion,
 } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { GridPattern } from "@/components/ui/grid-pattern";
@@ -56,6 +63,7 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
     id: "proj-1",
     title: "JoSan Website",
     category: "Frontend Web App",
+    image: "/projects/josan-preview.webp",
     video:
       "/projects/JoSan - AI-Powered Content Moderation - Google Chrome.mp4",
     yOffset: -16,
@@ -65,6 +73,7 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
     id: "proj-2",
     title: "VzStellar Website",
     category: "Full-stack Web App",
+    image: "/projects/vzstellar-preview.webp",
     video: "/projects/VZ Stellar Realty - Google Chrome.mp4",
     yOffset: 24,
     link: "#",
@@ -73,6 +82,7 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
     id: "proj-3",
     title: "Portfolio",
     category: "Frontend Web App",
+    image: "/projects/portfolio-preview.webp",
     video: "/projects/Portfolio- Honey.mp4",
     yOffset: -24,
     link: "#",
@@ -81,6 +91,7 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
     id: "proj-4",
     title: "JoSan Extension",
     category: "Chromium Web Extension",
+    image: "/projects/josan-extension-preview.webp",
     video: "/projects/JoSan Extension - Chromium.mp4",
     yOffset: 16,
     link: "#",
@@ -124,9 +135,12 @@ const ProjectCard = React.memo(function ProjectCard({
   isTooltipOpen,
   onTooltipOpenChange,
 }: ProjectCardProps) {
-  const videoRef = React.useRef<HTMLVideoElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [hasBeenActive, setHasBeenActive] = useState(false);
+  const [isHoverIntentActive, setIsHoverIntentActive] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   if (isActive && !hasBeenActive) {
     setHasBeenActive(true);
@@ -140,21 +154,37 @@ const ProjectCard = React.memo(function ProjectCard({
     onActive(project.id);
   }, [project.id, onActive]);
 
+  const handleClick = useCallback(() => {
+    onActive(project.id);
+  }, [project.id, onActive]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onActive(project.id);
+      }
+    },
+    [project.id, onActive],
+  );
+
   const images = project.images;
   const hasMultipleImages = !!(images && images.length > 1);
   const baseImage = project.image ?? images?.[0] ?? "";
 
-  // Reset index to 0 when the project card becomes inactive (render-phase state adjustment)
+  // Reset state when the project card becomes inactive (render-phase state adjustment)
   const [prevIsActive, setPrevIsActive] = useState(isActive);
   if (isActive !== prevIsActive) {
     setPrevIsActive(isActive);
     if (!isActive) {
       setCurrentImageIndex(0);
+      setIsHoverIntentActive(false);
+      setIsVideoReady(false);
     }
   }
 
   // Autoplay slideshow when active
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isActive || !hasMultipleImages || !images) return;
 
     const interval = setInterval(() => {
@@ -174,33 +204,45 @@ const ProjectCard = React.memo(function ProjectCard({
     setCurrentImageIndex((prev) => (prev + 1) % images.length);
   }, [images]);
 
-  React.useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (isActive) {
-      const playTimer = setTimeout(() => {
-        video.play().catch((err) => {
-          console.warn("Playback prevented or interrupted: ", err);
-        });
-      }, 900); //delay upon play at hover
-      return () => {
-        clearTimeout(playTimer);
-      };
-    } else {
-      video.pause();
-      try {
-        video.currentTime = 0;
-      } catch {
-        // Safe check for video elements not fully loaded yet
-      }
+  // Hover-intent debounce for video loading (250ms delay) to keep 60fps and zero lag on low-end PCs
+  useEffect(() => {
+    if (!isActive || shouldReduceMotion || !project.video) {
+      return;
     }
-  }, [isActive]);
+
+    const timer = setTimeout(() => {
+      setIsHoverIntentActive(true);
+    }, 250);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isActive, shouldReduceMotion, project.video]);
+
+  // Manage video playback cleanly when mounted
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !isHoverIntentActive) return;
+
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        // Prevent unhandled promise rejection if unmounted or policy blocks autoplay
+        console.warn("Autoplay was prevented or interrupted:", err);
+      });
+    }
+
+    return () => {
+      video.pause();
+    };
+  }, [isHoverIntentActive]);
 
   return (
     <m.div
       onMouseEnter={handleMouseEnter}
       onFocus={handleFocus}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
       layout
       layoutDependency={hoveredId}
       initial={false}
@@ -232,80 +274,74 @@ const ProjectCard = React.memo(function ProjectCard({
         }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        {project.video ? (
-          (hasBeenActive || isActive) ? (
-            <video
-              ref={videoRef}
-              src={project.video}
-              preload="none"
-              loop
-              muted
-              playsInline
-              className={`object-cover w-full h-full absolute inset-0 transition-[filter] duration-700 ease-out ${
-                isActive
-                  ? "grayscale-0 brightness-100"
-                  : "grayscale brightness-[0.4]"
-              }`}
-            />
-          ) : (
-            <div className="object-cover w-full h-full absolute inset-0 bg-bg-surface flex items-center justify-center pointer-events-none">
-              <div className="w-10 h-10 rounded-full border border-edge-subtle/50 bg-bg-void/40 flex items-center justify-center opacity-40" />
-            </div>
-          )
-        ) : project.image || (images && images.length > 0) ? (
-          <>
-            {/* Grayscale Base Image */}
-            <Image
-              src={baseImage}
-              alt=""
-              role="presentation"
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover grayscale brightness-[0.4]"
-            />
-            {/* Color Overlay Image (Opacity Animated) */}
-            <m.div
-              className="absolute inset-0 w-full h-full"
-              initial={false}
-              animate={{
-                opacity: isActive ? 1 : 0,
-              }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {hasMultipleImages && images && hasBeenActive ? (
-                <AnimatePresence initial={false} mode="popLayout">
-                  <m.div
-                    key={currentImageIndex}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                    className="absolute inset-0 w-full h-full"
-                  >
-                    <Image
-                      src={images[currentImageIndex] ?? baseImage}
-                      alt=""
-                      role="presentation"
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover"
-                      priority={currentImageIndex === 0}
-                    />
-                  </m.div>
-                </AnimatePresence>
-              ) : (
-                <Image
-                  src={baseImage}
-                  alt=""
-                  role="presentation"
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover"
-                />
-              )}
-            </m.div>
-          </>
-        ) : null}
+        {/* Base Poster Image (Rendered for ALL projects - never blank) */}
+        {baseImage && (
+          <Image
+            src={baseImage}
+            alt=""
+            role="presentation"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className={`object-cover transition-[filter] duration-700 ease-out ${
+              isActive
+                ? "grayscale-0 brightness-100"
+                : "grayscale brightness-[0.4]"
+            }`}
+            priority={index === 0}
+          />
+        )}
+
+        {/* Video Layer (Active + Debounced + Not Reduced Motion) */}
+        {project.video && isHoverIntentActive && !shouldReduceMotion && (
+          <video
+            ref={videoRef}
+            src={project.video}
+            preload="auto"
+            loop
+            muted
+            playsInline
+            autoPlay
+            onPlaying={() => setIsVideoReady(true)}
+            className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ease-out ${
+              isVideoReady ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        )}
+
+        {/* Slideshow for projects with multiple images (e.g. Mobile App) */}
+        {!project.video && hasMultipleImages && images && (
+          <m.div
+            className="absolute inset-0 w-full h-full"
+            initial={false}
+            animate={{
+              opacity: isActive ? 1 : 0,
+            }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {hasBeenActive ? (
+              <AnimatePresence initial={false} mode="popLayout">
+                <m.div
+                  key={currentImageIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="absolute inset-0 w-full h-full"
+                >
+                  <Image
+                    src={images[currentImageIndex] ?? baseImage}
+                    alt=""
+                    role="presentation"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover"
+                    priority={currentImageIndex === 0}
+                  />
+                </m.div>
+              </AnimatePresence>
+            ) : null}
+          </m.div>
+        )}
       </m.div>
 
       {/* Story-style progress indicators at top */}
