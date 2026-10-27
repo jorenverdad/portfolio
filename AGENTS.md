@@ -1,46 +1,84 @@
-# Wiki instructions
+# Agent Guidelines & Engineering Standards
 
-This project keeps a persistent knowledge base in `.wiki` (an Obsidian-compatible vault, plain markdown). Read this file at the start of every session before touching the wiki. It exists so context survives between sessions instead of evaporating when the window closes.
+System guidelines, architectural boundaries, and engineering workflows for AI agents operating on the **Personal Portfolio** codebase.
 
-**Mode:** both <!-- project-memory | research | both -->
+---
 
-## Before writing anything
+## 1. Project Overview & Tech Stack
 
-1. Read `.wiki/index.md` — it's the catalog of every page that already exists. Check it before creating a new page; extending an existing page is almost always better than creating a near-duplicate.
-2. Skim the last few entries in `.wiki/log.md` to see what's been touched recently.
+- **Project**: Joren's Personal Portfolio
+- **Framework**: Next.js 16 (App Router) + React 19
+- **Language**: TypeScript 5 (strict typing, no implicit `any`)
+- **Styling**: Tailwind CSS v4 + Base UI primitives (`@base-ui/react`), Lucide React icons, devicon
+- **Animation & Interactivity**: Motion (`motion`), tw-animate-css
+- **Testing**: Vitest (unit/component), Playwright (E2E)
+- **Package Manager**: `pnpm`
 
-## Folder schema
+---
 
-- `index.md` — catalog of every page in the vault (automatically updated via sync script).
-- `log.md` — append-only timeline, one line per operation (automatically updated via sync script).
-- `entities/` — one page per person, org, tool, or library
-- `concepts/` — ideas, frameworks, mental models
-- `decisions/` — architecture/technical decisions: what was chosen, what was rejected, and why
-- `synthesis/` — cross-cutting write-ups that tie multiple pages together
-- `raw/` — **immutable.** Original source material (articles, transcripts, PDFs). Never edit files here. If a source needs correcting, the human edits it directly in `raw/`, then the agent re-ingests it.
-- `sources/` — one summary page per file in `raw/`, written by the agent
+## 2. Essential Commands
 
-## Rules
+Always use `pnpm` for executing commands within the project root:
 
-- **Never edit `raw/`.** It's the record of what was actually said or written. Everything the agent writes goes in the other folders.
-- **Every write updates `index.md` and `log.md` via the sync script.** Run `node .wiki/scripts/sync-wiki.cjs` (with optional `--msg` for custom details) at the end of your task. Skipping this causes catalog mismatch and wastes LLM tokens on manual file edits.
-- **Check before creating.** Search `index.md` and the relevant folder for an existing page on the same topic before writing a new one.
-- **Cross-link with `[[wikilinks]]`.** Connections between pages are most of the value here — an unlinked page is much less useful than a linked one.
-- **One entity/concept/decision per page.** Keep pages atomic so they can be linked to cleanly.
+- **Dev Server**: `pnpm dev`
+- **Lint**: `pnpm lint`
+- **Unit & Integration Tests**: `pnpm test:run` (`vitest run`)
+- **E2E Tests**: `pnpm test:e2e` (`playwright test`)
+- **Build**: `pnpm build`
 
-## Typical requests this vault should handle
+---
 
-- "Log this decision" / "remember why we did X" → new or updated page in `decisions/` or `concepts/`, then run `node .wiki/scripts/sync-wiki.cjs`.
-- "Add this article/transcript to the wiki" → file goes in `raw/`, agent writes a summary page in `sources/`, updates `entities/`/`concepts/` as needed, then run `node .wiki/scripts/sync-wiki.cjs`.
-- "What do we know about X" / "why did we choose Y" → check `index.md`, read the relevant page(s), answer citing the page(s).
-- "How's the wiki looking" → report page counts, recent log entries, and any orphaned pages (not linked, not in the index).
+## 3. Code Graph & Architecture Discovery (Graphify)
 
-<!-- BEGIN:nextjs-agent-rules -->
+This repository uses **Graphify** as its primary architectural intelligence layer. Agents must prioritize graph-based structural discovery over blind, token-heavy file scans:
 
-## This is NOT the Next.js you know
+- **Graph-First Navigation**: When exploring system architecture, tracing execution flow, or locating function definitions, use Graphify (local CLI per [`graphify.md`](./graphify.md) or graphify rules in [`.agents/rules/graphify.md`](./.agents/rules/graphify.md)).
+- **Blast-Radius & Impact Analysis**: Before modifying or refactoring shared utilities, UI primitives, or components, check downstream dependents using:
+  ```powershell
+  graphify affected "<symbol-or-component>"
+  ```
+- **Trace Execution Paths**: When tracing how a UI action connects to components or utilities:
+  ```powershell
+  graphify path <source-file> <target-file>
+  ```
+- **Inspect God Nodes**: Run `graphify god-nodes` to identify central architectural hubs when analyzing system bottlenecks or coupling.
+- **AST Graph Synchronization**: After completing significant code changes or refactors, update the local AST graph:
+  ```powershell
+  graphify extract . --code-only
+  graphify cluster-only .
+  ```
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+---
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## 4. UI & Design System Rules
 
-<!-- END:nextjs-agent-rules -->
+All user interface development MUST adhere strictly to the established design system:
+
+- **Design System**: Use modern Tailwind CSS v4 utility classes and tokens from `src/app/globals.css`.
+- **Primitives**: Leverage `@base-ui/react` and shared components in `src/components/ui/`.
+- **Icons**: Use `lucide-react`, `react-icons`, and `tech-stack-icons`.
+- **Responsive & Accessible**: Support dynamic viewport scaling, keyboard navigation, and theme variables (dark/light mode).
+
+---
+
+## 5. Architectural Boundaries & Conventions
+
+- **Server vs. Client Components**:
+  - Default to Server Components for performance, SEO, and static markup.
+  - Add `'use client'` only at leaf components requiring browser interactivity, state, event listeners, or animation hooks.
+- **Components Organization**:
+  - `src/components/layout/`: Nav bar, footer, and structural layout elements.
+  - `src/components/sections/`: Main landing page sections (Hero, About, Tech Stack, Projects, Testimonials, Contact).
+  - `src/components/ui/`: Reusable primitive components (Button, ThemeToggle, LazyMount, ScrollReveal).
+  - `src/lib/`: Shared utilities and helpers.
+
+---
+
+## 6. Verification & Quality Checklist
+
+Before concluding any implementation or refactoring task:
+
+1. **Lint**: Run `pnpm lint` to ensure ESLint rules pass.
+2. **Tests**: Run `pnpm test:run` to ensure existing and new unit tests pass.
+3. **Build**: Run `pnpm build` to verify clean production build.
+4. **Impact Check**: Verify no unintended breaking changes occurred via Graphify (`graphify affected "<symbol>"`).
