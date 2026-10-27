@@ -120,10 +120,10 @@
   --destructive-foreground: oklch(1 0 0);
 
   /* Precise technical borders */
-  --edge-subtle: oklch(0.915 0.008 55);
-  --border: oklch(0.865 0.014 55);
-  --input: oklch(0.865 0.014 55);
-  --edge-strong: oklch(0.750 0.025 45);
+  --edge-subtle: oklch(0.925 0.006 55);
+  --border: oklch(0.895 0.010 55);
+  --input: oklch(0.895 0.010 55);
+  --edge-strong: oklch(0.780 0.020 45);
   --ring: oklch(0.560 0.215 25);
 
   /* Brand Scale in Light Mode */
@@ -282,26 +282,27 @@
   animation: cellFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Smooth Theme Transitions & View Transition API Styles */
+/* Freeze CSS property transitions during theme switches so snapshots capture final target colors with zero interpolation ghosting */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: none !important;
+}
+
+/* Optimized View Transition Radial Ripple - zero opacity crossfade, clean GPU clip-path wipe */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 0.35s;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation: none;
+  mix-blend-mode: normal;
 }
 
-/* Circular ripple wipe mode: disables default crossfade to let clip-path take over cleanly */
-html.theme-ripple-transition::view-transition-old(root),
-html.theme-ripple-transition::view-transition-new(root) {
-  animation: none !important;
-  mix-blend-mode: normal !important;
+::view-transition-old(root) {
+  z-index: 1;
 }
 
-html.theme-ripple-transition::view-transition-old(root) {
-  z-index: 1 !important;
-}
-
-html.theme-ripple-transition::view-transition-new(root) {
-  z-index: 9999 !important;
+::view-transition-new(root) {
+  z-index: 9999;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -310,18 +311,3 @@ html.theme-ripple-transition::view-transition-new(root) {
     animation-duration: 0.01ms !important;
   }
 }
-
-html.theme-transitioning,
-html.theme-transitioning *,
-html.theme-transitioning *::before,
-html.theme-transitioning *::after {
-  transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              fill 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              stroke 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  transition-delay: 0s !important;
-}
-
-

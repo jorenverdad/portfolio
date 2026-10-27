@@ -57,119 +57,132 @@ export function ThemeToggle({
   );
   const maskId = useId();
 
-  const toggleTheme = useCallback((e?: React.MouseEvent<HTMLButtonElement>) => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
+  const toggleTheme = useCallback(
+    (e?: React.MouseEvent<HTMLButtonElement>) => {
+      const nextTheme = theme === "dark" ? "light" : "dark";
 
-    const applyTheme = () => {
-      if (nextTheme === "light") {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-      } else {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-      }
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(
-          new CustomEvent("theme-change", { detail: nextTheme }),
-        );
-      }
-    };
-
-    const doc = typeof document !== "undefined" ? document : null;
-    if (!doc) {
-      applyTheme();
-      return;
-    }
-
-    const isReducedMotion =
-      typeof window !== "undefined" &&
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const docWithTransition = doc as Document & {
-      startViewTransition?: (callback: () => void) => {
-        ready: Promise<void>;
-        finished: Promise<void>;
-      };
-    };
-
-    if (
-      typeof docWithTransition.startViewTransition !== "function" ||
-      isReducedMotion
-    ) {
-      doc.documentElement.classList.add("theme-transitioning");
-      applyTheme();
-      setTimeout(() => {
-        doc.documentElement.classList.remove("theme-transitioning");
-      }, 350);
-      return;
-    }
-
-    // Origin calculation for radial ripple expansion
-    const rect = e?.currentTarget?.getBoundingClientRect();
-    const hasCoordinates =
-      e &&
-      typeof e.clientX === "number" &&
-      !(e.clientX === 0 && e.clientY === 0);
-
-    const x = hasCoordinates
-      ? e.clientX
-      : rect
-        ? rect.left + rect.width / 2
-        : window.innerWidth / 2;
-    const y = hasCoordinates
-      ? e.clientY
-      : rect
-        ? rect.top + rect.height / 2
-        : 40;
-
-    const endRadius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y),
-    );
-
-    doc.documentElement.classList.add("theme-ripple-transition");
-
-    const transition = docWithTransition.startViewTransition(() => {
-      applyTheme();
-    });
-
-    if (transition && typeof transition.ready?.then === "function") {
-      transition.ready
-        .then(() => {
-          const clipPath = [
-            `circle(0px at ${x}px ${y}px)`,
-            `circle(${endRadius}px at ${x}px ${y}px)`,
-          ];
-
+      const applyTheme = () => {
+        if (nextTheme === "light") {
+          document.documentElement.classList.remove("dark");
           try {
-            doc.documentElement.animate(
-              {
-                clipPath,
-              },
-              {
-                duration: 450,
-                easing: "cubic-bezier(0.2, 0, 0, 1)",
-                pseudoElement: "::view-transition-new(root)",
-              },
-            );
+            localStorage.setItem("theme", "light");
           } catch {
-            // Graceful fallback if pseudoElement animation is not supported
+            // Ignore storage write errors
           }
-        })
-        .catch(() => {});
-    }
+        } else {
+          document.documentElement.classList.add("dark");
+          try {
+            localStorage.setItem("theme", "dark");
+          } catch {
+            // Ignore storage write errors
+          }
+        }
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(
+            new CustomEvent("theme-change", { detail: nextTheme }),
+          );
+        }
+      };
 
-    if (transition && typeof transition.finished?.finally === "function") {
-      transition.finished.finally(() => {
-        doc.documentElement.classList.remove("theme-ripple-transition");
+      const doc = typeof document !== "undefined" ? document : null;
+      if (!doc) {
+        applyTheme();
+        return;
+      }
+
+      const isReducedMotion =
+        typeof window !== "undefined" &&
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const docWithTransition = doc as Document & {
+        startViewTransition?: (callback: () => void) => {
+          ready: Promise<void>;
+          finished: Promise<void>;
+        };
+      };
+
+      // Fallback for browsers without View Transitions or users with reduced motion
+      if (
+        typeof docWithTransition.startViewTransition !== "function" ||
+        isReducedMotion
+      ) {
+        doc.documentElement.classList.add("theme-transitioning");
+        applyTheme();
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            doc.documentElement.classList.remove("theme-transitioning");
+          });
+        });
+        return;
+      }
+
+      // Synchronously compute origin coordinates before starting transition
+      const rect = e?.currentTarget?.getBoundingClientRect();
+      const hasCoordinates =
+        e &&
+        typeof e.clientX === "number" &&
+        !(e.clientX === 0 && e.clientY === 0);
+
+      const x = hasCoordinates
+        ? e.clientX
+        : rect
+          ? rect.left + rect.width / 2
+          : window.innerWidth / 2;
+      const y = hasCoordinates
+        ? e.clientY
+        : rect
+          ? rect.top + rect.height / 2
+          : 40;
+
+      const endRadius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y),
+      );
+
+      // Temporarily freeze transitions so the snapshot captures final theme styles without transition lag
+      doc.documentElement.classList.add("theme-transitioning");
+
+      const transition = docWithTransition.startViewTransition(() => {
+        applyTheme();
       });
-    } else {
-      setTimeout(() => {
-        doc.documentElement.classList.remove("theme-ripple-transition");
-      }, 500);
-    }
-  }, [theme]);
+
+      if (transition && typeof transition.finished?.finally === "function") {
+        transition.finished.finally(() => {
+          doc.documentElement.classList.remove("theme-transitioning");
+        });
+      } else {
+        setTimeout(() => {
+          doc.documentElement.classList.remove("theme-transitioning");
+        }, 550);
+      }
+
+      if (transition && typeof transition.ready?.then === "function") {
+        transition.ready
+          .then(() => {
+            const clipPath = [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`,
+            ];
+
+            try {
+              doc.documentElement.animate(
+                { clipPath },
+                {
+                  duration: 500,
+                  easing: "cubic-bezier(0.2, 0, 0, 1)",
+                  pseudoElement: "::view-transition-new(root)",
+                },
+              );
+            } catch {
+              // Graceful fallback if pseudoElement animation is not supported
+            }
+          })
+          .catch(() => {});
+      }
+    },
+    [theme],
+  );
 
   const sizeClasses = {
     sm: "size-9",
@@ -189,7 +202,7 @@ export function ThemeToggle({
       className={`group relative flex items-center justify-center cursor-pointer select-none
         border border-edge-default bg-bg-surface/80 hover:bg-bg-elevated hover:border-brand-500
         text-muted-foreground hover:text-brand-500
-        transition-all duration-300 shadow-sm hover:shadow-[0_0_15px_rgba(224,32,32,0.05)] active:scale-95
+        transition-[color,background-color,border-color,box-shadow,transform] duration-200 shadow-sm hover:shadow-[0_0_15px_rgba(224,32,32,0.05)] active:scale-95
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background
         overflow-hidden ${shapeClass} ${sizeClasses} ${className}`}
     >
