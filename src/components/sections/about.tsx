@@ -14,8 +14,8 @@ import {
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { GitHubStatsCard } from "@/components/sections/github-stats";
 import { SkillsMarquee } from "@/components/sections/skills-marquee";
-import ProfileImg1 from "@/assets/imgs/profile.jpg";
-import ProfileImg2 from "@/assets/imgs/profile 1.png";
+import ProfileImg1 from "@/assets/imgs/profile.webp";
+import ProfileImg2 from "@/assets/imgs/profile-alt.webp";
 import type { GitHubStats } from "@/lib/github";
 function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
   const letters = Array.from(text);
@@ -108,8 +108,8 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
         className={`py-24 md:py-32 relative bg-bg-base overflow-hidden ${className ?? ""}`}
       >
         <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-          <div className="absolute top-[10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-500/20 blur-[140px]" />
-          <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-warm-500/10 blur-[140px]" />
+          <div className="absolute top-[10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-500/20 blur-[48px]" />
+          <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-warm-500/10 blur-[48px]" />
         </div>
         <GridPattern className="opacity-10 [mask-image:radial-gradient(ellipse_100%_100%_at_50%_50%,#000_20%,transparent_100%)] z-0" />
 
@@ -186,7 +186,7 @@ export function AboutSection({ className, stats }: AboutSectionProps) {
                     fill
                     className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700 ease-out scale-[1.03] group-hover:scale-100 pointer-events-none select-none"
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    priority
+                    loading="lazy"
                     draggable={false}
                   />
                 </m.div>
