@@ -80,10 +80,10 @@ export const DEFAULT_MILESTONES: ReadonlyArray<JourneyMilestone> = [
   {
     role: "Web Developer & UI Designer (Self-employed)",
     company: "Freelance",
-    startDate: "2024-10",
+    startDate: "2023-07",
     endDate: "2026-08",
-    period: "October 2024 – August 2026",
-    year: "October 2024 – August 2026",
+    period: "July 2023 – August 2026",
+    year: "July 2023 – August 2026",
     title: "Web Developer & UI Designer (Self-employed)",
     description:
       "Designed, developed, and deployed custom web applications and business websites for small and medium-sized business clients.",
