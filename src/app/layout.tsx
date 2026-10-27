@@ -62,9 +62,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${fontSans.variable} ${fontHeading.variable} ${geistMono.variable} dark antialiased`}
     >
-      <body className="min-h-screen flex flex-col bg-bg-base text-foreground font-sans">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem('theme');if(s==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark')}}catch(e){}})()`,
+          }}
+        />
+      </head>
+      <body className="min-h-screen flex flex-col bg-background text-foreground font-sans">
         {children}
         <Analytics />
         <SpeedInsights />

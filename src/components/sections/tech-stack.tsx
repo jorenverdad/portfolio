@@ -886,9 +886,9 @@ const EmptyCell = React.memo(function EmptyCell({ delay }: EmptyCellProps) {
   return (
     <div
       className="w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] rounded-xl md:rounded-2xl 
-        border border-white/[0.03] dark:border-white/[0.02] 
-        bg-white/[0.01] dark:bg-white/[0.01]
-        transition-colors duration-500 hover:bg-white/[0.04] dark:hover:bg-white/[0.04]
+        border border-black/[0.04] dark:border-white/[0.02] 
+        bg-black/[0.01] dark:bg-white/[0.01]
+        transition-colors duration-500 hover:bg-black/[0.03] dark:hover:bg-white/[0.04]
         animate-cell-empty"
       style={{
         animationDelay: `${delay}s`,
@@ -916,14 +916,14 @@ const TechCell = React.memo(function TechCell({
       whileHover={{ scale: 1.12 }}
       whileTap={{ scale: 0.95 }}
       className="relative z-10 hover:z-50 group w-14 h-14 md:w-[72px] md:h-[72px] lg:w-[88px] lg:h-[88px] flex items-center justify-center rounded-xl md:rounded-2xl cursor-pointer
-        bg-white/[0.05] dark:bg-white/[0.04]
-        border border-white/[0.08] dark:border-white/[0.08]
-        shadow-[0_4px_12px_rgba(0,0,0,0.05),inset_0_1px_0_rgba(255,255,255,0.1)]
+        bg-black/[0.02] dark:bg-white/[0.04]
+        border border-black/[0.08] dark:border-white/[0.08]
+        shadow-[0_4px_12px_rgba(0,0,0,0.04)]
         dark:shadow-[0_4px_12px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)]
         transition-colors transition-shadow duration-300
-        hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]
+        hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)]
         dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]
-        hover:border-white/[0.2] dark:hover:border-white/[0.15]"
+        hover:border-black/20 dark:hover:border-white/[0.15]"
     >
       {/* Subtle colorful aura behind the icon on hover */}
       <div

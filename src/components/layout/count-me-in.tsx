@@ -197,7 +197,7 @@ export function CountMeIn() {
       />
 
       {/* Telemetry Display */}
-      <div className="relative flex h-10 items-center justify-center rounded-full bg-black/40 px-5 shadow-inner border border-white/5 z-10">
+      <div className="relative flex h-10 items-center justify-center rounded-full bg-foreground/[0.04] dark:bg-black/40 px-5 shadow-inner border border-border/40 dark:border-white/5 z-10">
         <div className="flex items-center gap-3">
           {/* Status Indicator */}
           <div className="relative flex size-1.5 items-center justify-center">

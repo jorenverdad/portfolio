@@ -11,7 +11,7 @@ test.describe("Hero & Social Interactions", () => {
     await page.goto("/");
     const downloadBtn = page.getByRole("link", { name: /Download Resume/i });
     await expect(downloadBtn).toBeVisible();
-    await expect(downloadBtn).toHaveAttribute("href", "/pdfs/CV_JorenVerdad-2026.pdf");
+    await expect(downloadBtn).toHaveAttribute("href", "/pdfs/Verdad_CV_2026.pdf");
     await expect(downloadBtn).toHaveAttribute("target", "_blank");
     await expect(downloadBtn).toHaveAttribute("rel", /noopener/);
   });
@@ -130,4 +130,23 @@ test.describe("Hero & Social Interactions", () => {
     await expect(facebookLink).toHaveAttribute("target", "_blank");
     await expect(linkedInLink).toHaveAttribute("target", "_blank");
   });
+
+  test("should toggle between dark and light themes smoothly", async ({ page }) => {
+    await page.goto("/");
+    const themeBtn = page.getByLabel("Toggle dark mode").first();
+    await expect(themeBtn).toBeVisible();
+
+    // Default or initial mode should have dark class
+    const html = page.locator("html");
+    await expect(html).toHaveClass(/dark/);
+
+    // Toggle to light mode
+    await themeBtn.click();
+    await expect(html).not.toHaveClass(/dark/);
+
+    // Toggle back to dark mode
+    await themeBtn.click();
+    await expect(html).toHaveClass(/dark/);
+  });
 });
+
