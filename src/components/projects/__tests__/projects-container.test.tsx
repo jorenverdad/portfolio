@@ -122,4 +122,16 @@ describe("ProjectsContainer", () => {
       screen.getByText("What I Built & Personally Delivered"),
     ).toBeInTheDocument();
   });
+
+  it("switches to the Interactive Showcase Stage view mode when the stage button is clicked", () => {
+    render(<ProjectsContainer />);
+
+    const stageButton = screen.getByRole("button", {
+      name: /interactive showcase stage view/i,
+    });
+    fireEvent.click(stageButton);
+
+    expect(screen.getByText(/featured build/i)).toBeInTheDocument();
+    expect(screen.getByText(/deep dive case study/i)).toBeInTheDocument();
+  });
 });

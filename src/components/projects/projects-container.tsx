@@ -7,12 +7,14 @@ import {
   X,
   LayoutGrid,
   List,
+  GalleryHorizontalEnd,
   Sparkles,
   RotateCcw,
 } from "lucide-react";
 import { ProjectsHeader } from "./projects-header";
 import { ProjectsHero } from "./projects-hero";
 import { ProjectCard } from "./project-card";
+import { ProjectsStageView } from "./projects-stage-view";
 import { ProjectDetailModal } from "./project-detail-modal";
 import {
   getAllProjects,
@@ -30,7 +32,7 @@ export function ProjectsContainer() {
   const [selectedCategory, setSelectedCategory] =
     useState<ProjectCategory>("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list" | "stage">("grid");
 
   const requestedId =
     searchParams.get("id") ?? searchParams.get("project");
@@ -112,7 +114,7 @@ export function ProjectsContainer() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-bg-base text-foreground selection:bg-brand-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-bg-base text-foreground selection:bg-brand-500 selection:text-white overflow-x-clip">
       {/* Top Floating Glassmorphic Header */}
       <ProjectsHeader
         currentCount={filteredProjects.length}
@@ -123,7 +125,7 @@ export function ProjectsContainer() {
       <ProjectsHero totalProjects={allProjects.length} />
 
       {/* Main Directory Area */}
-      <main className="container mx-auto px-4 sm:px-6 py-10 flex-1 flex flex-col">
+      <main className="max-w-[1560px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 md:py-8 flex-1 flex flex-col">
         {/* Interactive Filter Toolbar */}
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-8">
           {/* Category Filter Pills */}
@@ -192,6 +194,7 @@ export function ProjectsContainer() {
                 }`}
                 aria-label="Grid layout view"
                 aria-pressed={viewMode === "grid"}
+                title="Grid View"
               >
                 <LayoutGrid className="size-4" />
               </button>
@@ -204,8 +207,22 @@ export function ProjectsContainer() {
                 }`}
                 aria-label="List layout view"
                 aria-pressed={viewMode === "list"}
+                title="List View"
               >
                 <List className="size-4" />
+              </button>
+              <button
+                onClick={() => setViewMode("stage")}
+                className={`p-1.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 ${
+                  viewMode === "stage"
+                    ? "bg-brand-500 text-white"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                aria-label="Interactive Showcase Stage view"
+                aria-pressed={viewMode === "stage"}
+                title="Showcase Stage (Spatial Deck)"
+              >
+                <GalleryHorizontalEnd className="size-4" />
               </button>
             </div>
           </div>
@@ -241,7 +258,7 @@ export function ProjectsContainer() {
                 />
               ))}
             </div>
-          ) : (
+          ) : viewMode === "list" ? (
             <div className="flex flex-col gap-4">
               {filteredProjects.map((project) => (
                 <ProjectCard
@@ -252,6 +269,11 @@ export function ProjectsContainer() {
                 />
               ))}
             </div>
+          ) : (
+            <ProjectsStageView
+              projects={filteredProjects}
+              onOpenDetail={handleOpenDetail}
+            />
           )
         ) : (
           /* Empty State */
