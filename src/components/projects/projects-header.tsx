@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, BrainCircuit } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export interface ProjectsHeaderProps {
@@ -33,19 +33,20 @@ export function ProjectsHeader({
 
         {/* Center Breadcrumb & Count Badge */}
         <div className="hidden md:flex items-center gap-2.5 font-mono text-xs select-none">
-          <span className="text-muted-foreground/60">joren.dev</span>
+          <span className="text-muted-foreground/60">jorenverdad.dev</span>
           <span className="text-muted-foreground/30">/</span>
           <span className="text-foreground font-semibold uppercase tracking-wider">
             projects
           </span>
-          {typeof currentCount === "number" && typeof totalCount === "number" && (
-            <span className="ml-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-500 border border-brand-500/20 text-[11px] font-medium font-sans">
-              <Sparkles className="size-2.5" />
-              {currentCount === totalCount
-                ? `${totalCount} Projects`
-                : `${currentCount} of ${totalCount}`}
-            </span>
-          )}
+          {typeof currentCount === "number" &&
+            typeof totalCount === "number" && (
+              <span className="ml-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-500 border border-brand-500/20 text-[11px] font-medium font-sans">
+                <BrainCircuit className="size-2.5" />
+                {currentCount === totalCount
+                  ? `${totalCount} Builds`
+                  : `${currentCount} of ${totalCount} Builds`}
+              </span>
+            )}
         </div>
 
         {/* Right Side: Theme Toggle */}

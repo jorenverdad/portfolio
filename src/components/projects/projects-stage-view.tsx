@@ -158,16 +158,16 @@ export function ProjectsStageView({
 
   return (
     <LazyMotion features={domMax}>
-      <div className="relative flex flex-col items-center w-full max-w-[1440px] mx-auto select-none my-1">
+      <div className="relative flex flex-col items-center w-full max-w-[1560px] mx-auto select-none my-1">
         {/* Subtle Ambient Radial Backlight */}
         <div
-          className="absolute inset-x-0 top-16 h-[440px] rounded-full opacity-35 dark:opacity-20 blur-3xl pointer-events-none -z-10 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,var(--color-brand-500),transparent_70%)] transition-all duration-700"
+          className="absolute inset-x-0 top-16 h-[440px] xl:h-[480px] 2xl:h-[520px] rounded-full opacity-35 dark:opacity-20 blur-3xl pointer-events-none -z-10 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,var(--color-brand-500),transparent_70%)] transition-all duration-700"
           aria-hidden="true"
         />
 
         {/* 3D Spatial Stage Showcase Viewport */}
         <div
-          className="relative w-full flex items-center justify-center gap-2 xl:gap-4 py-3"
+          className="relative w-full flex items-center justify-center gap-2.5 xl:gap-4 2xl:gap-5 py-3"
           style={{ perspective: 1200 }}
         >
           {/* Background Left Interactive Deck Card (Previous Project) */}
@@ -186,15 +186,15 @@ export function ProjectsStageView({
               style={{
                 transformOrigin: "right center",
               }}
-              className="hidden lg:flex flex-col justify-between p-3.5 xl:p-4 rounded-3xl bg-bg-surface/90 hover:bg-bg-elevated border border-edge-default hover:border-brand-500 shadow-lg hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 cursor-pointer w-[165px] xl:w-[225px] h-[390px] xl:h-[450px] shrink-0 scale-95 -rotate-y-8 hover:scale-100 hover:rotate-y-0 opacity-85 hover:opacity-100 z-10 overflow-hidden group select-none backdrop-blur-xl ring-1 ring-white/5"
+              className="hidden lg:flex flex-col justify-between p-3.5 xl:p-4 2xl:p-5 rounded-3xl bg-bg-surface/90 hover:bg-bg-elevated border border-edge-default hover:border-brand-500 shadow-lg hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 cursor-pointer w-[160px] xl:w-[195px] 2xl:w-[235px] h-[410px] xl:h-[460px] 2xl:h-[490px] shrink-0 scale-95 -rotate-y-8 hover:scale-100 hover:rotate-y-0 opacity-85 hover:opacity-100 z-10 overflow-hidden group select-none backdrop-blur-xl ring-1 ring-white/5"
             >
               {/* Header pill & Year */}
               <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-brand-500/15 border border-brand-500/30 text-brand-500 text-[10px] xl:text-[11px] font-mono font-bold tracking-wider group-hover:bg-brand-500 group-hover:text-white transition-colors">
-                  <ChevronLeft className="size-3 xl:size-3.5 transition-transform group-hover:-translate-x-0.5" />
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-brand-500/15 border border-brand-500/30 text-brand-500 text-[10px] xl:text-[11px] 2xl:text-xs font-mono font-bold tracking-wider group-hover:bg-brand-500 group-hover:text-white transition-colors">
+                  <ChevronLeft className="size-3 xl:size-3.5 2xl:size-4 transition-transform group-hover:-translate-x-0.5" />
                   PREV
                 </span>
-                <span className="text-[10px] font-mono text-muted-foreground/80">
+                <span className="text-[10px] 2xl:text-xs font-mono text-muted-foreground/80">
                   {prevProject.year}
                 </span>
               </div>
@@ -206,7 +206,7 @@ export function ProjectsStageView({
                     src={prevProject.image}
                     alt=""
                     fill
-                    sizes="250px"
+                    sizes="(max-width: 1280px) 180px, (max-width: 1536px) 220px, 280px"
                     className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                   />
                 ) : (
@@ -215,20 +215,20 @@ export function ProjectsStageView({
                   </div>
                 )}
                 <div className="absolute inset-0 bg-linear-to-t from-bg-surface/90 via-transparent to-transparent pointer-events-none" />
-                <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-xs text-[9px] font-mono text-white/90 uppercase tracking-wider">
+                <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-xs text-[9px] 2xl:text-[10px] font-mono text-white/90 uppercase tracking-wider">
                   {prevProject.category}
                 </span>
               </div>
 
               {/* Title & Role Info */}
               <div className="space-y-1">
-                <h4 className="font-heading text-xs xl:text-sm font-bold text-foreground truncate group-hover:text-brand-500 transition-colors">
+                <h4 className="font-heading text-xs xl:text-sm 2xl:text-base font-bold text-foreground truncate group-hover:text-brand-500 transition-colors">
                   {prevProject.title}
                 </h4>
-                <p className="font-mono text-[9px] xl:text-[10px] text-muted-foreground truncate">
+                <p className="font-mono text-[9px] xl:text-[10px] 2xl:text-xs text-muted-foreground truncate">
                   {prevProject.role}
                 </p>
-                <div className="pt-1.5 border-t border-edge-subtle/60 flex items-center gap-1 text-[9px] xl:text-[10px] font-mono text-brand-500 opacity-70 group-hover:opacity-100 transition-opacity">
+                <div className="pt-1.5 border-t border-edge-subtle/60 flex items-center gap-1 text-[9px] xl:text-[10px] 2xl:text-xs font-mono text-brand-500 opacity-70 group-hover:opacity-100 transition-opacity">
                   <ChevronLeft className="size-3" />
                   <span>Click to view</span>
                 </div>
@@ -258,7 +258,7 @@ export function ProjectsStageView({
                 damping: 32,
                 mass: 0.7,
               }}
-              className="relative z-20 w-full max-w-[560px] xl:max-w-[730px] rounded-3xl bg-bg-surface/95 border border-edge-default shadow-2xl overflow-hidden backdrop-blur-xl ring-1 ring-white/10 dark:ring-white/5 shrink-0"
+              className="relative z-20 w-full max-w-[580px] lg:max-w-[620px] xl:max-w-[820px] 2xl:max-w-[980px] rounded-3xl bg-bg-surface/95 border border-edge-default shadow-2xl overflow-hidden backdrop-blur-xl ring-1 ring-white/10 dark:ring-white/5 shrink-0"
             >
               {/* Studio Window Chrome Header */}
               <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-bg-surface/95 border-b border-edge-subtle/80 backdrop-blur-md">
@@ -272,7 +272,7 @@ export function ProjectsStageView({
 
                   <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-bg-void/80 border border-edge-subtle text-xs font-mono text-muted-foreground">
                     <Lock className="size-3 text-brand-500" />
-                    <span className="truncate max-w-[200px] md:max-w-[280px]">
+                    <span className="truncate max-w-[200px] md:max-w-[280px] xl:max-w-[360px] 2xl:max-w-[440px]">
                       {cleanUrl}
                     </span>
                     <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse ml-1" />
@@ -338,9 +338,9 @@ export function ProjectsStageView({
               </div>
 
               {/* Main Dual-Pane Content Canvas */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 lg:h-[480px] xl:h-[500px]">
-                {/* Left Column: Media Stage (7 cols, Full Height) */}
-                <div className="lg:col-span-7 relative flex flex-col justify-between bg-bg-void/90 border-b lg:border-b-0 lg:border-r border-edge-subtle/80 overflow-hidden lg:h-full">
+              <div className="grid grid-cols-1 lg:grid-cols-2 lg:h-[490px] xl:h-[520px] 2xl:h-[540px]">
+                {/* Left Column: Media Stage (50% Width, Full Height) */}
+                <div className="relative flex flex-col justify-between bg-bg-void/90 border-b lg:border-b-0 lg:border-r border-edge-subtle/80 overflow-hidden lg:h-full">
                   <div className="relative aspect-16/10 lg:aspect-auto lg:h-full w-full flex items-center justify-center overflow-hidden min-h-[260px]">
                     {activeProject.video ? (
                       <div className="relative size-full">
@@ -372,7 +372,7 @@ export function ProjectsStageView({
                           src={displayImage}
                           alt={activeProject.title}
                           fill
-                          sizes="(max-width: 1024px) 100vw, 600px"
+                          sizes="(max-width: 1024px) 100vw, (max-width: 1536px) 600px, 720px"
                           className="object-cover"
                           priority
                         />
@@ -385,13 +385,13 @@ export function ProjectsStageView({
                           aria-hidden="true"
                         />
 
-                        {/* Top System Eyebrow */}
+                        {/* Top System Eyebrow (Category cleanly integrated without overlap) */}
                         <div className="relative z-10 flex items-center justify-between text-xs font-mono text-muted-foreground border-b border-edge-subtle/60 pb-2.5">
-                          <span className="flex items-center gap-1.5 text-brand-500 font-semibold uppercase">
-                            <Server className="size-3.5" />
-                            Internal Architecture
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-500 font-semibold uppercase text-[10px] 2xl:text-[11px] tracking-wider">
+                            <Server className="size-3" />
+                            {activeProject.category}
                           </span>
-                          <span className="inline-flex items-center gap-1 text-emerald-400">
+                          <span className="inline-flex items-center gap-1 text-emerald-400 text-xs font-medium">
                             <Activity className="size-3 animate-pulse" />
                             Production Live
                           </span>
@@ -431,43 +431,39 @@ export function ProjectsStageView({
                         </div>
 
                         {/* Bottom Telemetry Bar */}
-                        <div className="relative z-10 pt-2 border-t border-edge-subtle/60 flex items-center justify-around text-xs font-mono text-muted-foreground">
-                          <div>
-                            <span className="text-foreground font-bold">
-                              400+
-                            </span>{" "}
-                            Staff
+                        <div className="relative z-10 pt-2.5 border-t border-edge-subtle/60 flex items-center justify-around text-xs font-mono text-muted-foreground">
+                          <div className="flex items-center gap-1.5">
+                            <Server className="size-3 text-brand-500" />
+                            <span className="text-foreground/90 font-medium">Core Engine</span>
                           </div>
                           <div className="h-3 w-px bg-edge-subtle" />
-                          <div>
-                            <span className="text-foreground font-bold">
-                              &lt;1s
-                            </span>{" "}
-                            Payroll
+                          <div className="flex items-center gap-1.5">
+                            <Lock className="size-3 text-brand-500" />
+                            <span className="text-foreground/90 font-medium">Row-Level Security</span>
                           </div>
                           <div className="h-3 w-px bg-edge-subtle" />
-                          <div>
-                            <span className="text-foreground font-bold">
-                              Zero
-                            </span>{" "}
-                            Lock
+                          <div className="flex items-center gap-1.5">
+                            <Activity className="size-3 text-emerald-400" />
+                            <span className="text-foreground/90 font-medium">Zero Downtime</span>
                           </div>
                         </div>
                       </div>
                     )}
 
-                    {/* Top Floating Badges */}
-                    <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
-                      <span className="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-white border border-white/15 text-[11px] font-mono font-medium shadow-md">
-                        {activeProject.category}
-                      </span>
-                      {activeProject.video && (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-500 text-white text-[10px] font-mono font-bold uppercase tracking-wider shadow-md">
-                          <Video className="size-3" />
-                          Interactive Feed
+                    {/* Top Floating Badges (Only shown when media is rendered) */}
+                    {(activeProject.video || displayImage) && (
+                      <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
+                        <span className="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-white border border-white/15 text-[11px] font-mono font-medium shadow-md">
+                          {activeProject.category}
                         </span>
-                      )}
-                    </div>
+                        {activeProject.video && (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-500 text-white text-[10px] font-mono font-bold uppercase tracking-wider shadow-md">
+                            <Video className="size-3" />
+                            Interactive Feed
+                          </span>
+                        )}
+                      </div>
+                    )}
 
                     {/* Multi-Screenshot Carousel Controls */}
                     {activeProject.images &&
@@ -520,77 +516,70 @@ export function ProjectsStageView({
                   </div>
                 </div>
 
-                {/* Right Column: Engineering HUD (5 cols, Compact & Balanced) */}
-                <div className="lg:col-span-5 p-5 sm:p-6 lg:p-6 flex flex-col justify-between bg-bg-surface lg:h-full overflow-hidden">
-                  <div className="space-y-3">
+                {/* Right Column: Engineering HUD (Equal 50% Column, Minimalist & Spacious) */}
+                <div className="p-5 sm:p-6 xl:p-7 flex flex-col justify-between bg-bg-surface lg:h-full overflow-hidden">
+                  <div className="space-y-3.5">
                     {/* Eyebrow Category & Year */}
                     <div className="flex items-center justify-between text-xs font-mono">
-                      <span className="text-brand-500 font-bold tracking-widest uppercase flex items-center gap-1.5 text-[11px]">
+                      <span className="text-brand-500 font-bold tracking-widest uppercase flex items-center gap-1.5 text-[11px] 2xl:text-xs">
                         <Sparkles className="size-3" />
                         Featured Build
                       </span>
-                      <span className="text-muted-foreground/80 font-semibold text-[11px]">
+                      <span className="text-muted-foreground/80 font-semibold text-[11px] 2xl:text-xs">
                         {activeProject.year}
                       </span>
                     </div>
 
                     {/* Project Title & Subtitle */}
                     <div>
-                      <h3 className="font-heading text-xl sm:text-2xl font-extrabold text-foreground leading-tight tracking-tight">
+                      <h3 className="font-heading text-xl sm:text-2xl 2xl:text-[26px] font-extrabold text-foreground leading-tight tracking-tight">
                         {activeProject.title}
                       </h3>
-                      <p className="font-sans text-xs text-muted-foreground mt-1 leading-relaxed line-clamp-2">
+                      <p className="font-sans text-xs 2xl:text-sm text-muted-foreground mt-1 leading-relaxed line-clamp-2">
                         {activeProject.subtitle}
                       </p>
                     </div>
 
-                    {/* Role & Personal Ownership Spotlight */}
-                    <div className="p-3 sm:p-3.5 rounded-xl bg-linear-to-br from-brand-500/10 via-bg-surface to-bg-void border-l-4 border-l-brand-500 border border-edge-subtle/80 shadow-xs">
-                      <div className="flex items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-edge-subtle/70">
-                        <div className="flex items-center gap-1.5">
-                          <UserCheck className="size-3.5 text-brand-500 shrink-0" />
-                          <span className="font-heading text-xs font-bold text-foreground">
-                            {activeProject.role}
-                          </span>
-                        </div>
+                    {/* Role & Team Metadata Strip (No truncation, flexible badges) */}
+                    <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-brand-500/10 border border-brand-500/25 text-brand-500 text-xs font-mono font-medium">
+                        <UserCheck className="size-3.5 text-brand-500 shrink-0" />
+                        <span>{activeProject.role}</span>
+                      </span>
 
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-bg-surface border border-edge-default text-[10px] font-mono text-muted-foreground truncate max-w-[130px]">
-                          <Users className="size-2.5 text-brand-500" />
-                          <span>{activeProject.team}</span>
-                        </span>
-                      </div>
-
-                      {/* Key Deliverables */}
-                      <ul className="space-y-1">
-                        {activeProject.details.myContributions
-                          .slice(0, 2)
-                          .map((contrib, idx) => (
-                            <li
-                              key={idx}
-                              className="flex items-start gap-1.5 text-xs text-muted-foreground leading-tight"
-                            >
-                              <CheckCircle2 className="size-3 text-brand-500 mt-0.5 shrink-0" />
-                              <span className="text-foreground/90 line-clamp-1">
-                                {contrib}
-                              </span>
-                            </li>
-                          ))}
-                      </ul>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-bg-void border border-edge-subtle text-muted-foreground text-xs font-mono">
+                        <Users className="size-3 text-brand-500 shrink-0" />
+                        <span>{activeProject.team}</span>
+                      </span>
                     </div>
 
-                    {/* Metrics Grid */}
+                    {/* Key Deliverables Highlights */}
+                    <ul className="space-y-1.5 pt-0.5">
+                      {activeProject.details.myContributions
+                        .slice(0, 2)
+                        .map((contrib, idx) => (
+                          <li
+                            key={idx}
+                            className="flex items-start gap-2 text-xs 2xl:text-[13px] text-muted-foreground leading-relaxed"
+                          >
+                            <CheckCircle2 className="size-3.5 text-brand-500 mt-0.5 shrink-0" />
+                            <span className="text-foreground/90 line-clamp-2">
+                              {contrib}
+                            </span>
+                          </li>
+                        ))}
+                    </ul>
+
+                    {/* Metrics Pill Grid (Matching Grid View Design) */}
                     {activeProject.metrics &&
                       activeProject.metrics.length > 0 && (
-                        <div className="grid grid-cols-3 gap-2">
+                        <div className="grid grid-cols-3 gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-bg-void/60 border border-edge-subtle/80 select-none">
                           {activeProject.metrics.map((metric) => (
-                            <div
-                              key={metric.label}
-                              className="p-2 rounded-xl bg-bg-void/80 border border-edge-subtle text-center"
-                            >
-                              <span className="block font-heading text-sm sm:text-base font-black text-foreground">
+                            <div key={metric.label} className="text-center">
+                              <span className="block font-heading text-xs sm:text-sm 2xl:text-base font-bold text-foreground">
                                 {metric.value}
                               </span>
-                              <span className="block font-mono text-[9px] text-muted-foreground uppercase truncate">
+                              <span className="block font-mono text-[10px] text-muted-foreground uppercase truncate">
                                 {metric.label}
                               </span>
                             </div>
@@ -598,12 +587,12 @@ export function ProjectsStageView({
                         </div>
                       )}
 
-                    {/* Tech Badges */}
-                    <div className="flex flex-wrap gap-1">
+                    {/* Clean Tech Badges */}
+                    <div className="flex flex-wrap gap-1.5">
                       {activeProject.tags.slice(0, 5).map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 py-0.5 rounded-md bg-bg-void text-muted-foreground border border-edge-subtle text-[10px] font-mono font-medium"
+                          className="px-2.5 py-0.5 rounded-full bg-bg-void/80 text-muted-foreground border border-edge-subtle/80 text-[10px] 2xl:text-[11px] font-mono font-medium"
                         >
                           {tag}
                         </span>
@@ -612,13 +601,13 @@ export function ProjectsStageView({
                   </div>
 
                   {/* Actions Bar */}
-                  <div className="pt-3 border-t border-edge-subtle/80 flex items-center justify-between gap-2.5 mt-2">
+                  <div className="pt-3 2xl:pt-4 border-t border-edge-subtle/80 flex items-center justify-between gap-2.5 mt-auto">
                     <Button
                       size="default"
                       onClick={() => onOpenDetail(activeProject)}
-                      className="flex-1 rounded-full text-xs sm:text-sm font-semibold bg-brand-500 hover:bg-brand-600 text-white shadow-sm hover:shadow-md transition-all duration-200 h-9"
+                      className="flex-1 rounded-full text-xs sm:text-sm 2xl:text-base font-semibold bg-brand-500 hover:bg-brand-600 text-white shadow-sm hover:shadow-md transition-all duration-200 h-9 2xl:h-10 cursor-pointer"
                     >
-                      <FileText className="size-3.5 mr-1.5" />
+                      <FileText className="size-3.5 2xl:size-4 mr-1.5" />
                       Deep Dive Case Study
                     </Button>
 
@@ -629,9 +618,9 @@ export function ProjectsStageView({
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`Source repository for ${activeProject.title}`}
-                          className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-bg-void border border-edge-subtle transition-colors"
+                          className="p-2 2xl:p-2.5 rounded-full text-muted-foreground hover:text-foreground hover:bg-bg-void border border-edge-subtle transition-colors"
                         >
-                          <FaGithub className="size-3.5" />
+                          <FaGithub className="size-3.5 2xl:size-4" />
                         </a>
                       )}
                       {activeProject.liveUrl && (
@@ -640,9 +629,9 @@ export function ProjectsStageView({
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`Live website for ${activeProject.title}`}
-                          className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-bg-void border border-edge-subtle transition-colors"
+                          className="p-2 2xl:p-2.5 rounded-full text-muted-foreground hover:text-foreground hover:bg-bg-void border border-edge-subtle transition-colors"
                         >
-                          <ArrowUpRight className="size-3.5" />
+                          <ArrowUpRight className="size-3.5 2xl:size-4" />
                         </a>
                       )}
                     </div>
@@ -668,16 +657,16 @@ export function ProjectsStageView({
               style={{
                 transformOrigin: "left center",
               }}
-              className="hidden lg:flex flex-col justify-between p-3.5 xl:p-4 rounded-3xl bg-bg-surface/90 hover:bg-bg-elevated border border-edge-default hover:border-brand-500 shadow-lg hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 cursor-pointer w-[165px] xl:w-[225px] h-[390px] xl:h-[450px] shrink-0 scale-95 rotate-y-8 hover:scale-100 hover:rotate-y-0 opacity-85 hover:opacity-100 z-10 overflow-hidden group select-none backdrop-blur-xl ring-1 ring-white/5"
+              className="hidden lg:flex flex-col justify-between p-3.5 xl:p-4 2xl:p-5 rounded-3xl bg-bg-surface/90 hover:bg-bg-elevated border border-edge-default hover:border-brand-500 shadow-lg hover:shadow-2xl hover:shadow-brand-500/20 transition-all duration-300 cursor-pointer w-[160px] xl:w-[195px] 2xl:w-[235px] h-[410px] xl:h-[460px] 2xl:h-[490px] shrink-0 scale-95 rotate-y-8 hover:scale-100 hover:rotate-y-0 opacity-85 hover:opacity-100 z-10 overflow-hidden group select-none backdrop-blur-xl ring-1 ring-white/5"
             >
               {/* Header pill & Year */}
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono text-muted-foreground/80">
+                <span className="text-[10px] 2xl:text-xs font-mono text-muted-foreground/80">
                   {nextProject.year}
                 </span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-brand-500/15 border border-brand-500/30 text-brand-500 text-[10px] xl:text-[11px] font-mono font-bold tracking-wider group-hover:bg-brand-500 group-hover:text-white transition-colors">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-brand-500/15 border border-brand-500/30 text-brand-500 text-[10px] xl:text-[11px] 2xl:text-xs font-mono font-bold tracking-wider group-hover:bg-brand-500 group-hover:text-white transition-colors">
                   NEXT
-                  <ChevronRight className="size-3 xl:size-3.5 transition-transform group-hover:translate-x-0.5" />
+                  <ChevronRight className="size-3 xl:size-3.5 2xl:size-4 transition-transform group-hover:translate-x-0.5" />
                 </span>
               </div>
 
@@ -688,7 +677,7 @@ export function ProjectsStageView({
                     src={nextProject.image}
                     alt=""
                     fill
-                    sizes="250px"
+                    sizes="(max-width: 1280px) 180px, (max-width: 1536px) 220px, 280px"
                     className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                   />
                 ) : (
@@ -697,20 +686,20 @@ export function ProjectsStageView({
                   </div>
                 )}
                 <div className="absolute inset-0 bg-linear-to-t from-bg-surface/90 via-transparent to-transparent pointer-events-none" />
-                <span className="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-xs text-[9px] font-mono text-white/90 uppercase tracking-wider">
+                <span className="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-xs text-[9px] 2xl:text-[10px] font-mono text-white/90 uppercase tracking-wider">
                   {nextProject.category}
                 </span>
               </div>
 
               {/* Title & Role Info */}
               <div className="space-y-1 text-right">
-                <h4 className="font-heading text-xs xl:text-sm font-bold text-foreground truncate group-hover:text-brand-500 transition-colors">
+                <h4 className="font-heading text-xs xl:text-sm 2xl:text-base font-bold text-foreground truncate group-hover:text-brand-500 transition-colors">
                   {nextProject.title}
                 </h4>
-                <p className="font-mono text-[9px] xl:text-[10px] text-muted-foreground truncate">
+                <p className="font-mono text-[9px] xl:text-[10px] 2xl:text-xs text-muted-foreground truncate">
                   {nextProject.role}
                 </p>
-                <div className="pt-1.5 border-t border-edge-subtle/60 flex items-center justify-end gap-1 text-[9px] xl:text-[10px] font-mono text-brand-500 opacity-70 group-hover:opacity-100 transition-opacity">
+                <div className="pt-1.5 border-t border-edge-subtle/60 flex items-center justify-end gap-1 text-[9px] xl:text-[10px] 2xl:text-xs font-mono text-brand-500 opacity-70 group-hover:opacity-100 transition-opacity">
                   <span>Click to view</span>
                   <ChevronRight className="size-3" />
                 </div>
