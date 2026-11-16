@@ -45,9 +45,9 @@ describe("ProjectsContainer", () => {
       }),
     ).toBeInTheDocument();
 
-    expect(screen.getByText("JoSan Website")).toBeInTheDocument();
-    expect(screen.getByText("VzStellar Website")).toBeInTheDocument();
-    expect(screen.getByText("ACEMC Enterprise HRIS")).toBeInTheDocument();
+    expect(screen.getAllByText("JoSan Website").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("VzStellar Website").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("ACEMC Enterprise HRIS").length).toBeGreaterThan(0);
   });
 
   it("filters projects when a category pill is clicked", () => {
@@ -73,8 +73,8 @@ describe("ProjectsContainer", () => {
 
     fireEvent.change(searchInput, { target: { value: "Payroll" } });
 
-    expect(screen.getByText("ACEMC Enterprise HRIS")).toBeInTheDocument();
-    expect(screen.queryByText("JoSan Website")).not.toBeInTheDocument();
+    expect(screen.getAllByText("ACEMC Enterprise HRIS").length).toBeGreaterThan(0);
+    expect(screen.queryByText("VzStellar Website")).not.toBeInTheDocument();
   });
 
   it("shows an empty state when no projects match the search query and allows reset", () => {
@@ -97,7 +97,7 @@ describe("ProjectsContainer", () => {
     });
     fireEvent.click(resetButton);
 
-    expect(screen.getByText("JoSan Website")).toBeInTheDocument();
+    expect(screen.getAllByText("JoSan Website").length).toBeGreaterThan(0);
   });
 
   it("opens the detail modal when 'Case Study' is clicked", () => {
@@ -123,15 +123,18 @@ describe("ProjectsContainer", () => {
     ).toBeInTheDocument();
   });
 
-  it("switches to the Interactive Showcase Stage view mode when the stage button is clicked", () => {
+  it("defaults to Showcase Stage view mode and switches to Grid view when clicked", () => {
     render(<ProjectsContainer />);
 
-    const stageButton = screen.getByRole("button", {
-      name: /interactive showcase stage view/i,
-    });
-    fireEvent.click(stageButton);
-
+    // Stage view elements are rendered by default
     expect(screen.getByText(/featured build/i)).toBeInTheDocument();
     expect(screen.getByText(/deep dive case study/i)).toBeInTheDocument();
+
+    const gridButton = screen.getByRole("button", {
+      name: /grid layout view/i,
+    });
+    fireEvent.click(gridButton);
+
+    expect(screen.getByText("JoSan Website")).toBeInTheDocument();
   });
 });
