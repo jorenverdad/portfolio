@@ -751,14 +751,14 @@ export function ProjectsStageView({
         </div>
 
         {/* Floating Kinetic Project Dock */}
-        <div className="w-full mt-6 mb-2 flex flex-col items-center gap-2.5 px-3 sm:px-4">
-          {/* Consistent Outer Dock Pill Frame (Always closed, fully rounded border on both ends) */}
-          <div className="relative max-w-full rounded-full bg-white/95 dark:bg-bg-elevated/80 border border-edge-default/70 dark:border-white/10 shadow-[0_2px_12px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] dark:shadow-[0_12px_36px_rgba(0,0,0,0.45)] backdrop-blur-xl p-1 sm:p-1.5 overflow-hidden flex items-center">
+        <div className="w-full mt-4 sm:mt-5 mb-1 flex flex-col items-center gap-2 px-3 sm:px-4">
+          {/* Consistent Outer Dock Pill Frame (Quiet, low-contrast, non-competing) */}
+          <div className="relative max-w-full rounded-full bg-bg-surface/60 dark:bg-bg-void/85 border border-edge-subtle/70 dark:border-white/[0.07] backdrop-blur-xl p-1 overflow-hidden flex items-center">
             {/* Left Edge Inner Fade Hint */}
             <div
               aria-hidden="true"
               className={cn(
-                "pointer-events-none absolute left-0 inset-y-0 w-8 sm:w-12 bg-linear-to-r from-white dark:from-bg-elevated to-transparent rounded-l-full z-10 transition-opacity duration-300",
+                "pointer-events-none absolute left-0 inset-y-0 w-8 sm:w-12 bg-linear-to-r from-bg-surface dark:from-bg-void to-transparent rounded-l-full z-10 transition-opacity duration-300",
                 canScrollLeft ? "opacity-100" : "opacity-0",
               )}
             />
@@ -769,7 +769,7 @@ export function ProjectsStageView({
               onScroll={updateScrollState}
               role="tablist"
               aria-label="Showcase stage project navigator"
-              className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-none px-2 sm:px-3 py-0.5 max-w-[calc(100vw-2.5rem)] sm:max-w-[88vw] lg:max-w-[1240px]"
+              className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-none px-2 sm:px-2.5 py-0.5 max-w-[calc(100vw-2.5rem)] sm:max-w-[88vw] lg:max-w-[1240px]"
             >
               {projects.map((proj, idx) => {
                 const isActive = idx === safeIndex;
@@ -786,10 +786,10 @@ export function ProjectsStageView({
                     }}
                     onClick={() => handleSelectIndex(idx)}
                     className={cn(
-                      "group relative flex items-center gap-2 sm:gap-2.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 cursor-pointer select-none shrink-0",
+                      "group relative flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 cursor-pointer select-none shrink-0",
                       isActive
                         ? "text-foreground font-semibold"
-                        : "text-muted-foreground hover:text-foreground hover:bg-black/[0.04] dark:hover:bg-white/[0.05]",
+                        : "text-muted-foreground/60 hover:text-foreground hover:bg-white/[0.04] dark:hover:bg-white/[0.04]",
                     )}
                     role="tab"
                     aria-selected={isActive}
@@ -798,10 +798,10 @@ export function ProjectsStageView({
                     {/* Monospace Index Badge */}
                     <span
                       className={cn(
-                        "font-mono text-[10px] sm:text-[11px] font-semibold transition-colors shrink-0",
+                        "font-mono text-[10px] font-semibold transition-colors shrink-0",
                         isActive
-                          ? "text-brand-600 dark:text-brand-500"
-                          : "text-muted-foreground/60 group-hover:text-muted-foreground",
+                          ? "text-brand-600 dark:text-brand-400"
+                          : "text-muted-foreground/40 group-hover:text-muted-foreground/70",
                       )}
                     >
                       {String(idx + 1).padStart(2, "0")}
@@ -810,10 +810,10 @@ export function ProjectsStageView({
                     {/* Crisp Rounded Thumbnail */}
                     <div
                       className={cn(
-                        "relative size-5.5 sm:size-6 rounded-md overflow-hidden bg-bg-void shrink-0 border transition-all duration-200",
+                        "relative size-5 rounded-md overflow-hidden bg-bg-void shrink-0 border transition-all duration-200",
                         isActive
-                          ? "border-brand-500/70 shadow-xs ring-1 ring-brand-500/40"
-                          : "border-edge-subtle/80 group-hover:border-edge-strong",
+                          ? "border-brand-500/60 ring-1 ring-brand-500/30 shadow-xs"
+                          : "border-edge-subtle/50 opacity-75 group-hover:opacity-100 group-hover:border-edge-subtle",
                       )}
                     >
                       {(proj.image ?? proj.images?.[0]) ? (
@@ -821,12 +821,12 @@ export function ProjectsStageView({
                           src={proj.image ?? proj.images![0]!}
                           alt=""
                           fill
-                          sizes="24px"
+                          sizes="20px"
                           className="object-cover"
                         />
                       ) : (
                         <div className="size-full flex items-center justify-center bg-brand-500/10 text-brand-500">
-                          <Layers className="size-3" />
+                          <Layers className="size-2.5" />
                         </div>
                       )}
                     </div>
@@ -834,10 +834,10 @@ export function ProjectsStageView({
                     {/* Project Title */}
                     <span
                       className={cn(
-                        "font-heading text-xs sm:text-[13px] font-bold whitespace-nowrap transition-colors",
+                        "font-heading text-xs font-medium whitespace-nowrap transition-colors",
                         isActive
-                          ? "text-foreground font-extrabold"
-                          : "text-muted-foreground group-hover:text-foreground",
+                          ? "text-foreground font-semibold"
+                          : "text-muted-foreground/70 group-hover:text-foreground",
                       )}
                     >
                       {proj.title}
@@ -846,11 +846,11 @@ export function ProjectsStageView({
                     {/* Active Live Pulse Indicator */}
                     {isActive && <span aria-hidden="true" />}
 
-                    {/* Active Gliding Pill with Clean Crisp Light/Dark Styling */}
+                    {/* Active Gliding Pill with Clean, Quiet Styling */}
                     {isActive && (
                       <m.span
                         layoutId="stage-dock-active-pill"
-                        className="absolute inset-0 rounded-full bg-brand-500/10 dark:bg-brand-500/20 border border-brand-500/50 dark:border-brand-500/70 shadow-xs dark:shadow-[0_0_20px_-3px_rgba(224,32,32,0.35)] pointer-events-none"
+                        className="absolute inset-0 rounded-full bg-brand-500/10 dark:bg-brand-500/15 border border-brand-500/40 dark:border-brand-500/50 shadow-2xs pointer-events-none"
                         transition={{
                           type: "spring",
                           stiffness: 380,
@@ -867,27 +867,24 @@ export function ProjectsStageView({
             <div
               aria-hidden="true"
               className={cn(
-                "pointer-events-none absolute right-0 inset-y-0 w-8 sm:w-12 bg-linear-to-l from-white dark:from-bg-elevated to-transparent rounded-r-full z-10 transition-opacity duration-300",
+                "pointer-events-none absolute right-0 inset-y-0 w-8 sm:w-12 bg-linear-to-l from-bg-surface dark:from-bg-void to-transparent rounded-r-full z-10 transition-opacity duration-300",
                 canScrollRight ? "opacity-100" : "opacity-0",
               )}
             />
           </div>
 
           {/* Status & Keyboard Hint HUD */}
-          <div className="flex items-center gap-2 text-[11px] font-mono text-muted-foreground/75 select-none">
+          <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-mono text-muted-foreground/50 select-none">
             <span className="hidden sm:inline">Use</span>
-            <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded bg-bg-surface border border-edge-subtle text-[10px] text-muted-foreground">
+            <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.2 rounded bg-bg-surface/60 border border-edge-subtle/60 text-[9px] text-muted-foreground/70">
               ←
             </kbd>
-            <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded bg-bg-surface border border-edge-subtle text-[10px] text-muted-foreground">
+            <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.2 rounded bg-bg-surface/60 border border-edge-subtle/60 text-[9px] text-muted-foreground/70">
               →
             </kbd>
-            <span className="hidden sm:inline">keys to navigate builds</span>
-            <span className="sm:hidden font-sans">
-              Swipe or tap to switch builds
-            </span>
+            <span className="hidden sm:inline">to navigate</span>
             <span className="text-muted-foreground/30">•</span>
-            <span className="font-semibold text-foreground/90">
+            <span className="font-medium text-muted-foreground/80">
               {safeIndex + 1} of {projects.length} Builds
             </span>
           </div>
