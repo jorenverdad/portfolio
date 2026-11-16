@@ -50,12 +50,18 @@ export function ProjectsHero({
           className={`relative pt-7 pb-7 sm:pt-9 sm:pb-8 md:pt-10 md:pb-8 overflow-hidden border-b border-edge-subtle/40 ${className}`}
           aria-label="Projects overview and engineering archive"
         >
-          {/* Subtle Ambient Radial Glow */}
-          <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[580px] h-[240px] bg-brand-500/[0.07] dark:bg-brand-500/[0.11] rounded-full blur-[90px]" />
-          </div>
+          {/* Background Grid Pattern with smooth vignette fade matching Hero section */}
+          <GridPattern className="opacity-25 dark:opacity-30 [mask-image:radial-gradient(ellipse_70%_70%_at_50%_40%,#000_15%,transparent_100%)]" />
 
-          <GridPattern className="opacity-[0.035] dark:opacity-[0.05]" />
+          {/* Natural Ambient Top Glow - Organic radial falloff, zero-blur GPU performance */}
+          <div
+            aria-hidden="true"
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[480px] pointer-events-none select-none opacity-40 dark:opacity-90"
+            style={{
+              background:
+                "radial-gradient(ellipse 85% 65% at 50% -15%, color-mix(in oklch, var(--color-brand-500) 26%, transparent) 0%, color-mix(in oklch, var(--color-brand-500) 10%, transparent) 42%, color-mix(in oklch, var(--color-brand-500) 2%, transparent) 75%, transparent 100%)",
+            }}
+          />
 
           <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-4xl text-center flex flex-col items-center">
             <m.div

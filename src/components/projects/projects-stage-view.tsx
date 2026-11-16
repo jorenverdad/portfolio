@@ -21,7 +21,7 @@ import {
   UserCheck,
   Users,
   CheckCircle2,
-  Sparkles,
+  FolderGit2,
   Lock,
   Database,
   Cpu,
@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import type { ProjectItem } from "@/lib/projects-data";
 
 export interface ProjectsStageViewProps {
@@ -48,8 +49,21 @@ export function ProjectsStageView({
   const [isAutoPlay, setIsAutoPlay] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const dockContainerRef = useRef<HTMLDivElement | null>(null);
+  const dockItemRefs = useRef<Map<number, HTMLButtonElement>>(new Map());
   const shouldReduceMotion = useReducedMotion();
+
+  const updateScrollState = useCallback(() => {
+    const el = dockContainerRef.current;
+    if (!el) return;
+    const left = el.scrollLeft > 4;
+    const right = el.scrollLeft + el.clientWidth < el.scrollWidth - 6;
+    setCanScrollLeft(left);
+    setCanScrollRight(right);
+  }, []);
 
   // Adjust activeIndex if category filter reduces projects count
   const safeIndex =
@@ -126,6 +140,28 @@ export function ProjectsStageView({
       }
     }
   }, [activeProject?.id, activeProject?.video, isMuted]);
+
+  // Smoothly scroll active dock item into view when index changes & update scroll hints
+  useEffect(() => {
+    const activeEl = dockItemRefs.current.get(safeIndex);
+    if (activeEl && typeof activeEl.scrollIntoView === "function") {
+      activeEl.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+    const timer = setTimeout(updateScrollState, 350);
+    return () => clearTimeout(timer);
+  }, [safeIndex, updateScrollState]);
+
+  // Monitor resize and project list updates to check if dock overflows
+  useEffect(() => {
+    updateScrollState();
+    const handleResize = () => updateScrollState();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [projects.length, updateScrollState]);
 
   if (!activeProject || projects.length === 0) {
     return (
@@ -434,17 +470,23 @@ export function ProjectsStageView({
                         <div className="relative z-10 pt-2.5 border-t border-edge-subtle/60 flex items-center justify-around text-xs font-mono text-muted-foreground">
                           <div className="flex items-center gap-1.5">
                             <Server className="size-3 text-brand-500" />
-                            <span className="text-foreground/90 font-medium">Core Engine</span>
+                            <span className="text-foreground/90 font-medium">
+                              Core Engine
+                            </span>
                           </div>
                           <div className="h-3 w-px bg-edge-subtle" />
                           <div className="flex items-center gap-1.5">
                             <Lock className="size-3 text-brand-500" />
-                            <span className="text-foreground/90 font-medium">Row-Level Security</span>
+                            <span className="text-foreground/90 font-medium">
+                              Row-Level Security
+                            </span>
                           </div>
                           <div className="h-3 w-px bg-edge-subtle" />
                           <div className="flex items-center gap-1.5">
                             <Activity className="size-3 text-emerald-400" />
-                            <span className="text-foreground/90 font-medium">Zero Downtime</span>
+                            <span className="text-foreground/90 font-medium">
+                              Zero Downtime
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -522,7 +564,7 @@ export function ProjectsStageView({
                     {/* Eyebrow Category & Year */}
                     <div className="flex items-center justify-between text-xs font-mono">
                       <span className="text-brand-500 font-bold tracking-widest uppercase flex items-center gap-1.5 text-[11px] 2xl:text-xs">
-                        <Sparkles className="size-3" />
+                        <FolderGit2 className="size-3" />
                         Featured Build
                       </span>
                       <span className="text-muted-foreground/80 font-semibold text-[11px] 2xl:text-xs">
@@ -709,57 +751,145 @@ export function ProjectsStageView({
         </div>
 
         {/* Floating Kinetic Project Dock */}
-        <div className="w-full mt-6 mb-2 flex justify-center overflow-x-auto pb-1 scrollbar-none px-4">
-          <div className="inline-flex items-center gap-1.5 p-1.5 rounded-full bg-bg-surface/85 border border-edge-default shadow-xl backdrop-blur-2xl">
-            {projects.map((proj, idx) => {
-              const isActive = idx === safeIndex;
+        <div className="w-full mt-6 mb-2 flex flex-col items-center gap-2.5 px-3 sm:px-4">
+          {/* Consistent Outer Dock Pill Frame (Always closed, fully rounded border on both ends) */}
+          <div className="relative max-w-full rounded-full bg-white/95 dark:bg-bg-elevated/80 border border-edge-default/70 dark:border-white/10 shadow-[0_2px_12px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] dark:shadow-[0_12px_36px_rgba(0,0,0,0.45)] backdrop-blur-xl p-1 sm:p-1.5 overflow-hidden flex items-center">
+            {/* Left Edge Inner Fade Hint */}
+            <div
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute left-0 inset-y-0 w-8 sm:w-12 bg-linear-to-r from-white dark:from-bg-elevated to-transparent rounded-l-full z-10 transition-opacity duration-300",
+                canScrollLeft ? "opacity-100" : "opacity-0",
+              )}
+            />
 
-              return (
-                <button
-                  key={proj.id}
-                  onClick={() => handleSelectIndex(idx)}
-                  className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 cursor-pointer ${
-                    isActive
-                      ? "bg-bg-elevated text-foreground shadow-sm"
-                      : "text-muted-foreground hover:text-foreground hover:bg-bg-void/60 opacity-80 hover:opacity-100"
-                  }`}
-                  aria-pressed={isActive}
-                  aria-label={`Switch to ${proj.title}`}
-                >
-                  <div className="relative size-5 rounded-full overflow-hidden bg-bg-void shrink-0 border border-edge-subtle">
-                    {proj.image ?? proj.images?.[0] ? (
-                      <Image
-                        src={proj.image ?? proj.images![0]!}
-                        alt=""
-                        fill
-                        sizes="20px"
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="size-full flex items-center justify-center bg-brand-500/10 text-brand-500">
-                        <Layers className="size-2.5" />
-                      </div>
+            {/* Inner Scrollable Tab Track */}
+            <div
+              ref={dockContainerRef}
+              onScroll={updateScrollState}
+              role="tablist"
+              aria-label="Showcase stage project navigator"
+              className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto scrollbar-none px-2 sm:px-3 py-0.5 max-w-[calc(100vw-2.5rem)] sm:max-w-[88vw] lg:max-w-[1240px]"
+            >
+              {projects.map((proj, idx) => {
+                const isActive = idx === safeIndex;
+
+                return (
+                  <button
+                    key={proj.id}
+                    ref={(el) => {
+                      if (el) {
+                        dockItemRefs.current.set(idx, el);
+                      } else {
+                        dockItemRefs.current.delete(idx);
+                      }
+                    }}
+                    onClick={() => handleSelectIndex(idx)}
+                    className={cn(
+                      "group relative flex items-center gap-2 sm:gap-2.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 cursor-pointer select-none shrink-0",
+                      isActive
+                        ? "text-foreground font-semibold"
+                        : "text-muted-foreground hover:text-foreground hover:bg-black/[0.04] dark:hover:bg-white/[0.05]",
                     )}
-                  </div>
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-label={`Switch to ${proj.title}`}
+                  >
+                    {/* Monospace Index Badge */}
+                    <span
+                      className={cn(
+                        "font-mono text-[10px] sm:text-[11px] font-semibold transition-colors shrink-0",
+                        isActive
+                          ? "text-brand-600 dark:text-brand-500"
+                          : "text-muted-foreground/60 group-hover:text-muted-foreground",
+                      )}
+                    >
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
 
-                  <span className="font-heading text-xs font-bold whitespace-nowrap">
-                    {proj.title}
-                  </span>
+                    {/* Crisp Rounded Thumbnail */}
+                    <div
+                      className={cn(
+                        "relative size-5.5 sm:size-6 rounded-md overflow-hidden bg-bg-void shrink-0 border transition-all duration-200",
+                        isActive
+                          ? "border-brand-500/70 shadow-xs ring-1 ring-brand-500/40"
+                          : "border-edge-subtle/80 group-hover:border-edge-strong",
+                      )}
+                    >
+                      {(proj.image ?? proj.images?.[0]) ? (
+                        <Image
+                          src={proj.image ?? proj.images![0]!}
+                          alt=""
+                          fill
+                          sizes="24px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="size-full flex items-center justify-center bg-brand-500/10 text-brand-500">
+                          <Layers className="size-3" />
+                        </div>
+                      )}
+                    </div>
 
-                  {isActive && (
-                    <m.span
-                      layoutId="stage-dock-active-pill"
-                      className="absolute inset-0 rounded-full border-2 border-brand-500 pointer-events-none"
-                      transition={{
-                        type: "spring",
-                        stiffness: 350,
-                        damping: 30,
-                      }}
-                    />
-                  )}
-                </button>
-              );
-            })}
+                    {/* Project Title */}
+                    <span
+                      className={cn(
+                        "font-heading text-xs sm:text-[13px] font-bold whitespace-nowrap transition-colors",
+                        isActive
+                          ? "text-foreground font-extrabold"
+                          : "text-muted-foreground group-hover:text-foreground",
+                      )}
+                    >
+                      {proj.title}
+                    </span>
+
+                    {/* Active Live Pulse Indicator */}
+                    {isActive && <span aria-hidden="true" />}
+
+                    {/* Active Gliding Pill with Clean Crisp Light/Dark Styling */}
+                    {isActive && (
+                      <m.span
+                        layoutId="stage-dock-active-pill"
+                        className="absolute inset-0 rounded-full bg-brand-500/10 dark:bg-brand-500/20 border border-brand-500/50 dark:border-brand-500/70 shadow-xs dark:shadow-[0_0_20px_-3px_rgba(224,32,32,0.35)] pointer-events-none"
+                        transition={{
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Right Edge Inner Fade Hint */}
+            <div
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute right-0 inset-y-0 w-8 sm:w-12 bg-linear-to-l from-white dark:from-bg-elevated to-transparent rounded-r-full z-10 transition-opacity duration-300",
+                canScrollRight ? "opacity-100" : "opacity-0",
+              )}
+            />
+          </div>
+
+          {/* Status & Keyboard Hint HUD */}
+          <div className="flex items-center gap-2 text-[11px] font-mono text-muted-foreground/75 select-none">
+            <span className="hidden sm:inline">Use</span>
+            <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded bg-bg-surface border border-edge-subtle text-[10px] text-muted-foreground">
+              ←
+            </kbd>
+            <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded bg-bg-surface border border-edge-subtle text-[10px] text-muted-foreground">
+              →
+            </kbd>
+            <span className="hidden sm:inline">keys to navigate builds</span>
+            <span className="sm:hidden font-sans">
+              Swipe or tap to switch builds
+            </span>
+            <span className="text-muted-foreground/30">•</span>
+            <span className="font-semibold text-foreground/90">
+              {safeIndex + 1} of {projects.length} Builds
+            </span>
           </div>
         </div>
       </div>
