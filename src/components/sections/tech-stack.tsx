@@ -96,16 +96,6 @@ export const TECH_STACK: readonly TechItem[] = [
     color: "#7952B3",
     category: "Frontend",
   },
-  { name: "React", iconName: "react", color: "#61DAFB", category: "Frontend" },
-  {
-    name: "Next.js",
-    iconName: "nextjs2",
-    color: "#000000",
-    darkColor: "#FFFFFF",
-    category: "Frontend",
-    preferred: true,
-  },
-  { name: "Vue", iconName: "vuejs", color: "#4FC08D", category: "Frontend" },
   {
     name: "Nuxt",
     iconName: "nuxtjs",
@@ -113,9 +103,18 @@ export const TECH_STACK: readonly TechItem[] = [
     category: "Frontend",
   },
   {
-    name: "Tailwind CSS",
-    iconName: "tailwindcss",
-    color: "#06B6D4",
+    name: "Pinia",
+    iconName: "pinia",
+    color: "#FFE56C",
+    darkColor: "#FFE56C",
+    category: "Frontend",
+  },
+  { name: "React", iconName: "react", color: "#61DAFB", category: "Frontend" },
+  {
+    name: "Next.js",
+    iconName: "nextjs2",
+    color: "#000000",
+    darkColor: "#FFFFFF",
     category: "Frontend",
     preferred: true,
   },
@@ -133,6 +132,20 @@ export const TECH_STACK: readonly TechItem[] = [
     category: "Frontend",
     preferred: true,
   },
+  { name: "Vue", iconName: "vuejs", color: "#4FC08D", category: "Frontend" },
+  {
+    name: "Tailwind CSS",
+    iconName: "tailwindcss",
+    color: "#06B6D4",
+    category: "Frontend",
+    preferred: true,
+  },
+  {
+    name: "Vuetify",
+    iconName: "vuetify",
+    color: "#1867C0",
+    category: "Frontend",
+  },
   {
     name: "Motion",
     iconName: "motion",
@@ -146,19 +159,6 @@ export const TECH_STACK: readonly TechItem[] = [
     iconName: "zustand",
     color: "#443E38",
     darkColor: "#F4F4F5",
-    category: "Frontend",
-  },
-  {
-    name: "Vuetify",
-    iconName: "vuetify",
-    color: "#1867C0",
-    category: "Frontend",
-  },
-  {
-    name: "Pinia",
-    iconName: "pinia",
-    color: "#FFE56C",
-    darkColor: "#FFE56C",
     category: "Frontend",
   },
 
@@ -223,13 +223,6 @@ export const TECH_STACK: readonly TechItem[] = [
   // DEVOPS & CLOUD
   // ==========================================
   {
-    name: "Docker",
-    iconName: "docker",
-    color: "#2496ED",
-    category: "DevOps & Cloud",
-    preferred: true,
-  },
-  {
     name: "Vercel",
     iconName: "vercel",
     color: "#000000",
@@ -245,10 +238,24 @@ export const TECH_STACK: readonly TechItem[] = [
     preferred: true,
   },
   {
+    name: "Docker",
+    iconName: "docker",
+    color: "#2496ED",
+    category: "DevOps & Cloud",
+    preferred: true,
+  },
+  {
     name: "Cloudflare",
     iconName: "cloudflare",
     color: "#F38020",
     category: "DevOps & Cloud",
+  },
+  {
+    name: "GitHub Actions",
+    iconClass: "devicon-githubactions-plain",
+    color: "#2088FF",
+    category: "DevOps & Cloud",
+    hideInGrid: true,
   },
   {
     name: "Nginx",
@@ -261,13 +268,6 @@ export const TECH_STACK: readonly TechItem[] = [
     iconName: "proxmox",
     color: "#E57000",
     category: "DevOps & Cloud",
-  },
-  {
-    name: "GitHub Actions",
-    iconClass: "devicon-githubactions-plain",
-    color: "#2088FF",
-    category: "DevOps & Cloud",
-    hideInGrid: true,
   },
   {
     name: "Sentry",
