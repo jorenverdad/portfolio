@@ -7,8 +7,9 @@ describe("github stats utility", () => {
   beforeEach(() => {
     // Setup clean env
     process.env = { ...originalEnv, GITHUB_TOKEN: "test-token-123" };
-    // Stub console.error to keep test output clean
+    // Stub console.error and console.warn to keep test output clean
     vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -16,7 +17,7 @@ describe("github stats utility", () => {
     vi.restoreAllMocks();
   });
 
-  it("should successfully fetch and aggregate GitHub stats", async () => {
+  it("should successfully fetch and aggregate GitHub stats using Search API for commits", async () => {
     const mockGraphQLResponse = {
       data: {
         user: {
@@ -36,10 +37,22 @@ describe("github stats utility", () => {
       },
     };
 
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => mockGraphQLResponse,
+    const mockFetch = vi.fn().mockImplementation(async (url: string) => {
+      if (url.includes("/graphql")) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => mockGraphQLResponse,
+        };
+      }
+      if (url.includes("/search/commits")) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({ total_count: 588 }),
+        };
+      }
+      return { ok: false, status: 404 };
     });
 
     vi.stubGlobal("fetch", mockFetch);
@@ -50,10 +63,10 @@ describe("github stats utility", () => {
       publicRepos: 15,
       followers: 120,
       totalStars: 40, // 10 + 25 + 5
-      totalCommits: 350,
+      totalCommits: 588,
     });
 
-    expect(mockFetch).toHaveBeenCalledTimes(1);
+    expect(mockFetch).toHaveBeenCalledTimes(2);
     expect(mockFetch).toHaveBeenCalledWith(
       "https://api.github.com/graphql",
       expect.objectContaining({
@@ -65,6 +78,66 @@ describe("github stats utility", () => {
         body: expect.stringContaining('"username":"test-user"'),
       })
     );
+    expect(mockFetch).toHaveBeenCalledWith(
+      "https://api.github.com/search/commits?q=author:test-user",
+      expect.objectContaining({
+        headers: {
+          Accept: "application/vnd.github.cloak-preview",
+          "User-Agent": "portfolio-app",
+          Authorization: "Bearer test-token-123",
+        },
+      })
+    );
+  });
+
+  it("should fall back to GraphQL contributions count when Commit Search API fails", async () => {
+    const mockGraphQLResponse = {
+      data: {
+        user: {
+          publicRepos: { totalCount: 15 },
+          followers: { totalCount: 120 },
+          repositories: {
+            nodes: [
+              { stargazerCount: 10 },
+              { stargazerCount: 25 },
+              { stargazerCount: 5 },
+            ],
+          },
+          contributionsCollection: {
+            totalCommitContributions: 350,
+          },
+        },
+      },
+    };
+
+    const mockFetch = vi.fn().mockImplementation(async (url: string) => {
+      if (url.includes("/graphql")) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => mockGraphQLResponse,
+        };
+      }
+      if (url.includes("/search/commits")) {
+        return {
+          ok: false,
+          status: 403,
+          json: async () => ({ message: "rate limited" }),
+        };
+      }
+      return { ok: false, status: 404 };
+    });
+
+    vi.stubGlobal("fetch", mockFetch);
+
+    const stats = await fetchGitHubStats("test-user");
+
+    expect(stats).toEqual({
+      publicRepos: 15,
+      followers: 120,
+      totalStars: 40,
+      totalCommits: 350, // gracefully falls back to totalCommitContributions
+    });
   });
 
   it("should return fallback stats and log error on HTTP failure status", async () => {
@@ -94,10 +167,19 @@ describe("github stats utility", () => {
       errors: [{ message: "Field not found" }],
     };
 
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => mockGraphQLResponse,
+    const mockFetch = vi.fn().mockImplementation(async (url: string) => {
+      if (url.includes("/graphql")) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => mockGraphQLResponse,
+        };
+      }
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({ total_count: 100 }),
+      };
     });
 
     vi.stubGlobal("fetch", mockFetch);
@@ -124,10 +206,19 @@ describe("github stats utility", () => {
       },
     };
 
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => mockGraphQLResponse,
+    const mockFetch = vi.fn().mockImplementation(async (url: string) => {
+      if (url.includes("/graphql")) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => mockGraphQLResponse,
+        };
+      }
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({ total_count: 100 }),
+      };
     });
 
     vi.stubGlobal("fetch", mockFetch);

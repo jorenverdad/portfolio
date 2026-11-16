@@ -1,9 +1,10 @@
 /**
- * GitHub GraphQL API — server-side data fetching with caching.
+ * GitHub GraphQL & REST Search API — server-side data fetching with caching.
  *
- * Fetches public profile stats for a given GitHub user in a
- * **single GraphQL request** (replaces 30+ REST calls):
- * repos, followers, total stars earned, and all-time commit count.
+ * Fetches profile stats for a given GitHub user:
+ * repos, followers, total stars earned (across all owned repos, including forks and private repos),
+ * and all-time commits (via GitHub Commit Search API, mirroring github-stats-extended,
+ * with graceful fallback to GraphQL contributions).
  */
 
 import { cacheLife, cacheTag } from 'next/cache';
@@ -35,8 +36,6 @@ const GITHUB_STATS_QUERY = `
       repositories(
         first: 100
         ownerAffiliations: OWNER
-        isFork: false
-        privacy: PUBLIC
         orderBy: { field: STARGAZERS, direction: DESC }
       ) {
         nodes {
@@ -71,13 +70,60 @@ interface GQLResponse {
 }
 
 // ---------------------------------------------------------------------------
+// Search API Helper — all-time commits
+// ---------------------------------------------------------------------------
+
+/**
+ * Fetches all-time commit count by author using GitHub's Commit Search API.
+ * This matches the exact commit counting logic of github-stats-extended (include_all_commits=true).
+ * Returns null if the request fails or rate limits, allowing fallback to GraphQL contributions.
+ */
+async function fetchAllTimeCommits(
+  username: string,
+  token?: string,
+): Promise<number | null> {
+  try {
+    const headers: Record<string, string> = {
+      Accept: 'application/vnd.github.cloak-preview',
+      'User-Agent': 'portfolio-app',
+    };
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const res = await fetch(
+      `https://api.github.com/search/commits?q=author:${encodeURIComponent(username)}`,
+      {
+        headers,
+      },
+    );
+
+    if (!res.ok) {
+      console.warn(`[github] Commit search HTTP ${res.status}`);
+      return null;
+    }
+
+    const data: { total_count?: number } = await res.json();
+    if (typeof data.total_count === 'number' && !Number.isNaN(data.total_count)) {
+      return data.total_count;
+    }
+    return null;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.warn('[github] Commit search failed:', error.message);
+    }
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Main fetcher — cached server function
 // ---------------------------------------------------------------------------
 
 const GITHUB_USERNAME = 'jorenverdad';
 
 /**
- * Fetches aggregated GitHub statistics via a single GraphQL request.
+ * Fetches aggregated GitHub statistics.
  *
  * Cached for 1 hour via `use cache` + `cacheLife('hours')`.
  * Call this directly from Server Components — no API route needed.
@@ -99,17 +145,24 @@ export async function fetchGitHubStats(
   try {
     const token = process.env.GITHUB_TOKEN;
 
-    const res = await fetch('https://api.github.com/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        query: GITHUB_STATS_QUERY,
-        variables: { username },
+    const gqlHeaders: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (token) {
+      gqlHeaders.Authorization = `Bearer ${token}`;
+    }
+
+    const [res, allTimeCommits] = await Promise.all([
+      fetch('https://api.github.com/graphql', {
+        method: 'POST',
+        headers: gqlHeaders,
+        body: JSON.stringify({
+          query: GITHUB_STATS_QUERY,
+          variables: { username },
+        }),
       }),
-    });
+      fetchAllTimeCommits(username, token),
+    ]);
 
     if (!res.ok) {
       console.error(`[github] GraphQL HTTP ${res.status}`);
@@ -134,11 +187,16 @@ export async function fetchGitHubStats(
       0,
     );
 
+    const totalCommits =
+      allTimeCommits !== null
+        ? allTimeCommits
+        : user.contributionsCollection.totalCommitContributions;
+
     return {
       publicRepos: user.publicRepos.totalCount,
       followers: user.followers.totalCount,
       totalStars,
-      totalCommits: user.contributionsCollection.totalCommitContributions,
+      totalCommits,
     };
   } catch (error: unknown) {
     if (error instanceof Error) {
