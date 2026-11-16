@@ -234,6 +234,17 @@
   }
 }
 
+/* Custom Global Text Selection */
+::selection {
+  background-color: var(--brand-500) !important;
+  color: #ffffff !important;
+}
+
+::-moz-selection {
+  background-color: var(--brand-500) !important;
+  color: #ffffff !important;
+}
+
 /* Button Shimmer Effect */
 .shimmer-btn {
   position: relative;
