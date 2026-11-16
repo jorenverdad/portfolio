@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import {
   m,
@@ -19,7 +20,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { WorkInProgress } from "@/components/ui/work-in-progress";
 
 export type Project = {
   readonly id: string;
@@ -121,8 +121,6 @@ type ProjectCardProps = {
   readonly isDesktop: boolean;
   readonly onActive: (id: string) => void;
   readonly hoveredId: string | null;
-  readonly isTooltipOpen: boolean;
-  readonly onTooltipOpenChange: (isOpen: boolean) => void;
 };
 
 const ProjectCard = React.memo(function ProjectCard({
@@ -132,8 +130,6 @@ const ProjectCard = React.memo(function ProjectCard({
   isDesktop,
   onActive,
   hoveredId,
-  isTooltipOpen,
-  onTooltipOpenChange,
 }: ProjectCardProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -259,8 +255,7 @@ const ProjectCard = React.memo(function ProjectCard({
         mass: 0.9,
       }}
       className={`
-        relative rounded-2xl md:rounded-3xl cursor-pointer group bg-bg-surface min-w-0 min-h-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
-        ${isTooltipOpen ? "overflow-visible" : "overflow-hidden"}
+        relative rounded-2xl md:rounded-3xl cursor-pointer group bg-bg-surface min-w-0 min-h-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 overflow-hidden
         ${isActive ? "h-full w-full" : "w-[90%] md:w-full h-full md:h-[85%]"}
       `}
       tabIndex={0}
@@ -452,25 +447,16 @@ const ProjectCard = React.memo(function ProjectCard({
                 animate={{ opacity: 1, height: "auto", marginTop: 16 }}
                 exit={{ opacity: 0, height: 0, marginTop: 0 }}
                 transition={{ duration: 0.25, ease: "easeInOut" }}
-                className={
-                  isTooltipOpen ? "overflow-visible" : "overflow-hidden"
-                }
+                className="overflow-hidden"
               >
-                <WorkInProgress
-                  position="top"
-                  featureName="Deep Dive"
-                  title="Synthesizing the Case Study"
-                  description="I am compiling the technical architecture, design decisions, and performance metrics for this build. The breakdown of engineering challenges and their solutions will be live shortly."
-                  onOpenChange={onTooltipOpenChange}
+                <Button
+                  render={<Link href={`/projects?id=${project.id}`} />}
+                  nativeButton={false}
+                  className="bg-white text-black hover:bg-white/90 rounded-full px-6 font-medium shadow-sm group/btn"
                 >
-                  <Button
-                    render={<a href={project.link ?? "#"} />}
-                    nativeButton={false}
-                    className="bg-white text-black hover:bg-white/90 rounded-full px-6"
-                  >
-                    Explore Project
-                  </Button>
-                </WorkInProgress>
+                  Explore Project
+                  <ArrowUpRight className="ml-1.5 h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                </Button>
               </m.div>
             )}
           </AnimatePresence>
@@ -485,29 +471,14 @@ export function ProjectsSection({
   projects = DEFAULT_PROJECTS,
 }: ProjectsProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [activeTooltipId, setActiveTooltipId] = useState<string | null>(null);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  const handleActive = useCallback(
-    (id: string) => {
-      if (activeTooltipId) return;
-      setHoveredId(id);
-    },
-    [activeTooltipId],
-  );
+  const handleActive = useCallback((id: string) => {
+    setHoveredId(id);
+  }, []);
 
   const handleMouseLeave = useCallback(() => {
-    if (activeTooltipId) return;
     setHoveredId(null);
-  }, [activeTooltipId]);
-
-  const handleTooltipOpenChange = useCallback((id: string, isOpen: boolean) => {
-    if (isOpen) {
-      setActiveTooltipId(id);
-      setHoveredId(id);
-    } else {
-      setActiveTooltipId(null);
-    }
   }, []);
 
   return (
@@ -557,20 +528,15 @@ export function ProjectsSection({
                   clean user experiences.
                 </p>
 
-                <WorkInProgress
-                  position="bottom"
-                  featureName="Project Index"
-                  title="Cataloging the Archive"
-                  description="I am organizing and polishing a comprehensive index of my experimental prototypes, open-source utilities, and client systems. The complete directory is currently being curated."
+                <Button
+                  variant="outline"
+                  render={<Link href="/projects" />}
+                  nativeButton={false}
+                  className="rounded-full px-8 border-edge-default hover:bg-bg-elevated hover:text-foreground transition-all duration-300 group"
                 >
-                  <Button
-                    variant="outline"
-                    className="rounded-full px-8 border-edge-default hover:bg-bg-elevated hover:text-foreground transition-all duration-300 group"
-                  >
-                    Explore All Projects
-                    <ArrowUpRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </Button>
-                </WorkInProgress>
+                  Explore All Projects
+                  <ArrowUpRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </Button>
               </m.div>
             </div>
 
@@ -580,10 +546,7 @@ export function ProjectsSection({
               onMouseLeave={handleMouseLeave}
             >
               {projects.map((project, index) => {
-                const isActive = activeTooltipId
-                  ? activeTooltipId === project.id
-                  : hoveredId === project.id;
-                const isTooltipOpen = activeTooltipId === project.id;
+                const isActive = hoveredId === project.id;
 
                 return (
                   <ProjectCard
@@ -594,10 +557,6 @@ export function ProjectsSection({
                     isDesktop={isDesktop}
                     onActive={handleActive}
                     hoveredId={hoveredId}
-                    isTooltipOpen={isTooltipOpen}
-                    onTooltipOpenChange={(isOpen) =>
-                      handleTooltipOpenChange(project.id, isOpen)
-                    }
                   />
                 );
               })}
