@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { NavBar } from "@/components/layout/nav-bar";
 import { Footer } from "@/components/layout/footer";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
 import { HeroSection } from "@/components/sections/hero";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { LazyMount } from "@/components/ui/lazy-mount";
@@ -75,6 +76,7 @@ export default function Home() {
         </LazyMount>
       </main>
       <Footer />
+      <ScrollToTop />
     </>
   );
 }
