@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Search,
@@ -40,6 +40,13 @@ export function ProjectsContainer() {
     requestedId,
   );
   const [prevRequestedId, setPrevRequestedId] = useState(requestedId);
+
+  // Guarantee page starts strictly at the top on initial mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
+  }, []);
 
   // Sync state when URL search param changes
   if (requestedId !== prevRequestedId) {

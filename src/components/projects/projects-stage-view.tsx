@@ -54,6 +54,7 @@ export function ProjectsStageView({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const dockContainerRef = useRef<HTMLDivElement | null>(null);
   const dockItemRefs = useRef<Map<number, HTMLButtonElement>>(new Map());
+  const isFirstMount = useRef(true);
   const shouldReduceMotion = useReducedMotion();
 
   const updateScrollState = useCallback(() => {
@@ -141,16 +142,36 @@ export function ProjectsStageView({
     }
   }, [activeProject?.id, activeProject?.video, isMuted]);
 
-  // Smoothly scroll active dock item into view when index changes & update scroll hints
+  // Smoothly center active dock item in horizontal track when index changes (WITHOUT scrolling window)
   useEffect(() => {
-    const activeEl = dockItemRefs.current.get(safeIndex);
-    if (activeEl && typeof activeEl.scrollIntoView === "function") {
-      activeEl.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
-      });
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      updateScrollState();
+      return;
     }
+
+    const container = dockContainerRef.current;
+    const activeEl = dockItemRefs.current.get(safeIndex);
+    if (container && activeEl) {
+      const containerRect = container.getBoundingClientRect();
+      const activeRect = activeEl.getBoundingClientRect();
+      const currentScroll = container.scrollLeft;
+      const targetScroll =
+        currentScroll +
+        (activeRect.left - containerRect.left) -
+        container.clientWidth / 2 +
+        activeRect.width / 2;
+
+      if (typeof container.scrollTo === "function") {
+        container.scrollTo({
+          left: targetScroll,
+          behavior: "smooth",
+        });
+      } else {
+        container.scrollLeft = targetScroll;
+      }
+    }
+
     const timer = setTimeout(updateScrollState, 350);
     return () => clearTimeout(timer);
   }, [safeIndex, updateScrollState]);
