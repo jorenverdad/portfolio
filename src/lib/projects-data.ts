@@ -4,7 +4,7 @@ export type ProjectCategory =
   | "Frontend Web App"
   | "Chromium Web Extension"
   | "Mobile App"
-  | "Desktop App";
+  | "Cross-Platform App";
 
 export type ProjectMetric = {
   readonly label: string;
@@ -524,11 +524,14 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
     tags: [
       "Django",
       "Python",
+      "JavaScript",
       "Vue.js",
       "Vuetify",
+      "Svelte",
+      "Material UI",
       "Pinia",
-      "Crypto-JS",
       "Vite",
+      "Crypto-JS",
     ],
     liveUrl: "https://github.com/centmarde/ChattingHub",
     githubUrl: "https://github.com/centmarde/ChattingHub",
@@ -576,10 +579,10 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
     id: "proj-10",
     title: "Sinawali Showdown",
     subtitle: "Turn-Based Strategy Card Game Inspired by Filipino Martial Arts",
-    category: "Desktop App",
+    category: "Cross-Platform App",
     year: "2024",
     role: "Full-Stack UI/UX & Game Systems Contributor",
-    team: "Collaborative Team (Sinawali Logic Raiders)",
+    team: "Collaborative Team",
     image: "/projects/sinawali-preview.png",
     images: [
       "/projects/sinawali-preview.png",
@@ -589,14 +592,16 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
       "/projects/sinawali-4.png",
     ],
     tags: [
-      "Electron",
       "Vue.js",
       "Vuetify",
+      "Electron",
+      "JavaScript",
       "Pinia",
-      "Socket.io",
       "Supabase",
+      "PostgreSQL",
       "Groq AI",
       "Vite",
+      "Socket.io",
     ],
     liveUrl:
       "https://github.com/centmarde/Sinawali_Showdown-version-Alpha-0.0.1",
@@ -604,39 +609,40 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
       "https://github.com/centmarde/Sinawali_Showdown-version-Alpha-0.0.1",
     featured: true,
     metrics: [
+      { label: "Platform", value: "Web & Desktop" },
       { label: "Combat Engine", value: "Turn-Based" },
-      { label: "Platform", value: "Electron Desktop" },
       { label: "Multiplayer", value: "WebSocket Live" },
     ],
     details: {
       overview:
-        "Sinawali Showdown is a cross-platform desktop turn-based strategy card game built on Electron, Vue 3, and Node.js WebSockets, translating the tactical strikes, parries, and combinations of Filipino martial arts (Arnis/Kali) into competitive digital deck-building combat.",
+        "Sinawali Showdown is a cross-platform (web and desktop) turn-based strategy card game built on Electron, Vue 3, and Node.js WebSockets, translating the tactical strikes, parries, and combinations of Filipino martial arts (Arnis/Kali) into competitive digital deck-building combat.",
       problem:
         "Traditional digital card games rely heavily on standard Western fantasy tropes and static turn resolutions, lacking authentic cultural representation and the rapid, reactive combat flow characteristic of traditional martial arts like Arnis.",
       solution:
-        "Engineered a desktop card battle system featuring dual-stick Arnis weapon mechanics (Sinawali weave patterns), real-time peer-to-peer WebSocket synchronization, AI-powered sparring opponents via Groq SDK, and responsive battle HUDs with animated health and mana gauges.",
+        "Engineered a cross-platform card battle system deployed for both web browsers and desktop systems via Electron, featuring dual-stick Arnis weapon mechanics (Sinawali weave patterns), real-time peer-to-peer WebSocket synchronization, Groq AI sparring opponents, and responsive battle HUDs with animated health and mana gauges.",
       roleDescription:
         "Core UI/UX and game systems engineer on the Sinawali Logic Raiders development team, responsible for in-game combat HUD indicators, administrative player management portals, Google authentication workflows, and image optimization pipelines.",
       myContributions: [
         "Engineered the full-featured Administrative Dashboard (AdminBase.vue, UserList.vue) with navigation drawers, card collection previews, and real-time status monitoring.",
-        "Implemented complete user management CRUD dialogs with Vuetify (v-dialog), enabling player account updates and deletions synchronized across Supabase auth.users and public.users tables.",
+        "Implemented complete user management CRUD dialogs with Vuetify (v-dialog), enabling player account updates and deletions synchronized across Supabase auth.users and public.users PostgreSQL tables.",
         "Built responsive in-game combat HUD components including dynamic animated health bars (HealthBar.vue), mana pools, and turn timers with real-time state binding.",
         "Integrated Google OAuth and Supabase authentication into the main menu login flow, enabling persistent player identity and cloud profile synchronization.",
-        "Developed dynamic battle scene backgrounds (Background.vue, bg.gif, parallax layers) with viewport auto-resizing across desktop display resolutions.",
-        "Coordinated Electron desktop packaging (electron-forge, electron-builder) and synchronized cross-branch merges between game logic and desktop shell environments.",
+        "Developed dynamic battle scene backgrounds (Background.vue, bg.gif, parallax layers) with viewport auto-resizing across desktop and browser display resolutions.",
+        "Coordinated Electron and Vite cross-platform build workflows supporting both web client and native desktop runtime distributions.",
         "Automated repository media asset compression with Imgbot, significantly optimizing image payload sizes for fast desktop and web loads.",
       ],
       highlights: [
-        "Full-featured Administrative Dashboard with user CRUD dialogs synced directly across Supabase auth and public schemas.",
+        "Cross-platform architecture engineered for both desktop execution via Electron and modern browser web play.",
+        "Full-featured Administrative Dashboard with user CRUD dialogs synced directly across Supabase auth and PostgreSQL public schemas.",
         "Tactical Arnis martial arts card system with attack combos, defensive parries, and buff statuses.",
-        "Cross-platform desktop runtime powered by Electron 33 and packaged via Electron Forge.",
         "Real-time multiplayer synchronization using Node.js and Socket.io WebSocket channels.",
       ],
       architecture: [
-        "Electron 33 desktop application wrapping a Vue 3 SPA with Vuetify components and Pinia state stores.",
+        "Cross-platform architecture supporting both Electron 33 desktop execution and browser deployment using Vite 5 and Vue 3.",
+        "Frontend built with Vue 3, Vuetify 3 Material components, Pinia reactive stores, and JavaScript modules.",
         "Lightweight Node.js Socket.io server broadcasting real-time attack, buff, and hit animations on port 3002.",
-        "Supabase backend for user profile persistence, cloud card collections, and Google OAuth sessions.",
-        "Groq SDK integration powering dynamic AI decision-making for single-player sparring scenarios.",
+        "Supabase cloud infrastructure with PostgreSQL database schemas, Google OAuth authentication, and persistent card collections.",
+        "Groq AI integration powering dynamic decision-making for single-player sparring scenarios.",
       ],
       challenges: [
         "Synchronized dual-player combat animation states over WebSockets without frame stuttering or desynchronized turn phases.",
@@ -661,6 +667,6 @@ export function getAllCategories(): ReadonlyArray<ProjectCategory> {
     "Frontend Web App",
     "Chromium Web Extension",
     "Mobile App",
-    "Desktop App",
+    "Cross-Platform App",
   ];
 }

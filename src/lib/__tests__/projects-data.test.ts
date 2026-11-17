@@ -39,12 +39,18 @@ describe("projects-data", () => {
     expect(proj9).toBeDefined();
     expect(proj9?.title).toBe("ChattingHub");
     expect(proj9?.category).toBe("Full-stack Web App");
+    expect(proj9?.tags).toContain("JavaScript");
+    expect(proj9?.tags).toContain("Svelte");
+    expect(proj9?.tags).toContain("Material UI");
 
     const proj10 = getProjectById("proj-10");
     expect(proj10).toBeDefined();
     expect(proj10?.title).toBe("Sinawali Showdown");
-    expect(proj10?.category).toBe("Desktop App");
+    expect(proj10?.category).toBe("Cross-Platform App");
     expect(proj10?.images?.length).toBe(5);
+    expect(proj10?.tags).toContain("PostgreSQL");
+    expect(proj10?.tags).toContain("JavaScript");
+    expect(proj10?.tags).toContain("Groq AI");
 
     const nonExistent = getProjectById("non-existent-id");
     expect(nonExistent).toBeUndefined();
@@ -57,6 +63,6 @@ describe("projects-data", () => {
     expect(categories).toContain("Frontend Web App");
     expect(categories).toContain("Chromium Web Extension");
     expect(categories).toContain("Mobile App");
-    expect(categories).toContain("Desktop App");
+    expect(categories).toContain("Cross-Platform App");
   });
 });

@@ -62,6 +62,13 @@ describe("ProjectsContainer", () => {
 
     // "VzStellar Website" (Full-stack) should not be visible
     expect(screen.queryByText("VzStellar Website")).not.toBeInTheDocument();
+
+    // Click "Cross-Platform App" category pill
+    const crossPlatformPill = screen.getByRole("button", {
+      name: /cross-platform app/i,
+    });
+    fireEvent.click(crossPlatformPill);
+    expect(screen.getByText("Sinawali Showdown")).toBeInTheDocument();
   });
 
   it("filters projects according to text search", () => {

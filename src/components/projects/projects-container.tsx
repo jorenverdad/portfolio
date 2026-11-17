@@ -96,14 +96,27 @@ export function ProjectsContainer() {
 
       const titleMatch = project.title.toLowerCase().includes(query);
       const subtitleMatch = project.subtitle.toLowerCase().includes(query);
+      const categoryMatch = project.category.toLowerCase().includes(query);
       const tagMatch = project.tags.some((tag) =>
         tag.toLowerCase().includes(query),
+      );
+      const metricMatch = project.metrics?.some(
+        (m) =>
+          m.label.toLowerCase().includes(query) ||
+          m.value.toLowerCase().includes(query),
       );
       const overviewMatch = project.details.overview
         .toLowerCase()
         .includes(query);
 
-      return titleMatch || subtitleMatch || tagMatch || overviewMatch;
+      return (
+        titleMatch ||
+        subtitleMatch ||
+        categoryMatch ||
+        tagMatch ||
+        metricMatch ||
+        overviewMatch
+      );
     });
   }, [allProjects, selectedCategory, searchQuery]);
 
@@ -261,25 +274,23 @@ export function ProjectsContainer() {
             />
           ) : viewMode === "grid" ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {filteredProjects.map((project, index) => (
+              {filteredProjects.map((project) => (
                 <ProjectCard
                   key={project.id}
                   project={project}
                   onOpenDetail={handleOpenDetail}
                   viewMode="grid"
-                  priority={index < 3}
                 />
               ))}
             </div>
           ) : (
             <div className="flex flex-col gap-4">
-              {filteredProjects.map((project, index) => (
+              {filteredProjects.map((project) => (
                 <ProjectCard
                   key={project.id}
                   project={project}
                   onOpenDetail={handleOpenDetail}
                   viewMode="list"
-                  priority={index < 4}
                 />
               ))}
             </div>

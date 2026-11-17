@@ -13,6 +13,12 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip";
 
 function subscribeDarkMode(callback: () => void) {
   if (typeof window === "undefined" || !window.MutationObserver) {
@@ -193,9 +199,14 @@ export function resolveTechIcon(tag: string): TechResolution {
     return { iconName: "android", label: tag };
   }
 
-  // Material Design
-  if (normalized.includes("material design") || normalized.includes("material")) {
+  // Material UI / Material Design / MUI
+  if (normalized.includes("material") || normalized.includes("mui")) {
     return { iconName: "materialui", label: tag };
+  }
+
+  // Svelte / SvelteKit (supports "Svelte", "Svelte 5", "SvelteKit")
+  if (normalized.includes("svelte")) {
+    return { iconName: "sveltejs", label: tag };
   }
 
   // Motion
@@ -273,12 +284,13 @@ export function resolveTechIcon(tag: string): TechResolution {
     return { iconName: "openai", label: tag };
   }
 
-  // AI / Groq / AI Moderation
-  if (
-    normalized.includes("ai") ||
-    normalized.includes("groq") ||
-    normalized.includes("moderation")
-  ) {
+  // Grok / Groq AI (supports "Groq", "Groq AI", "Grok", "Grok AI")
+  if (normalized.includes("groq") || normalized.includes("grok")) {
+    return { iconName: "grok", label: tag };
+  }
+
+  // AI Moderation
+  if (normalized.includes("ai") || normalized.includes("moderation")) {
     return {
       renderCustom: () => (
         <Sparkles className="size-full text-brand-500" aria-hidden="true" />
@@ -436,64 +448,58 @@ export function ShowcaseTechStack({
   const hiddenCount = hiddenTags.length;
 
   return (
-    <div
-      className={cn("flex flex-wrap items-center gap-2 sm:gap-2.5 2xl:gap-3 py-1", className)}
-      role="group"
-      aria-label="Technologies used in this project"
-    >
-      {visibleTags.map((tag) => (
-        <div key={tag} className="group relative flex items-center justify-center">
-          <div
-            className="size-10 sm:size-11 2xl:size-12 rounded-xl bg-bg-void/60 hover:bg-bg-elevated border border-edge-subtle/80 hover:border-brand-500/50 flex items-center justify-center p-2 sm:p-2.5 transition-all duration-200 hover:scale-110 active:scale-95 shadow-xs hover:shadow-md hover:shadow-brand-500/10 cursor-default"
-            title={tag}
-            aria-label={tag}
-            tabIndex={0}
-          >
-            <ProjectTechIcon tag={tag} isDark={isDark} />
-          </div>
+    <TooltipProvider delay={100} closeDelay={150}>
+      <div
+        className={cn("flex flex-wrap items-center gap-2 sm:gap-2.5 2xl:gap-3 py-1", className)}
+        role="group"
+        aria-label="Technologies used in this project"
+      >
+        {visibleTags.map((tag) => (
+          <Tooltip key={tag}>
+            <TooltipTrigger
+              className="size-10 sm:size-11 2xl:size-12 rounded-xl bg-bg-void/60 hover:bg-bg-elevated border border-edge-subtle/80 hover:border-brand-500/50 flex items-center justify-center p-2 sm:p-2.5 transition-all duration-200 hover:scale-110 active:scale-95 shadow-xs hover:shadow-md hover:shadow-brand-500/10 cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              title={tag}
+              aria-label={tag}
+            >
+              <ProjectTechIcon tag={tag} isDark={isDark} />
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              align="center"
+              sideOffset={6}
+              className="font-mono font-bold tracking-wide"
+            >
+              {tag}
+            </TooltipContent>
+          </Tooltip>
+        ))}
 
-          {/* Clean HUD Tooltip */}
-          <div
-            role="tooltip"
-            className="absolute bottom-full mb-2.5 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-lg bg-foreground text-background text-xs font-mono font-bold tracking-wide whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 group-focus-within:opacity-100 transition-all duration-150 z-50 shadow-xl scale-95 group-hover:scale-100 group-focus-within:scale-100"
-          >
-            {tag}
-            <div
-              className="absolute -bottom-1 left-1/2 -translate-x-1/2 size-2 bg-foreground rotate-45 rounded-xs"
-              aria-hidden="true"
-            />
-          </div>
-        </div>
-      ))}
-
-      {hiddenCount > 0 && (
-        <div className="group relative flex items-center justify-center">
-          <div
-            className="h-10 sm:h-11 2xl:h-12 px-3 sm:px-3.5 rounded-xl bg-bg-void/60 hover:bg-bg-elevated border border-edge-subtle/80 hover:border-brand-500/50 flex items-center justify-center text-xs sm:text-sm font-mono font-bold text-muted-foreground hover:text-brand-500 transition-all duration-200 hover:scale-105 active:scale-95 shadow-xs cursor-default"
-            title={hiddenTags.join(", ")}
-            aria-label={`+${hiddenCount} more technologies: ${hiddenTags.join(", ")}`}
-            tabIndex={0}
-          >
-            +{hiddenCount}
-          </div>
-
-          {/* Clean Overflow HUD Tooltip */}
-          <div
-            role="tooltip"
-            className="absolute bottom-full mb-2.5 right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 px-3 py-1.5 rounded-lg bg-foreground text-background text-xs font-mono font-medium whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 group-focus-within:opacity-100 transition-all duration-150 z-50 shadow-xl scale-95 group-hover:scale-100 group-focus-within:scale-100 flex items-center gap-1.5"
-          >
-            <span className="font-bold text-brand-500 dark:text-brand-600">
-              +{hiddenCount} more:
-            </span>
-            <span>{hiddenTags.join(", ")}</span>
-            <div
-              className="absolute -bottom-1 right-3 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 size-2 bg-foreground rotate-45 rounded-xs"
-              aria-hidden="true"
-            />
-          </div>
-        </div>
-      )}
-    </div>
+        {hiddenCount > 0 && (
+          <Tooltip>
+            <TooltipTrigger
+              className="h-10 sm:h-11 2xl:h-12 px-3 sm:px-3.5 rounded-xl bg-bg-void/60 hover:bg-bg-elevated border border-edge-subtle/80 hover:border-brand-500/50 flex items-center justify-center text-xs sm:text-sm font-mono font-bold text-muted-foreground hover:text-brand-500 transition-all duration-200 hover:scale-105 active:scale-95 shadow-xs cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              title={hiddenTags.join(", ")}
+              aria-label={`+${hiddenCount} more technologies: ${hiddenTags.join(", ")}`}
+            >
+              +{hiddenCount}
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              align="end"
+              sideOffset={6}
+              className="max-w-[280px] sm:max-w-sm md:max-w-md font-mono text-xs font-medium flex items-center gap-1.5 flex-wrap"
+            >
+              <span className="font-bold text-brand-500 dark:text-brand-600 shrink-0">
+                +{hiddenCount} more:
+              </span>
+              <span className="text-background/90 break-words">
+                {hiddenTags.join(", ")}
+              </span>
+            </TooltipContent>
+          </Tooltip>
+        )}
+      </div>
+    </TooltipProvider>
   );
 }
 

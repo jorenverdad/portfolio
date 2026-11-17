@@ -115,7 +115,7 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
   {
     id: "proj-10",
     title: "Sinawali Showdown",
-    category: "Desktop App",
+    category: "Cross-Platform App",
     image: "/projects/sinawali-preview.png",
     images: [
       "/projects/sinawali-preview.png",

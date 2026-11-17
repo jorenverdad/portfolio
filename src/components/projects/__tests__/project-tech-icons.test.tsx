@@ -43,13 +43,17 @@ describe("project-tech-icons", () => {
       expect(resolveTechIcon("Python").iconName).toBe("python");
       expect(resolveTechIcon("Electron").iconName).toBe("electron");
       expect(resolveTechIcon("Node.js").iconName).toBe("nodejs");
+      expect(resolveTechIcon("Groq AI").iconName).toBe("grok");
+      expect(resolveTechIcon("Grok").iconName).toBe("grok");
+      expect(resolveTechIcon("Svelte").iconName).toBe("sveltejs");
+      expect(resolveTechIcon("Material UI").iconName).toBe("materialui");
+      expect(resolveTechIcon("MUI").iconName).toBe("materialui");
     });
 
     it("resolves custom and specialized tags with renderCustom", () => {
       expect(resolveTechIcon("Base UI").renderCustom).toBeDefined();
       expect(resolveTechIcon("Shadcn UI").renderCustom).toBeDefined();
       expect(resolveTechIcon("AI Moderation").renderCustom).toBeDefined();
-      expect(resolveTechIcon("Groq AI").renderCustom).toBeDefined();
       expect(resolveTechIcon("REST API").renderCustom).toBeDefined();
       expect(resolveTechIcon("DOM MutationObserver").renderCustom).toBeDefined();
       expect(resolveTechIcon("Mobile UI").renderCustom).toBeDefined();
