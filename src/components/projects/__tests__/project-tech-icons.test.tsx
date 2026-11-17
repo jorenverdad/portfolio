@@ -35,19 +35,28 @@ describe("project-tech-icons", () => {
       expect(resolveTechIcon("Vite").iconName).toBe("vitejs");
       expect(resolveTechIcon("Three.js").iconName).toBe("threejs");
       expect(resolveTechIcon("Radix UI").iconName).toBe("radixui");
+      expect(resolveTechIcon("Bootstrap 5").iconName).toBe("bootstrap5");
+      expect(resolveTechIcon("Capacitor").iconName).toBe("ionic");
       expect(resolveTechIcon("OpenAI API").iconName).toBe("openai");
       expect(resolveTechIcon("OpenAI").iconName).toBe("openai");
+      expect(resolveTechIcon("Django REST Framework").iconName).toBe("django");
+      expect(resolveTechIcon("Python").iconName).toBe("python");
+      expect(resolveTechIcon("Electron").iconName).toBe("electron");
+      expect(resolveTechIcon("Node.js").iconName).toBe("nodejs");
     });
 
     it("resolves custom and specialized tags with renderCustom", () => {
       expect(resolveTechIcon("Base UI").renderCustom).toBeDefined();
       expect(resolveTechIcon("Shadcn UI").renderCustom).toBeDefined();
       expect(resolveTechIcon("AI Moderation").renderCustom).toBeDefined();
+      expect(resolveTechIcon("Groq AI").renderCustom).toBeDefined();
       expect(resolveTechIcon("REST API").renderCustom).toBeDefined();
       expect(resolveTechIcon("DOM MutationObserver").renderCustom).toBeDefined();
       expect(resolveTechIcon("Mobile UI").renderCustom).toBeDefined();
       expect(resolveTechIcon("Realtime").renderCustom).toBeDefined();
+      expect(resolveTechIcon("Socket.io").renderCustom).toBeDefined();
       expect(resolveTechIcon("RPC Functions").renderCustom).toBeDefined();
+      expect(resolveTechIcon("Crypto-JS").renderCustom).toBeDefined();
     });
 
     it("provides fallback for arbitrary tags", () => {

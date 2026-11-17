@@ -32,6 +32,7 @@ describe("ProjectsSection", () => {
     expect(screen.getByText("HM Portfolio")).toBeInTheDocument();
     expect(screen.getByText("JoSan Extension")).toBeInTheDocument();
     expect(screen.getByText("Uwu Hotel Booking")).toBeInTheDocument();
+    expect(screen.getByText("Sinawali Showdown")).toBeInTheDocument();
   });
 
   it("renders static poster images for all projects so cards are never blank", () => {

@@ -112,6 +112,21 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
     yOffset: -12,
     link: "#",
   },
+  {
+    id: "proj-10",
+    title: "Sinawali Showdown",
+    category: "Desktop App",
+    image: "/projects/sinawali-preview.png",
+    images: [
+      "/projects/sinawali-preview.png",
+      "/projects/sinawali-1.png",
+      "/projects/sinawali-2.png",
+      "/projects/sinawali-3.png",
+      "/projects/sinawali-4.png",
+    ],
+    yOffset: 20,
+    link: "#",
+  },
 ] as const;
 
 type ProjectCardProps = {
@@ -283,6 +298,7 @@ const ProjectCard = React.memo(function ProjectCard({
                 : "grayscale brightness-[0.4]"
             }`}
             priority={index === 0}
+            loading={index === 0 ? "eager" : "lazy"}
           />
         )}
 
@@ -331,6 +347,7 @@ const ProjectCard = React.memo(function ProjectCard({
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover"
                     priority={currentImageIndex === 0}
+                    loading={currentImageIndex === 0 ? "eager" : "lazy"}
                   />
                 </m.div>
               </AnimatePresence>

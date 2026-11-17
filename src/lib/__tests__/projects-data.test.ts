@@ -35,6 +35,17 @@ describe("projects-data", () => {
     expect(proj1).toBeDefined();
     expect(proj1?.title).toBe("JoSan Website");
 
+    const proj9 = getProjectById("proj-9");
+    expect(proj9).toBeDefined();
+    expect(proj9?.title).toBe("ChattingHub");
+    expect(proj9?.category).toBe("Full-stack Web App");
+
+    const proj10 = getProjectById("proj-10");
+    expect(proj10).toBeDefined();
+    expect(proj10?.title).toBe("Sinawali Showdown");
+    expect(proj10?.category).toBe("Desktop App");
+    expect(proj10?.images?.length).toBe(5);
+
     const nonExistent = getProjectById("non-existent-id");
     expect(nonExistent).toBeUndefined();
   });
@@ -46,5 +57,6 @@ describe("projects-data", () => {
     expect(categories).toContain("Frontend Web App");
     expect(categories).toContain("Chromium Web Extension");
     expect(categories).toContain("Mobile App");
+    expect(categories).toContain("Desktop App");
   });
 });

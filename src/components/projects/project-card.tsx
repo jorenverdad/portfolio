@@ -11,12 +11,14 @@ export interface ProjectCardProps {
   readonly project: ProjectItem;
   readonly onOpenDetail: (project: ProjectItem) => void;
   readonly viewMode?: "grid" | "list";
+  readonly priority?: boolean;
 }
 
 export const ProjectCard = React.memo(function ProjectCard({
   project,
   onOpenDetail,
   viewMode = "grid",
+  priority = false,
 }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -79,6 +81,8 @@ export const ProjectCard = React.memo(function ProjectCard({
                 fill
                 sizes="80px"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
+                priority={priority}
+                loading={priority ? "eager" : "lazy"}
               />
             ) : (
               <div className="size-full flex items-center justify-center bg-brand-500/10 text-brand-500">
@@ -196,6 +200,8 @@ export const ProjectCard = React.memo(function ProjectCard({
             className={`object-cover transition-all duration-700 ${
               isHovered ? "scale-105 brightness-105" : "scale-100"
             }`}
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
           />
         ) : (
           <div className="size-full flex flex-col items-center justify-center p-6 text-center bg-linear-to-br from-bg-surface to-bg-void">

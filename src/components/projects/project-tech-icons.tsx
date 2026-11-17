@@ -10,6 +10,7 @@ import {
   Radio,
   TerminalSquare,
   Code2,
+  ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -93,6 +94,8 @@ export function ShadcnIcon({ className }: { readonly className?: string }) {
     </svg>
   );
 }
+
+
 
 export interface TechResolution {
   readonly iconName?: IconName;
@@ -210,6 +213,16 @@ export function resolveTechIcon(tag: string): TechResolution {
     return { iconName: "chromium", label: tag };
   }
 
+  // Electron
+  if (normalized.includes("electron")) {
+    return { iconName: "electron", label: tag };
+  }
+
+  // Node.js
+  if (normalized.includes("node")) {
+    return { iconName: "nodejs", label: tag };
+  }
+
   // Base UI
   if (normalized.includes("base ui") || normalized.includes("base-ui")) {
     return {
@@ -241,6 +254,16 @@ export function resolveTechIcon(tag: string): TechResolution {
     return { iconName: "radixui", label: tag };
   }
 
+  // Bootstrap (supports "Bootstrap", "Bootstrap 5")
+  if (normalized.includes("bootstrap")) {
+    return { iconName: "bootstrap5", label: tag };
+  }
+
+  // Capacitor
+  if (normalized.includes("capacitor")) {
+    return { iconName: "ionic", label: tag };
+  }
+
   // OpenAI / OpenAI API
   if (
     normalized.includes("openai") ||
@@ -250,11 +273,39 @@ export function resolveTechIcon(tag: string): TechResolution {
     return { iconName: "openai", label: tag };
   }
 
-  // AI Moderation
-  if (normalized.includes("ai") || normalized.includes("moderation")) {
+  // AI / Groq / AI Moderation
+  if (
+    normalized.includes("ai") ||
+    normalized.includes("groq") ||
+    normalized.includes("moderation")
+  ) {
     return {
       renderCustom: () => (
         <Sparkles className="size-full text-brand-500" aria-hidden="true" />
+      ),
+      label: tag,
+    };
+  }
+
+  // Django (supports "Django", "Django REST Framework")
+  if (normalized.includes("django")) {
+    return { iconName: "django", label: tag };
+  }
+
+  // Python
+  if (normalized.includes("python")) {
+    return { iconName: "python", label: tag };
+  }
+
+  // Cryptography / Encryption / Crypto-JS
+  if (
+    normalized.includes("crypto") ||
+    normalized.includes("encrypt") ||
+    normalized.includes("cipher")
+  ) {
+    return {
+      renderCustom: () => (
+        <ShieldCheck className="size-full text-emerald-500" aria-hidden="true" />
       ),
       label: tag,
     };
@@ -294,8 +345,12 @@ export function resolveTechIcon(tag: string): TechResolution {
     };
   }
 
-  // Realtime
-  if (normalized.includes("realtime")) {
+  // Realtime & WebSockets (Socket.io)
+  if (
+    normalized.includes("realtime") ||
+    normalized.includes("socket") ||
+    normalized.includes("websocket")
+  ) {
     return {
       renderCustom: () => (
         <Radio className="size-full text-emerald-500" aria-hidden="true" />

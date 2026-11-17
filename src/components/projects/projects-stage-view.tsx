@@ -266,6 +266,7 @@ export function ProjectsStageView({
                     fill
                     sizes="(max-width: 1280px) 180px, (max-width: 1536px) 220px, 280px"
                     className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                    loading="eager"
                   />
                 ) : (
                   <div className="size-full flex items-center justify-center text-brand-500">
@@ -433,6 +434,7 @@ export function ProjectsStageView({
                           sizes="(max-width: 1024px) 100vw, (max-width: 1536px) 600px, 720px"
                           className="object-cover"
                           priority
+                          loading="eager"
                         />
                       </div>
                     ) : (
@@ -737,6 +739,7 @@ export function ProjectsStageView({
                     fill
                     sizes="(max-width: 1280px) 180px, (max-width: 1536px) 220px, 280px"
                     className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+                    loading="eager"
                   />
                 ) : (
                   <div className="size-full flex items-center justify-center text-brand-500">

@@ -3,7 +3,8 @@ export type ProjectCategory =
   | "Full-stack Web App"
   | "Frontend Web App"
   | "Chromium Web Extension"
-  | "Mobile App";
+  | "Mobile App"
+  | "Desktop App";
 
 export type ProjectMetric = {
   readonly label: string;
@@ -46,7 +47,7 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
     title: "JoSan Website",
     subtitle: "Product Landing Page & Interactive AI Demo for JoSan Extension",
     category: "Frontend Web App",
-    year: "2024",
+    year: "2026",
     role: "Frontend Developer",
     team: "Collaborative Team",
     image: "/projects/josan-preview.webp",
@@ -161,7 +162,7 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
     title: "HM Portfolio",
     subtitle: "Interactive 3D Single-Page Portfolio for Honey Mae Omela",
     category: "Frontend Web App",
-    year: "2024",
+    year: "2025",
     role: "Frontend Developer",
     team: "Client Project",
     image: "/projects/portfolio-preview.webp",
@@ -222,14 +223,14 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
     title: "JoSan Extension",
     subtitle: "AI-Powered Chromium Content Moderation Extension",
     category: "Chromium Web Extension",
-    year: "2024",
+    year: "2025",
     role: "Lead Extension & AI Engineer",
     team: "Thesis Project (2 Members)",
     image: "/projects/josan-extension-preview.webp",
     video: "/projects/JoSan Extension - Chromium.mp4",
     tags: [
       "Manifest V3",
-      "React 19",
+      "React",
       "TypeScript",
       "Tailwind CSS",
       "OpenAI API",
@@ -281,11 +282,11 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
   {
     id: "proj-5",
     title: "Uwu Hotel Booking",
-    subtitle: "Mobile Hotel & Accommodation Reservation Experience",
+    subtitle: "Cross-Platform Hotel Reservation & Stay Management Mobile App",
     category: "Mobile App",
     year: "2024",
-    role: "Mobile UI/UX Designer & Developer",
-    team: "Solo Project",
+    role: "Lead Developer & Mobile UI/UX Designer",
+    team: "Collaborative Team",
     image: "/projects/UwU.png",
     images: [
       "/projects/UwU.png",
@@ -295,43 +296,53 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
       "/projects/UwU4.png",
       "/projects/UwU5.png",
     ],
-    tags: ["Mobile UI", "Kotlin", "Android", "Material Design", "Figma"],
-    liveUrl: "https://github.com/jorenverdad",
-    githubUrl: "https://github.com/jorenverdad",
+    tags: [
+      "Capacitor",
+      "Android Studio",
+      "JavaScript",
+      "Vite",
+      "Supabase",
+      "Bootstrap",
+    ],
+    liveUrl: "https://github.com/shinjitsue/uwu-mobile-app",
+    githubUrl: "https://github.com/shinjitsue/uwu-mobile-app",
     featured: true,
     metrics: [
-      { label: "Screens", value: "12+" },
-      { label: "Rating", value: "4.9/5" },
-      { label: "Flows", value: "End-to-End" },
+      { label: "Platform", value: "Android" },
+      { label: "Runtime", value: "Capacitor" },
+      { label: "Backend", value: "Supabase" },
     ],
     details: {
       overview:
-        "A mobile application designed to simplify boutique hotel reservations, room customizations, and localized check-in services.",
+        "Uwu Hotel Booking is a cross-platform mobile accommodation reservation app built with Capacitor, Android Studio, and Supabase, providing travelers with real-time room availability, dynamic stay calculations, and native device camera capabilities.",
       problem:
-        "Existing hotel reservation apps are often cluttered with excessive cross-selling ads and complicated checkout steps that frustrate travelers.",
+        "Traditional travel booking interfaces frequently suffer from heavy mobile bundles, cluttered upsells, and fragmented checkout experiences that complicate quick hotel and room reservations.",
       solution:
-        "Designed and implemented an inviting, mobile-first booking experience featuring one-tap room browsing, date picking, transparent amenity breakdowns, and digital reservation passes.",
+        "Engineered a lightweight mobile application packaged via Capacitor for Android, integrating a Supabase real-time backend with secure authentication, multi-date stay computation, high-res image galleries, and an administrative analytics dashboard.",
       roleDescription:
-        "Conducted UI/UX research, wireframing in Figma, and implemented native Android views following Material Design 3 guidelines.",
+        "Lead mobile developer and UI/UX designer on a collaborative team, directing mobile interface workflows, Capacitor native bridge configuration, Android Studio APK builds, and Supabase backend services.",
       myContributions: [
-        "Designed the complete design system and 12+ mobile mockups in Figma with modern typography and pastel palettes.",
-        "Built the interactive room browsing showcase with multi-photo carousels and smooth swipe gestures.",
-        "Implemented the dynamic booking date selector and automated guest price recalculation logic.",
-        "Created digital boarding pass passes with offline-accessible QR check-in codes.",
+        "Architected the cross-platform mobile client using Capacitor and configured native Android Studio compilation workflows.",
+        "Designed the complete mobile UI/UX in Figma and built responsive mobile screens with Bootstrap 5 and SCSS.",
+        "Configured Supabase PostgreSQL database schemas, Supabase Auth with Google OAuth, and Storage media buckets.",
+        "Implemented native device plugins including Camera for user profile uploads and custom splash screen initialization.",
+        "Engineered client-side reservation compute logic (hotel_compute.js) and administrative Chart.js analytics.",
       ],
       highlights: [
-        "Visual room showcase with interactive multi-angle high-resolution photo galleries.",
-        "Interactive calendar booking selector with live price calculation and discount vouchers.",
-        "Digital boarding pass and booking confirmation screen with offline QR check-in.",
+        "Native Android deployment packaged via Capacitor with native Camera and Splash Screen plugins.",
+        "Complete booking lifecycle: multi-day pricing calculations, date selection, and instant confirmation toasts.",
+        "Supabase cloud backend managing property databases, user authentication, and high-res image buckets.",
+        "Administrative analytics dashboard with Chart.js tracking booking volume and revenue metrics.",
       ],
       architecture: [
-        "Material Design 3 principles tailored with friendly typography and pastel accent palettes.",
-        "Clean architectural pattern separating UI state, booking business logic, and mock data sources.",
-        "Adaptive layouts accommodating small phone viewports up to large tablet screens.",
+        "Capacitor 5 runtime bridging native Android SDK capabilities with high-performance web views.",
+        "Modular JavaScript architecture with custom client router and SCSS design tokens.",
+        "Supabase BaaS integrating PostgreSQL, row security, user authentication, and CDN storage buckets.",
+        "Android Studio Gradle build configuration supporting native APK compilation and device debugging.",
       ],
       challenges: [
-        "Handled complex date-range overlap calculations and multi-guest pricing adjustments smoothly.",
-        "Created fluid micro-interactions for hearting favorites and transitioning between booking steps.",
+        "Ensured smooth 60fps transitions and fast modal rendering across lower-spec Android devices by optimizing asset loading.",
+        "Bridged native device permissions (camera storage access) seamlessly within Capacitor's security lifecycle.",
       ],
     },
   },
@@ -495,6 +506,144 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
       ],
     },
   },
+  {
+    id: "proj-9",
+    title: "ChattingHub",
+    subtitle: "End-to-End Encrypted Full-Stack Chat & User Dashboard",
+    category: "Full-stack Web App",
+    year: "2024",
+    role: "Full-Stack & Authentication Contributor",
+    team: "Collaborative Team (3 Members)",
+    image: "/projects/chattinghub-preview.png",
+    images: [
+      "/projects/chattinghub-preview.png",
+      "/projects/chattinghub-1.png",
+      "/projects/chattinghub-2.png",
+      "/projects/chattinghub-3.png",
+    ],
+    tags: [
+      "Django",
+      "Python",
+      "Vue.js",
+      "Vuetify",
+      "Pinia",
+      "Crypto-JS",
+      "Vite",
+    ],
+    liveUrl: "https://github.com/centmarde/ChattingHub",
+    githubUrl: "https://github.com/centmarde/ChattingHub",
+    featured: true,
+    metrics: [
+      { label: "Encryption", value: "AES-256" },
+      { label: "Frontends", value: "Vue 3 & Svelte" },
+      { label: "Auth Flow", value: "JWT Guard" },
+    ],
+    details: {
+      overview:
+        "ChattingHub is an end-to-end encrypted messaging and user management system built with Django REST Framework and modern client frontends (Vue 3 and Svelte 5), guaranteeing cryptographic privacy across client-server boundaries.",
+      problem:
+        "Standard web chat platforms frequently transmit unencrypted payloads or store readable conversations directly in database tables, exposing user communications to network snooping and unauthorized database inspection.",
+      solution:
+        "Engineered an end-to-end cryptographic architecture where chat payloads are encrypted client-side using Crypto-JS before network transmission, decrypted on-the-fly for authorized recipients, and guarded by Django REST Framework authentication and SimpleJWT tokens.",
+      roleDescription:
+        "Core full-stack contributor and UI architect on a 3-engineer collaborative team, directing Vue 3 authentication views, localStorage-persisted tab navigation, client encryption layers, and public setup documentation.",
+      myContributions: [
+        "Architected client-side cryptographic encryption and decryption workflows with Crypto-JS, safeguarding message payloads before they reach network transit.",
+        "Engineered the Vue 3 authentication layout (AuthView, LoginForm, RegisterForm) with form validation and real-time toast feedback.",
+        "Built the responsive administrative Dashboard with localStorage-persisted tab navigation and dynamic user data tables.",
+        "Configured Pinia authentication stores and Axios interceptors for automatic JWT token attachment and session expiration handling.",
+        "Integrated Svelte Material UI (SMUI) design tokens and theme palettes for the secondary high-speed frontend client.",
+        "Authored comprehensive backend and frontend setup guides, API specifications, and architectural documentation in the public repository.",
+      ],
+      highlights: [
+        "Client-side cryptographic encryption preventing plaintext message interception across network boundaries.",
+        "Dual-frontend architecture featuring a primary Vue 3/Vuetify portal and an alternative Svelte 5/SMUI interface.",
+        "Secure JWT authentication lifecycle with protected route guards and automatic token refresh.",
+        "Administrative analytics dashboard displaying active user directories and conversation metrics.",
+      ],
+      architecture: [
+        "Django 4.2 backend structured with Django REST Framework, SimpleJWT authentication, and custom cryptographic middleware.",
+        "Vue 3 client styled with Vuetify 3 Material components and managed with Pinia state stores.",
+        "Dual-client architecture supporting both Vue.js and Svelte 5 interfaces consuming the same unified REST API.",
+      ],
+      challenges: [
+        "Kept cryptographic operations non-blocking during high-volume messaging by offloading key transformations before DOM rendering.",
+        "Maintained consistent authentication states across browser page reloads using reactive Pinia stores synced with localStorage.",
+      ],
+    },
+  },
+  {
+    id: "proj-10",
+    title: "Sinawali Showdown",
+    subtitle: "Turn-Based Strategy Card Game Inspired by Filipino Martial Arts",
+    category: "Desktop App",
+    year: "2024",
+    role: "Full-Stack UI/UX & Game Systems Contributor",
+    team: "Collaborative Team (Sinawali Logic Raiders)",
+    image: "/projects/sinawali-preview.png",
+    images: [
+      "/projects/sinawali-preview.png",
+      "/projects/sinawali-1.png",
+      "/projects/sinawali-2.png",
+      "/projects/sinawali-3.png",
+      "/projects/sinawali-4.png",
+    ],
+    tags: [
+      "Electron",
+      "Vue.js",
+      "Vuetify",
+      "Pinia",
+      "Socket.io",
+      "Supabase",
+      "Groq AI",
+      "Vite",
+    ],
+    liveUrl:
+      "https://github.com/centmarde/Sinawali_Showdown-version-Alpha-0.0.1",
+    githubUrl:
+      "https://github.com/centmarde/Sinawali_Showdown-version-Alpha-0.0.1",
+    featured: true,
+    metrics: [
+      { label: "Combat Engine", value: "Turn-Based" },
+      { label: "Platform", value: "Electron Desktop" },
+      { label: "Multiplayer", value: "WebSocket Live" },
+    ],
+    details: {
+      overview:
+        "Sinawali Showdown is a cross-platform desktop turn-based strategy card game built on Electron, Vue 3, and Node.js WebSockets, translating the tactical strikes, parries, and combinations of Filipino martial arts (Arnis/Kali) into competitive digital deck-building combat.",
+      problem:
+        "Traditional digital card games rely heavily on standard Western fantasy tropes and static turn resolutions, lacking authentic cultural representation and the rapid, reactive combat flow characteristic of traditional martial arts like Arnis.",
+      solution:
+        "Engineered a desktop card battle system featuring dual-stick Arnis weapon mechanics (Sinawali weave patterns), real-time peer-to-peer WebSocket synchronization, AI-powered sparring opponents via Groq SDK, and responsive battle HUDs with animated health and mana gauges.",
+      roleDescription:
+        "Core UI/UX and game systems engineer on the Sinawali Logic Raiders development team, responsible for in-game combat HUD indicators, administrative player management portals, Google authentication workflows, and image optimization pipelines.",
+      myContributions: [
+        "Engineered the full-featured Administrative Dashboard (AdminBase.vue, UserList.vue) with navigation drawers, card collection previews, and real-time status monitoring.",
+        "Implemented complete user management CRUD dialogs with Vuetify (v-dialog), enabling player account updates and deletions synchronized across Supabase auth.users and public.users tables.",
+        "Built responsive in-game combat HUD components including dynamic animated health bars (HealthBar.vue), mana pools, and turn timers with real-time state binding.",
+        "Integrated Google OAuth and Supabase authentication into the main menu login flow, enabling persistent player identity and cloud profile synchronization.",
+        "Developed dynamic battle scene backgrounds (Background.vue, bg.gif, parallax layers) with viewport auto-resizing across desktop display resolutions.",
+        "Coordinated Electron desktop packaging (electron-forge, electron-builder) and synchronized cross-branch merges between game logic and desktop shell environments.",
+        "Automated repository media asset compression with Imgbot, significantly optimizing image payload sizes for fast desktop and web loads.",
+      ],
+      highlights: [
+        "Full-featured Administrative Dashboard with user CRUD dialogs synced directly across Supabase auth and public schemas.",
+        "Tactical Arnis martial arts card system with attack combos, defensive parries, and buff statuses.",
+        "Cross-platform desktop runtime powered by Electron 33 and packaged via Electron Forge.",
+        "Real-time multiplayer synchronization using Node.js and Socket.io WebSocket channels.",
+      ],
+      architecture: [
+        "Electron 33 desktop application wrapping a Vue 3 SPA with Vuetify components and Pinia state stores.",
+        "Lightweight Node.js Socket.io server broadcasting real-time attack, buff, and hit animations on port 3002.",
+        "Supabase backend for user profile persistence, cloud card collections, and Google OAuth sessions.",
+        "Groq SDK integration powering dynamic AI decision-making for single-player sparring scenarios.",
+      ],
+      challenges: [
+        "Synchronized dual-player combat animation states over WebSockets without frame stuttering or desynchronized turn phases.",
+        "Packaged multi-process Node.js WebSocket servers alongside the Electron desktop application bundle cleanly.",
+      ],
+    },
+  },
 ] as const;
 
 export function getAllProjects(): ReadonlyArray<ProjectItem> {
@@ -512,5 +661,6 @@ export function getAllCategories(): ReadonlyArray<ProjectCategory> {
     "Frontend Web App",
     "Chromium Web Extension",
     "Mobile App",
+    "Desktop App",
   ];
 }

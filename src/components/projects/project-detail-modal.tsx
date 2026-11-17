@@ -137,6 +137,7 @@ export function ProjectDetailModal({
                       sizes="(max-width: 1024px) 100vw, 900px"
                       className="object-cover"
                       priority
+                      loading="eager"
                     />
                   ) : (
                     <div className="size-full flex flex-col items-center justify-center p-8 bg-linear-to-br from-bg-surface to-bg-void text-center">
