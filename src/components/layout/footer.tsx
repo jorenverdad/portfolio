@@ -2,6 +2,7 @@ import React from 'react';
 import { CountMeIn } from '@/components/layout/count-me-in';
 import { FooterScrollTop } from '@/components/layout/footer-scroll-top';
 import { CurrentYear } from '@/components/ui/current-year';
+import { MagneticTextParticles } from '@/components/layout/magnetic-text-particles';
 
 export interface FooterProps {
   readonly className?: string;
@@ -16,20 +17,9 @@ export function Footer({ className }: FooterProps) {
       }`}
     >
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center">
-        {/* Subtle, atmospheric watermark with a silky fade at the bottom */}
-        <div className="w-full flex justify-center pointer-events-none select-none overflow-hidden mb-4">
-          <span
-            className="text-[28vw] md:text-[22vw] lg:text-[20vw] font-black leading-none tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-foreground/20 via-foreground/5 to-transparent select-none"
-            style={{
-              WebkitMaskImage:
-                'linear-gradient(to bottom, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 92%)',
-              maskImage:
-                'linear-gradient(to bottom, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 92%)',
-            }}
-            aria-hidden="true"
-          >
-            JOREN
-          </span>
+        {/* Interactive Three.js magnetic particle watermark with silky bottom fade */}
+        <div className="w-full flex justify-center select-none overflow-hidden mb-4">
+          <MagneticTextParticles text="JOREN" />
         </div>
 
         {/* Footer controls & copyright bar */}
