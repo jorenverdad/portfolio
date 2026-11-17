@@ -55,7 +55,7 @@ describe('TechStackSection', () => {
     expect(CATEGORIES).toContain('Tools');
     expect(CATEGORIES).toContain('Agentic IDEs');
     expect(CATEGORIES).toContain('OS');
-    expect(TECH_STACK.length).toBe(58);
+    expect(TECH_STACK.length).toBe(59);
   });
 
   it('includes newly added tech-stack-icons (Vitest, Sentry, Antigravity, Claude Code, Codex, Cursor, Copilot) without Husky', () => {
@@ -77,6 +77,7 @@ describe('TechStackSection', () => {
     expect(names).toContain('PHP');
     expect(names).toContain('Sass');
     expect(names).toContain('Nuxt');
+    expect(names).toContain('Three.js');
     expect(names).not.toContain('Husky');
   });
 
@@ -139,6 +140,7 @@ describe('TechStackSection', () => {
     expect(screen.getAllByText('PHP').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('Sass').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('Nuxt').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Three.js').length).toBeGreaterThanOrEqual(1);
 
     // GitHub Actions must not appear in grid view
     expect(screen.queryByText('GitHub Actions')).toBeNull();

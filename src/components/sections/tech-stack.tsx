@@ -132,7 +132,14 @@ export const TECH_STACK: readonly TechItem[] = [
     category: "Frontend",
     preferred: true,
   },
-  { name: "Vue", iconName: "vuejs", color: "#4FC08D", category: "Frontend" },
+  {
+    name: "Three.js",
+    iconName: "threejs",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "Frontend",
+  },
+  { name: "Vue.js", iconName: "vuejs", color: "#4FC08D", category: "Frontend" },
   {
     name: "Tailwind CSS",
     iconName: "tailwindcss",
