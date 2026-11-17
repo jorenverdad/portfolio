@@ -30,10 +30,13 @@ describe("project-tech-icons", () => {
       expect(resolveTechIcon("Kotlin").iconName).toBe("kotlin");
       expect(resolveTechIcon("Android").iconName).toBe("android");
       expect(resolveTechIcon("Motion").iconName).toBe("motion");
-      expect(resolveTechIcon("Manifest V3").iconName).toBe("chrome");
+      expect(resolveTechIcon("Manifest V3").iconName).toBe("chromium");
+      expect(resolveTechIcon("Chromium").iconName).toBe("chromium");
       expect(resolveTechIcon("Vite").iconName).toBe("vitejs");
       expect(resolveTechIcon("Three.js").iconName).toBe("threejs");
       expect(resolveTechIcon("Radix UI").iconName).toBe("radixui");
+      expect(resolveTechIcon("OpenAI API").iconName).toBe("openai");
+      expect(resolveTechIcon("OpenAI").iconName).toBe("openai");
     });
 
     it("resolves custom and specialized tags with renderCustom", () => {

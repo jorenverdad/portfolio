@@ -47,7 +47,7 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
     subtitle: "Product Landing Page & Interactive AI Demo for JoSan Extension",
     category: "Frontend Web App",
     year: "2024",
-    role: "Next.js & Frontend Engineer",
+    role: "Frontend Developer",
     team: "Collaborative Team",
     image: "/projects/josan-preview.webp",
     video:
@@ -64,9 +64,9 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
     githubUrl: "https://github.com/jorenverdad",
     featured: true,
     metrics: [
-      { label: "Accuracy", value: "98.5%" },
-      { label: "Scan Speed", value: "<150ms" },
-      { label: "Demo Rules", value: "40+" },
+      { label: "Load Speed", value: "<1s" },
+      { label: "Interactive Demo", value: "Real-Time" },
+      { label: "API Caching", value: "65% Saved" },
     ],
     details: {
       overview:
@@ -85,7 +85,7 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
       ],
       highlights: [
         "Hands-on interactive demo sandbox displaying real-time confidence scores and instant text redaction.",
-        "Client acquisition funnels tailored for both individual Chrome extension users and B2B platform teams.",
+        "Client acquisition funnels tailored for both individual Chromium extension users and B2B platform teams.",
         "Optimized client-side caching reducing redundant inference requests by 65%.",
       ],
       architecture: [
@@ -162,7 +162,7 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
     subtitle: "Interactive 3D Single-Page Portfolio for Honey Mae Omela",
     category: "Frontend Web App",
     year: "2024",
-    role: "Lead Frontend Engineer & UI Designer",
+    role: "Frontend Developer",
     team: "Client Project",
     image: "/projects/portfolio-preview.webp",
     video: "/projects/Portfolio- Honey.mp4",
@@ -185,7 +185,7 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
     ],
     details: {
       overview:
-        "HM Portfolio is a bespoke single-page personal portfolio engineered for client Honey Mae Omela, featuring dynamic 3D backgrounds, smooth section observation, circular theme transitions, and responsive bento-grid layouts.",
+        "HM Portfolio is a bespoke single-page personal portfolio engineered for client, featuring dynamic 3D backgrounds, smooth section observation, circular theme transitions, and responsive bento-grid layouts.",
       problem:
         "The client needed a distinctive, high-impact personal brand website that stood out from standard static portfolios, requiring seamless multi-theme transitions, interactive 3D particle visuals, and mobile-friendly navigation without performance lag.",
       solution:
@@ -220,50 +220,61 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
   {
     id: "proj-4",
     title: "JoSan Extension",
-    subtitle: "Chromium Browser Content Moderation Extension",
+    subtitle: "AI-Powered Chromium Content Moderation Extension",
     category: "Chromium Web Extension",
     year: "2024",
-    role: "Browser Extension Developer",
-    team: "Collaborative Team",
+    role: "Lead Extension & AI Engineer",
+    team: "Thesis Project (2 Members)",
     image: "/projects/josan-extension-preview.webp",
     video: "/projects/JoSan Extension - Chromium.mp4",
-    tags: ["Manifest V3", "TypeScript", "Tailwind CSS", "DOM MutationObserver"],
-    liveUrl: "https://github.com/jorenverdad",
-    githubUrl: "https://github.com/jorenverdad",
+    tags: [
+      "Manifest V3",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS",
+      "OpenAI API",
+      "DOM MutationObserver",
+    ],
+    liveUrl: "https://github.com/jorenverdad/JoSan",
+    githubUrl: "https://github.com/jorenverdad/JoSan",
     featured: true,
     metrics: [
       { label: "Scan Time", value: "<15ms" },
-      { label: "DOM Overhead", value: "<1%" },
-      { label: "Standard", value: "Manifest V3" },
+      { label: "Languages", value: "3 (EN/TL/BIS)" },
+      { label: "Privacy", value: "DMs Excluded" },
     ],
     details: {
       overview:
-        "A lightweight Chromium extension that actively scans web pages in real time to redact offensive language, hate speech, and spam before users see it.",
+        "JoSan Extension is an intelligent Chromium browser extension built on Manifest V3, employing a two-stage hybrid filtering engine (fast local regex plus OpenAI moderation) to redact profanity, hate speech, and harassment in real time across 13 major platforms.",
       problem:
-        "Users browsing open social media platforms frequently encounter graphic or harassment-laden comments without personal protective filtering controls.",
+        "Social media feeds expose users to toxic comments and harassment, while existing content blockers either rely solely on rigid keywords causing false positives or slow down page scrolling with heavy server roundtrips.",
       solution:
-        "Built a Manifest V3 browser extension utilizing high-efficiency DOM MutationObservers to intercept and blur toxic comments on active feeds without degrading browser rendering performance.",
+        "Engineered a two-stage filtering architecture combining sub-15ms client-side regex detection (with English, Tagalog, and Bisaya wordlists) and contextual OpenAI Moderation API analysis (omni-moderation and GPT-5-mini), ensuring public feed protection without touching private messages.",
       roleDescription:
-        "Engineered the content script DOM observer, background service worker, and the popup configuration user interface.",
+        "Co-creator and lead extension engineer for undergraduate thesis, owning Manifest V3 service worker architecture, DOM MutationObserver filtering pipelines, and OpenAI Moderation integration.",
       myContributions: [
-        "Architected the Manifest V3 background service worker and content script communication protocol.",
-        "Implemented debounced DOM MutationObserver routines that scan and redact toxic text in under 15ms.",
-        "Built the extension popup dashboard using TypeScript and Tailwind CSS with custom sensitivity sliders.",
-        "Engineered click-to-reveal blur overlays allowing users to safely inspect redacted content.",
+        "Architected the Manifest V3 background service worker and content script communication protocol with 5-minute response caching.",
+        "Engineered debounced DOM MutationObservers that intercept and blur toxic comments in under 15ms across dynamic infinite-scroll feeds.",
+        "Integrated OpenAI's Moderation API (omni-moderation-latest and GPT-5-mini) for context-aware classification to eliminate false positives.",
+        "Built trilingual detection pipelines supporting English, Tagalog, and Bisaya with automated language detection.",
+        "Designed strict privacy boundaries that exclude DMs, chat boxes, and password fields across all 13 supported platforms.",
+        "Developed the React 19 popup and options analytics dashboard using Tailwind CSS and Recharts for 30-day usage tracking.",
       ],
       highlights: [
-        "Instant text redactor and blur overlays with a click-to-reveal safety mechanism.",
-        "Customizable user dictionary and severity sliders accessible via the browser action popup.",
-        "Background service worker architecture with minimal CPU and memory footprints.",
+        "Two-stage hybrid moderation engine: sub-15ms local regex filter paired with OpenAI contextual analysis.",
+        "Trilingual detection supporting English, Tagalog, and Bisaya profanity lexicons with confidence scoring.",
+        "Strict privacy safeguard: active feed filtering only, permanently excluding private messages and chat inputs.",
+        "Real-time usage dashboard with 30-day rate-limit tracking and click-to-reveal blur overlays.",
       ],
       architecture: [
-        "Manifest V3 architecture complying with the latest Chrome Web Store security guidelines.",
+        "Manifest V3 architecture complying with Chromium extension security standards.",
+        "Hybrid build system using Webpack for background scripts and Vite for React 19 popup/options pages.",
         "Isolated content script DOM observers decoupling heavy regex matching into idle callback tasks.",
-        "Modern Tailwind-styled popup UI built with TypeScript and Vite bundler.",
+        "Local browser storage (chrome.storage.local) keeping API keys and user wordlists strictly on-device.",
       ],
       challenges: [
-        "Prevented browser lag on infinite-scroll pages (Twitter/Reddit) by debouncing mutation batches.",
-        "Ensured zero cross-site script leakage by sanitizing all injected preview elements.",
+        "Prevented UI lag on high-frequency infinite scroll feeds (Twitter/X, Reddit, TikTok) by batching mutation records with requestIdleCallback.",
+        "Avoided API rate-limit bottlenecks (30 RPM) through aggressive 5-minute client caching and selective AI dispatch only for ambiguous text.",
       ],
     },
   },

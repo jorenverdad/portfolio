@@ -200,13 +200,14 @@ export function resolveTechIcon(tag: string): TechResolution {
     return { iconName: "motion", label: tag };
   }
 
-  // Chrome / Manifest V3 extension
+  // Chromium / Manifest V3 extension
   if (
+    normalized.includes("chromium") ||
     normalized.includes("manifest") ||
     normalized.includes("chrome") ||
     normalized.includes("extension")
   ) {
-    return { iconName: "chrome", label: tag };
+    return { iconName: "chromium", label: tag };
   }
 
   // Base UI
@@ -238,6 +239,15 @@ export function resolveTechIcon(tag: string): TechResolution {
   // Radix UI
   if (normalized.includes("radix")) {
     return { iconName: "radixui", label: tag };
+  }
+
+  // OpenAI / OpenAI API
+  if (
+    normalized.includes("openai") ||
+    normalized.includes("open ai") ||
+    normalized.includes("gpt")
+  ) {
+    return { iconName: "openai", label: tag };
   }
 
   // AI Moderation
