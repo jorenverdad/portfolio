@@ -29,7 +29,7 @@ describe("ProjectsSection", () => {
     expect(screen.getByText("Projects.")).toBeInTheDocument();
     expect(screen.getByText("JoSan Website")).toBeInTheDocument();
     expect(screen.getByText("VzStellar Website")).toBeInTheDocument();
-    expect(screen.getByText("Portfolio")).toBeInTheDocument();
+    expect(screen.getByText("HM Portfolio")).toBeInTheDocument();
     expect(screen.getByText("JoSan Extension")).toBeInTheDocument();
     expect(screen.getByText("Uwu Hotel Booking")).toBeInTheDocument();
   });

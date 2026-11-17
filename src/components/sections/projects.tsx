@@ -80,7 +80,7 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
   },
   {
     id: "proj-3",
-    title: "Portfolio",
+    title: "HM Portfolio",
     category: "Frontend Web App",
     image: "/projects/portfolio-preview.webp",
     video: "/projects/Portfolio- Honey.mp4",

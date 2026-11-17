@@ -59,6 +59,41 @@ export function BaseUiIcon({ className }: { readonly className?: string }) {
   );
 }
 
+/**
+ * Official Shadcn UI SVG Logo Mark
+ */
+export function ShadcnIcon({ className }: { readonly className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 256 256"
+      className={cn("size-full", className)}
+      fill="none"
+      aria-hidden="true"
+    >
+      <line
+        x1="208"
+        y1="128"
+        x2="128"
+        y2="208"
+        stroke="currentColor"
+        strokeWidth="24"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <line
+        x1="192"
+        y1="40"
+        x2="40"
+        y2="192"
+        stroke="currentColor"
+        strokeWidth="24"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export interface TechResolution {
   readonly iconName?: IconName;
   readonly renderCustom?: (isDark: boolean) => React.ReactNode;
@@ -81,9 +116,33 @@ export function resolveTechIcon(tag: string): TechResolution {
     return { iconName: "react", label: tag };
   }
 
+  // Vue.js (supports "Vue", "Vue.js", "Vue 3")
+  if (normalized.includes("vue") && !normalized.includes("vuetify")) {
+    return { iconName: "vuejs", label: tag };
+  }
+
+  // Vuetify
+  if (normalized.includes("vuetify")) {
+    return { iconName: "vuetify", label: tag };
+  }
+
+  // Pinia
+  if (normalized.includes("pinia")) {
+    return { iconName: "pinia", label: tag };
+  }
+
   // TypeScript
   if (normalized.includes("typescript") || normalized === "ts") {
     return { iconName: "typescript", label: tag };
+  }
+
+  // JavaScript
+  if (
+    normalized.includes("javascript") ||
+    normalized === "js" ||
+    normalized.includes("ecmascript")
+  ) {
+    return { iconName: "js", label: tag };
   }
 
   // Tailwind CSS (supports "Tailwind CSS", "Tailwind CSS v4")
@@ -104,6 +163,11 @@ export function resolveTechIcon(tag: string): TechResolution {
   // Docker
   if (normalized.includes("docker")) {
     return { iconName: "docker", label: tag };
+  }
+
+  // pnpm
+  if (normalized.includes("pnpm")) {
+    return { iconName: "pnpm", label: tag };
   }
 
   // Laravel
@@ -151,6 +215,29 @@ export function resolveTechIcon(tag: string): TechResolution {
       renderCustom: () => <BaseUiIcon className="text-foreground" />,
       label: tag,
     };
+  }
+
+  // Shadcn UI
+  if (normalized.includes("shadcn")) {
+    return {
+      renderCustom: () => <ShadcnIcon className="text-foreground" />,
+      label: tag,
+    };
+  }
+
+  // Vite
+  if (normalized.includes("vite")) {
+    return { iconName: "vitejs", label: tag };
+  }
+
+  // Three.js
+  if (normalized.includes("three")) {
+    return { iconName: "threejs", label: tag };
+  }
+
+  // Radix UI
+  if (normalized.includes("radix")) {
+    return { iconName: "radixui", label: tag };
   }
 
   // AI Moderation

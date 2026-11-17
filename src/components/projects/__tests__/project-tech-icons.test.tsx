@@ -7,6 +7,7 @@ import {
   ShowcaseTechStack,
   DetailedTechStack,
   BaseUiIcon,
+  ShadcnIcon,
 } from "../project-tech-icons";
 
 describe("project-tech-icons", () => {
@@ -14,21 +15,30 @@ describe("project-tech-icons", () => {
     it("resolves major framework and language tags to tech-stack-icons", () => {
       expect(resolveTechIcon("Next.js 16").iconName).toBe("nextjs2");
       expect(resolveTechIcon("React 19").iconName).toBe("react");
+      expect(resolveTechIcon("Vue.js").iconName).toBe("vuejs");
+      expect(resolveTechIcon("Vuetify").iconName).toBe("vuetify");
+      expect(resolveTechIcon("Pinia").iconName).toBe("pinia");
       expect(resolveTechIcon("TypeScript").iconName).toBe("typescript");
+      expect(resolveTechIcon("JavaScript").iconName).toBe("js");
       expect(resolveTechIcon("Tailwind CSS v4").iconName).toBe("tailwindcss");
       expect(resolveTechIcon("Supabase").iconName).toBe("supabase");
       expect(resolveTechIcon("PostgreSQL 16").iconName).toBe("postgresql");
       expect(resolveTechIcon("Docker").iconName).toBe("docker");
+      expect(resolveTechIcon("pnpm").iconName).toBe("pnpm");
       expect(resolveTechIcon("Laravel").iconName).toBe("laravel");
       expect(resolveTechIcon("Figma").iconName).toBe("figma");
       expect(resolveTechIcon("Kotlin").iconName).toBe("kotlin");
       expect(resolveTechIcon("Android").iconName).toBe("android");
       expect(resolveTechIcon("Motion").iconName).toBe("motion");
       expect(resolveTechIcon("Manifest V3").iconName).toBe("chrome");
+      expect(resolveTechIcon("Vite").iconName).toBe("vitejs");
+      expect(resolveTechIcon("Three.js").iconName).toBe("threejs");
+      expect(resolveTechIcon("Radix UI").iconName).toBe("radixui");
     });
 
     it("resolves custom and specialized tags with renderCustom", () => {
       expect(resolveTechIcon("Base UI").renderCustom).toBeDefined();
+      expect(resolveTechIcon("Shadcn UI").renderCustom).toBeDefined();
       expect(resolveTechIcon("AI Moderation").renderCustom).toBeDefined();
       expect(resolveTechIcon("REST API").renderCustom).toBeDefined();
       expect(resolveTechIcon("DOM MutationObserver").renderCustom).toBeDefined();
@@ -44,12 +54,17 @@ describe("project-tech-icons", () => {
     });
   });
 
-  describe("BaseUiIcon", () => {
+  describe("BaseUiIcon and ShadcnIcon", () => {
     it("renders valid SVG without crashing", () => {
-      const { container } = render(<BaseUiIcon className="size-6" />);
-      const svg = container.querySelector("svg");
-      expect(svg).toBeInTheDocument();
-      expect(svg).toHaveAttribute("viewBox", "0 0 17 24");
+      const { container: baseContainer } = render(<BaseUiIcon className="size-6" />);
+      const baseSvg = baseContainer.querySelector("svg");
+      expect(baseSvg).toBeInTheDocument();
+      expect(baseSvg).toHaveAttribute("viewBox", "0 0 17 24");
+
+      const { container: shadcnContainer } = render(<ShadcnIcon className="size-6" />);
+      const shadcnSvg = shadcnContainer.querySelector("svg");
+      expect(shadcnSvg).toBeInTheDocument();
+      expect(shadcnSvg).toHaveAttribute("viewBox", "0 0 256 256");
     });
   });
 
@@ -64,6 +79,13 @@ describe("project-tech-icons", () => {
       const svg = container.querySelector("svg");
       expect(svg).toBeInTheDocument();
       expect(svg).toHaveAttribute("viewBox", "0 0 17 24");
+    });
+
+    it("renders custom icon for Shadcn UI", () => {
+      const { container } = render(<ProjectTechIcon tag="Shadcn UI" isDark={true} />);
+      const svg = container.querySelector("svg");
+      expect(svg).toBeInTheDocument();
+      expect(svg).toHaveAttribute("viewBox", "0 0 256 256");
     });
   });
 
