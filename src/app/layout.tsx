@@ -72,7 +72,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-background text-foreground font-sans">
+      <body className="min-h-screen flex flex-col bg-background text-foreground font-sans selection:bg-brand-500 selection:text-white">
         {children}
         <Analytics />
         <SpeedInsights />

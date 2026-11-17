@@ -17,6 +17,7 @@ export const CATEGORIES = [
   "Frontend",
   "Backend",
   "Database",
+  "DevOps & Cloud",
   "Mobile",
   "Desktop",
   "Tools",
@@ -30,11 +31,28 @@ export type TechItem = {
   readonly name: string;
   readonly color: string;
   readonly darkColor?: string;
-  readonly category?: TechCategory;
+  readonly category?: TechCategory | readonly TechCategory[];
   readonly preferred?: boolean;
   readonly iconName?: IconName;
   readonly iconClass?: string;
+  readonly customIcon?: React.ReactNode;
+  readonly hideInGrid?: boolean;
 };
+
+function CoolifyIcon({ className }: { readonly className?: string }) {
+  return (
+    <svg
+      role="img"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <title>Coolify</title>
+      <path d="M4.364 4.364V0h17.454v4.364zm0 13.09H0V4.365h4.364zm0 0h17.454v4.364H4.364ZM6.545 6.546v-1.7H22.3V2.182H24v4.363zm0 0v10.4h-1.7v-10.4ZM3.882 17.936v1.7h-1.7v-1.7ZM24 24H6.545v-1.7H22.3v-2.664H24Z" />
+    </svg>
+  );
+}
 
 export const TECH_STACK: readonly TechItem[] = [
   // ==========================================
@@ -61,6 +79,13 @@ export const TECH_STACK: readonly TechItem[] = [
     color: "#3776AB",
     category: "Languages",
   },
+  {
+    name: "PHP",
+    iconName: "php",
+    color: "#777BB4",
+    darkColor: "#8892BF",
+    category: "Languages",
+  },
 
   // ==========================================
   // FRONTEND
@@ -69,6 +94,19 @@ export const TECH_STACK: readonly TechItem[] = [
     name: "Bootstrap",
     iconName: "bootstrap5",
     color: "#7952B3",
+    category: "Frontend",
+  },
+  {
+    name: "Nuxt",
+    iconName: "nuxtjs",
+    color: "#00DC82",
+    category: "Frontend",
+  },
+  {
+    name: "Pinia",
+    iconName: "pinia",
+    color: "#FFE56C",
+    darkColor: "#FFE56C",
     category: "Frontend",
   },
   { name: "React", iconName: "react", color: "#61DAFB", category: "Frontend" },
@@ -80,6 +118,27 @@ export const TECH_STACK: readonly TechItem[] = [
     category: "Frontend",
     preferred: true,
   },
+  {
+    name: "Sass",
+    iconName: "sass",
+    color: "#CC6699",
+    category: "Frontend",
+  },
+  {
+    name: "Shadcn UI",
+    iconName: "shadcnui",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "Frontend",
+    preferred: true,
+  },
+  {
+    name: "Three.js",
+    iconName: "threejs",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "Frontend",
+  },
   { name: "Vue.js", iconName: "vuejs", color: "#4FC08D", category: "Frontend" },
   {
     name: "Tailwind CSS",
@@ -89,12 +148,10 @@ export const TECH_STACK: readonly TechItem[] = [
     preferred: true,
   },
   {
-    name: "Shadcn UI",
-    iconName: "shadcnui",
-    color: "#000000",
-    darkColor: "#FFFFFF",
+    name: "Vuetify",
+    iconName: "vuetify",
+    color: "#1867C0",
     category: "Frontend",
-    preferred: true,
   },
   {
     name: "Motion",
@@ -170,6 +227,64 @@ export const TECH_STACK: readonly TechItem[] = [
   { name: "Redis", iconName: "redis", color: "#EE0000", category: "Database" },
 
   // ==========================================
+  // DEVOPS & CLOUD
+  // ==========================================
+  {
+    name: "Vercel",
+    iconName: "vercel",
+    color: "#000000",
+    darkColor: "#FFFFFF",
+    category: "DevOps & Cloud",
+    preferred: true,
+  },
+  {
+    name: "Coolify",
+    customIcon: <CoolifyIcon className="w-full h-full text-[#6B16ED]" />,
+    color: "#6B16ED",
+    category: "DevOps & Cloud",
+    preferred: true,
+  },
+  {
+    name: "Docker",
+    iconName: "docker",
+    color: "#2496ED",
+    category: "DevOps & Cloud",
+    preferred: true,
+  },
+  {
+    name: "Cloudflare",
+    iconName: "cloudflare",
+    color: "#F38020",
+    category: "DevOps & Cloud",
+  },
+  {
+    name: "GitHub Actions",
+    iconClass: "devicon-githubactions-plain",
+    color: "#2088FF",
+    category: "DevOps & Cloud",
+    hideInGrid: true,
+  },
+  {
+    name: "Nginx",
+    iconName: "nginx",
+    color: "#009639",
+    category: "DevOps & Cloud",
+  },
+  {
+    name: "Proxmox",
+    iconName: "proxmox",
+    color: "#E57000",
+    category: "DevOps & Cloud",
+  },
+  {
+    name: "Sentry",
+    iconName: "sentry",
+    color: "#362D59",
+    darkColor: "#FFFFFF",
+    category: "DevOps & Cloud",
+  },
+
+  // ==========================================
   // MOBILE
   // ==========================================
   {
@@ -198,7 +313,6 @@ export const TECH_STACK: readonly TechItem[] = [
   // ==========================================
   // TOOLS
   // ==========================================
-  { name: "Docker", iconName: "docker", color: "#2496ED", category: "Tools" },
   { name: "ESLint", iconName: "eslint", color: "#4B32C3", category: "Tools" },
   {
     name: "Figma",
@@ -249,21 +363,6 @@ export const TECH_STACK: readonly TechItem[] = [
     color: "#F7B93E",
     category: "Tools",
   },
-  {
-    name: "Sentry",
-    iconName: "sentry",
-    color: "#362D59",
-    darkColor: "#FFFFFF",
-    category: "Tools",
-  },
-  {
-    name: "Vercel",
-    iconName: "vercel",
-    color: "#000000",
-    darkColor: "#FFFFFF",
-    category: "Tools",
-    preferred: true,
-  },
   { name: "Vite", iconName: "vitejs", color: "#646CFF", category: "Tools" },
   {
     name: "Vitest",
@@ -289,6 +388,7 @@ export const TECH_STACK: readonly TechItem[] = [
     color: "#DA7756",
     darkColor: "#F59E0B",
     category: "Agentic IDEs",
+    preferred: true,
   },
   {
     name: "Cursor",
@@ -311,13 +411,6 @@ export const TECH_STACK: readonly TechItem[] = [
     darkColor: "#10A37F",
     category: "Agentic IDEs",
   },
-  {
-    name: "VS Code",
-    iconName: "vscode",
-    color: "#007ACC",
-    darkColor: "#007ACC",
-    category: "Agentic IDEs",
-  },
 
   // ==========================================
   // OPERATING SYSTEMS
@@ -332,7 +425,7 @@ export const TECH_STACK: readonly TechItem[] = [
     name: "Linux",
     iconName: "linux",
     color: "#FCC624",
-    category: "OS",
+    category: ["OS", "DevOps & Cloud"],
   },
   {
     name: "Ubuntu",
@@ -392,7 +485,8 @@ function computeGridData(
     return a.x - b.x;
   });
 
-  TECH_STACK.forEach((tech, i) => {
+  const gridItems = TECH_STACK.filter((tech) => !tech.hideInGrid);
+  gridItems.forEach((tech, i) => {
     const cell = sortedCells[i];
     if (cell) {
       cell.tech = tech;
@@ -418,10 +512,17 @@ export type CategorizedGroup = {
   readonly items: readonly TechItem[];
 };
 
+const isInCategory = (tech: TechItem, cat: TechCategory): boolean => {
+  if (Array.isArray(tech.category)) {
+    return tech.category.includes(cat);
+  }
+  return tech.category === cat;
+};
+
 const CATEGORIZED_STACK: readonly CategorizedGroup[] = CATEGORIES.map(
   (category) => ({
     category,
-    items: TECH_STACK.filter((t) => t.category === category).sort(
+    items: TECH_STACK.filter((t) => isInCategory(t, category)).sort(
       (a, b) => (b.preferred ? 1 : 0) - (a.preferred ? 1 : 0),
     ),
   }),
@@ -824,7 +925,19 @@ const TechStackList = React.memo(function TechStackList({
 
                   {/* Icon */}
                   <div className="relative z-10 w-5 h-5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    {tech.iconName ? (
+                    {tech.customIcon ? (
+                      <div
+                        className="w-full h-full flex items-center justify-center"
+                        style={{
+                          color:
+                            isDark && tech.darkColor
+                              ? tech.darkColor
+                              : tech.color,
+                        }}
+                      >
+                        {tech.customIcon}
+                      </div>
+                    ) : tech.iconName ? (
                       <StackIcon
                         name={tech.iconName}
                         variant={isDark ? "dark" : "light"}
@@ -937,7 +1050,16 @@ const TechCell = React.memo(function TechCell({
 
       {/* Icon Container */}
       <div className="relative z-10 text-2xl md:text-3xl lg:text-4xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
-        {tech.iconName ? (
+        {tech.customIcon ? (
+          <div
+            className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 flex items-center justify-center"
+            style={{
+              color: isDark && tech.darkColor ? tech.darkColor : tech.color,
+            }}
+          >
+            {tech.customIcon}
+          </div>
+        ) : tech.iconName ? (
           <StackIcon
             name={tech.iconName}
             variant={isDark ? "dark" : "light"}
