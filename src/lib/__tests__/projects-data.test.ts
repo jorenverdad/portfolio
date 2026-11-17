@@ -52,6 +52,20 @@ describe("projects-data", () => {
     expect(proj10?.tags).toContain("JavaScript");
     expect(proj10?.tags).toContain("Groq AI");
 
+    const proj11 = getProjectById("proj-11");
+    expect(proj11).toBeDefined();
+    expect(proj11?.title).toBe("Fashion-MNIST CNN Benchmark");
+    expect(proj11?.category).toBe("Machine Learning");
+    expect(proj11?.images?.length).toBe(6);
+    expect(proj11?.tags).toContain("PyTorch");
+    expect(proj11?.tags).toContain("Python");
+    expect(proj11?.tags).toContain("Scikit-learn");
+    expect(proj11?.tags).toContain("NumPy");
+    expect(proj11?.tags).toContain("Matplotlib");
+    expect(proj11?.tags).toContain("Seaborn");
+    expect(proj11?.metrics?.length).toBe(3);
+    expect(proj11?.metrics?.[0]?.value).toBe("92.71%");
+
     const nonExistent = getProjectById("non-existent-id");
     expect(nonExistent).toBeUndefined();
   });
@@ -64,5 +78,6 @@ describe("projects-data", () => {
     expect(categories).toContain("Chromium Web Extension");
     expect(categories).toContain("Mobile App");
     expect(categories).toContain("Cross-Platform App");
+    expect(categories).toContain("Machine Learning");
   });
 });

@@ -661,7 +661,7 @@ export function ProjectsStageView({
                   </div>
 
                   {/* Actions Bar */}
-                  <div className="pt-3 2xl:pt-4 border-t border-edge-subtle/80 flex items-center justify-between gap-2.5 mt-auto">
+                  <div className="pt-3 2xl:pt-4 border-t border-edge-subtle/80 flex items-center justify-between gap-2.5 mt-auto shrink-0">
                     <Button
                       size="default"
                       onClick={() => onOpenDetail(activeProject)}

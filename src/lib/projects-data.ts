@@ -4,7 +4,8 @@ export type ProjectCategory =
   | "Frontend Web App"
   | "Chromium Web Extension"
   | "Mobile App"
-  | "Cross-Platform App";
+  | "Cross-Platform App"
+  | "Machine Learning";
 
 export type ProjectMetric = {
   readonly label: string;
@@ -650,6 +651,80 @@ export const PROJECTS_ARCHIVE: ReadonlyArray<ProjectItem> = [
       ],
     },
   },
+  {
+    id: "proj-11",
+    title: "Fashion-MNIST CNN Benchmark",
+    subtitle: "Comparative PyTorch Deep Learning Study",
+    category: "Machine Learning",
+    year: "2025",
+    role: "Deep Learning & PyTorch Engineer",
+    team: "Solo Research & Engineering Project",
+    image: "/projects/fashion-mnist-preview.png",
+    images: [
+      "/projects/fashion-mnist-preview.png",
+      "/projects/fashion-mnist-1.png",
+      "/projects/fashion-mnist-2.png",
+      "/projects/fashion-mnist-3.png",
+      "/projects/fashion-mnist-4.png",
+      "/projects/fashion-mnist-5.png",
+    ],
+    tags: [
+      "PyTorch",
+      "Python",
+      "NumPy",
+      "Pandas",
+      "Matplotlib",
+      "Seaborn",
+      "Scikit-learn",
+      "Torchvision",
+      "Deep Learning",
+      "CNN",
+      "Computer Vision",
+    ],
+    liveUrl: "https://github.com/jorenverdad/fashion-mnist-cnn-pytorch",
+    githubUrl: "https://github.com/jorenverdad/fashion-mnist-cnn-pytorch",
+    featured: true,
+    metrics: [
+      { label: "Top Accuracy", value: "92.71%" },
+      { label: "F1-Score", value: "0.9273" },
+      { label: "Model Size", value: "1.2 MB" },
+    ],
+    details: {
+      overview:
+        "Fashion-MNIST CNN Benchmark is an end-to-end PyTorch deep learning research pipeline implementing, training, and benchmarking multiple Convolutional Neural Network architectures against baseline statistical models, achieving 92.71% test accuracy with empirical ablation validation.",
+      problem:
+        "Standard computer vision workflows frequently apply aggressive data augmentation and heavy dropout regularization by default. On standardized 28x28 grayscale apparel datasets, uncalibrated transformations can introduce boundary noise and degrade classification accuracy without clear performance visibility.",
+      solution:
+        "Engineered a modular PyTorch deep learning framework with hierarchical convolutional feature extractors (32→64→128 channels), batch normalization, Adam optimization, and ReduceLROnPlateau scheduling, paired with automated Scikit-learn evaluation metrics and ROC analysis across 5 model variants.",
+      roleDescription:
+        "Designed the neural network architectures, authored the PyTorch training and evaluation pipelines, conducted controlled ablation studies on regularization and data augmentation, and produced comprehensive visualization benchmarks.",
+      myContributions: [
+        "Architected a 3-layer deep CNN in PyTorch utilizing 3x3 kernels, batch normalization, and two-stage spatial pooling, keeping model parameter count under 310K.",
+        "Engineered an automated training pipeline with Adam optimization, ReduceLROnPlateau adaptive scheduling, and early stopping to guarantee optimal convergence.",
+        "Conducted systematic ablation experiments across 5 architectures, benchmarking baseline logistic regression (66.98%), shallow CNN (88.31%), and deep CNN variants (up to 92.71%).",
+        "Discovered the data augmentation paradox for Fashion-MNIST, demonstrating that aggressive spatial transformations degraded accuracy from 92.71% down to 89.95%.",
+        "Built a modular evaluation suite generating multiclass confusion matrices, one-vs-rest ROC curves, and class-level precision/recall metrics (achieving 99.05% F1 on Trousers and 98.65% on Bags).",
+        "Profiled and optimized CPU inference execution to achieve ~13.5 iterations per second with a deployment-ready 1.2MB checkpoint footprint.",
+      ],
+      highlights: [
+        "Top-performing 92.71% test accuracy and 0.9273 macro F1-score with lightweight 310K parameter architecture.",
+        "Systematic ablation research uncovering the negative impact of aggressive data augmentation on standardized 28x28 datasets.",
+        "Automated multiclass evaluation generating confusion matrices, ROC curves with AUC, and misclassification heatmaps.",
+        "Lightweight 1.2MB model checkpoint optimized for real-time CPU deployment (~13.5 it/s).",
+      ],
+      architecture: [
+        "PyTorch 2.7 deep learning pipeline with custom FashionCNN and AlternativeCNN torch.nn.Module definitions.",
+        "3-block convolutional backbone with 3x3 convolutions, 2D batch normalization, ReLU activations, and MaxPool2d subsampling.",
+        "Dual fully-connected classification head (6272→256→10) with CrossEntropyLoss and configurable dropout.",
+        "Scikit-learn and Matplotlib analytics engine generating per-class classification reports and training/validation trajectory plots.",
+        "NumPy, Pandas, and Seaborn data processing layers for tensor reshaping, batch transformations, and statistical correlation.",
+      ],
+      challenges: [
+        "Identified and mitigated feature blurring from aggressive spatial transformations, validating that pristine normalization outperforms random cropping and rotation on Fashion-MNIST.",
+        "Calibrated capacity versus regularization trade-offs, discovering that batch normalization alone prevented overfitting without the 0.85% penalty imposed by heavy dropout.",
+      ],
+    },
+  },
 ] as const;
 
 export function getAllProjects(): ReadonlyArray<ProjectItem> {
@@ -668,5 +743,6 @@ export function getAllCategories(): ReadonlyArray<ProjectCategory> {
     "Chromium Web Extension",
     "Mobile App",
     "Cross-Platform App",
+    "Machine Learning",
   ];
 }

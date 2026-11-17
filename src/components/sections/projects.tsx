@@ -127,6 +127,22 @@ const DEFAULT_PROJECTS: ReadonlyArray<Project> = [
     yOffset: 20,
     link: "#",
   },
+  {
+    id: "proj-11",
+    title: "Fashion-MNIST CNN Benchmark",
+    category: "Machine Learning",
+    image: "/projects/fashion-mnist-preview.png",
+    images: [
+      "/projects/fashion-mnist-preview.png",
+      "/projects/fashion-mnist-1.png",
+      "/projects/fashion-mnist-2.png",
+      "/projects/fashion-mnist-3.png",
+      "/projects/fashion-mnist-4.png",
+      "/projects/fashion-mnist-5.png",
+    ],
+    yOffset: -18,
+    link: "#",
+  },
 ] as const;
 
 type ProjectCardProps = {

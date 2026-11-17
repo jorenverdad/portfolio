@@ -50,12 +50,18 @@ describe("ProjectsContainer", () => {
     expect(screen.getAllByText("ACEMC Enterprise HRIS").length).toBeGreaterThan(0);
   });
 
-  it("filters projects when a category pill is clicked", () => {
+  it("filters projects when a category is selected via multi-select", () => {
     render(<ProjectsContainer />);
 
-    // Click "Mobile App" category pill
-    const mobilePill = screen.getByRole("button", { name: /mobile app/i });
-    fireEvent.click(mobilePill);
+    // Open Category Multi-Select Popover
+    const filterBtn = screen.getByRole("button", {
+      name: /filter by category/i,
+    });
+    fireEvent.click(filterBtn);
+
+    // Click "Mobile App" category option in the popover
+    const mobileOption = screen.getByRole("checkbox", { name: /mobile app/i });
+    fireEvent.click(mobileOption);
 
     // "Uwu Hotel Booking" should be visible
     expect(screen.getByText("Uwu Hotel Booking")).toBeInTheDocument();
@@ -63,12 +69,19 @@ describe("ProjectsContainer", () => {
     // "VzStellar Website" (Full-stack) should not be visible
     expect(screen.queryByText("VzStellar Website")).not.toBeInTheDocument();
 
-    // Click "Cross-Platform App" category pill
-    const crossPlatformPill = screen.getByRole("button", {
+    // Select another category: "Cross-Platform App" (multi-selection test)
+    const crossPlatformOption = screen.getByRole("checkbox", {
       name: /cross-platform app/i,
     });
-    fireEvent.click(crossPlatformPill);
-    expect(screen.getByText("Sinawali Showdown")).toBeInTheDocument();
+    fireEvent.click(crossPlatformOption);
+
+    // Both selected categories should now be visible
+    expect(
+      screen.getAllByText("Uwu Hotel Booking").length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText("Sinawali Showdown").length,
+    ).toBeGreaterThan(0);
   });
 
   it("filters projects according to text search", () => {

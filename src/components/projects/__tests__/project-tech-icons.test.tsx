@@ -48,6 +48,12 @@ describe("project-tech-icons", () => {
       expect(resolveTechIcon("Svelte").iconName).toBe("sveltejs");
       expect(resolveTechIcon("Material UI").iconName).toBe("materialui");
       expect(resolveTechIcon("MUI").iconName).toBe("materialui");
+      expect(resolveTechIcon("PyTorch").iconName).toBe("pytorch");
+      expect(resolveTechIcon("Torchvision").iconName).toBe("pytorch");
+      expect(resolveTechIcon("Scikit-learn").iconName).toBe("scikitlearn");
+      expect(resolveTechIcon("NumPy").iconName).toBe("numpy");
+      expect(resolveTechIcon("Pandas").iconName).toBe("pandas");
+      expect(resolveTechIcon("Seaborn").iconName).toBe("seaborn");
     });
 
     it("resolves custom and specialized tags with renderCustom", () => {
@@ -61,6 +67,10 @@ describe("project-tech-icons", () => {
       expect(resolveTechIcon("Socket.io").renderCustom).toBeDefined();
       expect(resolveTechIcon("RPC Functions").renderCustom).toBeDefined();
       expect(resolveTechIcon("Crypto-JS").renderCustom).toBeDefined();
+      expect(resolveTechIcon("Matplotlib").renderCustom).toBeDefined();
+      expect(resolveTechIcon("Deep Learning").renderCustom).toBeDefined();
+      expect(resolveTechIcon("CNN").renderCustom).toBeDefined();
+      expect(resolveTechIcon("Computer Vision").renderCustom).toBeDefined();
     });
 
     it("provides fallback for arbitrary tags", () => {
