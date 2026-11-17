@@ -123,6 +123,31 @@ describe("ProjectsStageView", () => {
     expect(screen.getByText(acemcProject.team)).toBeInTheDocument();
   });
 
+  it("renders tech logos with +N overflow indicator for projects with more than 6 tags", () => {
+    const handleOpenDetail = vi.fn();
+    const acemcProject = PROJECTS_ARCHIVE.find((p) =>
+      p.title.includes("ACEMC"),
+    )!; // ACEMC has 7 tags
+
+    render(
+      <ProjectsStageView
+        projects={[acemcProject]}
+        onOpenDetail={handleOpenDetail}
+      />,
+    );
+
+    // 6 logos are visible with titles
+    expect(screen.getByTitle("Next.js 16")).toBeInTheDocument();
+    expect(screen.getByTitle("React 19")).toBeInTheDocument();
+    expect(screen.getByTitle("TypeScript")).toBeInTheDocument();
+    expect(screen.getByTitle("Supabase")).toBeInTheDocument();
+    expect(screen.getByTitle("PostgreSQL 16")).toBeInTheDocument();
+    expect(screen.getByTitle("Docker")).toBeInTheDocument();
+
+    // +1 badge is rendered for the 7th tag (Realtime)
+    expect(screen.getByText("+1")).toBeInTheDocument();
+  });
+
   it("renders empty state when projects array is empty", () => {
     const handleOpenDetail = vi.fn();
     render(

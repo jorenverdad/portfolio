@@ -166,7 +166,7 @@ export const ProjectCard = React.memo(function ProjectCard({
             className="rounded-full px-4 text-xs font-medium bg-brand-500 hover:bg-brand-600 text-white"
           >
             <FileText className="size-3.5 mr-1" />
-            Case Study
+            Deep Dive Case Study
           </Button>
         </div>
       </article>
@@ -309,7 +309,7 @@ export const ProjectCard = React.memo(function ProjectCard({
             className="rounded-full px-4 text-xs font-medium bg-brand-500 hover:bg-brand-600 text-white shadow-xs"
           >
             <FileText className="size-3.5 mr-1" />
-            Case Study
+            Deep Dive Case Study
           </Button>
 
           <div className="flex items-center gap-1.5">

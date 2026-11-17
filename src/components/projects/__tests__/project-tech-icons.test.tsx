@@ -1,0 +1,134 @@
+import React from "react";
+import { describe, it, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
+import {
+  resolveTechIcon,
+  ProjectTechIcon,
+  ShowcaseTechStack,
+  DetailedTechStack,
+  BaseUiIcon,
+} from "../project-tech-icons";
+
+describe("project-tech-icons", () => {
+  describe("resolveTechIcon", () => {
+    it("resolves major framework and language tags to tech-stack-icons", () => {
+      expect(resolveTechIcon("Next.js 16").iconName).toBe("nextjs2");
+      expect(resolveTechIcon("React 19").iconName).toBe("react");
+      expect(resolveTechIcon("TypeScript").iconName).toBe("typescript");
+      expect(resolveTechIcon("Tailwind CSS v4").iconName).toBe("tailwindcss");
+      expect(resolveTechIcon("Supabase").iconName).toBe("supabase");
+      expect(resolveTechIcon("PostgreSQL 16").iconName).toBe("postgresql");
+      expect(resolveTechIcon("Docker").iconName).toBe("docker");
+      expect(resolveTechIcon("Laravel").iconName).toBe("laravel");
+      expect(resolveTechIcon("Figma").iconName).toBe("figma");
+      expect(resolveTechIcon("Kotlin").iconName).toBe("kotlin");
+      expect(resolveTechIcon("Android").iconName).toBe("android");
+      expect(resolveTechIcon("Motion").iconName).toBe("motion");
+      expect(resolveTechIcon("Manifest V3").iconName).toBe("chrome");
+    });
+
+    it("resolves custom and specialized tags with renderCustom", () => {
+      expect(resolveTechIcon("Base UI").renderCustom).toBeDefined();
+      expect(resolveTechIcon("AI Moderation").renderCustom).toBeDefined();
+      expect(resolveTechIcon("REST API").renderCustom).toBeDefined();
+      expect(resolveTechIcon("DOM MutationObserver").renderCustom).toBeDefined();
+      expect(resolveTechIcon("Mobile UI").renderCustom).toBeDefined();
+      expect(resolveTechIcon("Realtime").renderCustom).toBeDefined();
+      expect(resolveTechIcon("RPC Functions").renderCustom).toBeDefined();
+    });
+
+    it("provides fallback for arbitrary tags", () => {
+      const fallback = resolveTechIcon("Unknown Tech");
+      expect(fallback.renderCustom).toBeDefined();
+      expect(fallback.label).toBe("Unknown Tech");
+    });
+  });
+
+  describe("BaseUiIcon", () => {
+    it("renders valid SVG without crashing", () => {
+      const { container } = render(<BaseUiIcon className="size-6" />);
+      const svg = container.querySelector("svg");
+      expect(svg).toBeInTheDocument();
+      expect(svg).toHaveAttribute("viewBox", "0 0 17 24");
+    });
+  });
+
+  describe("ProjectTechIcon", () => {
+    it("renders StackIcon for standard tech", () => {
+      const { container } = render(<ProjectTechIcon tag="React 19" isDark={true} />);
+      expect(container.querySelector("svg")).toBeInTheDocument();
+    });
+
+    it("renders custom icon for Base UI", () => {
+      const { container } = render(<ProjectTechIcon tag="Base UI" isDark={true} />);
+      const svg = container.querySelector("svg");
+      expect(svg).toBeInTheDocument();
+      expect(svg).toHaveAttribute("viewBox", "0 0 17 24");
+    });
+  });
+
+  describe("ShowcaseTechStack", () => {
+    const sampleTags = [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Supabase",
+      "PostgreSQL 16",
+      "Docker",
+      "Realtime",
+    ];
+
+    it("renders maxVisible items (default 6) and a +N badge when tags overflow", () => {
+      render(<ShowcaseTechStack tags={sampleTags} maxVisible={6} />);
+
+      // Exactly 6 visible items should have title/aria-label
+      expect(screen.getByTitle("Next.js 16")).toBeInTheDocument();
+      expect(screen.getByTitle("React 19")).toBeInTheDocument();
+      expect(screen.getByTitle("TypeScript")).toBeInTheDocument();
+      expect(screen.getByTitle("Supabase")).toBeInTheDocument();
+      expect(screen.getByTitle("PostgreSQL 16")).toBeInTheDocument();
+      expect(screen.getByTitle("Docker")).toBeInTheDocument();
+
+      // +1 badge should be visible for Realtime
+      expect(screen.getByText("+1")).toBeInTheDocument();
+      expect(
+        screen.getByLabelText("+1 more technologies: Realtime"),
+      ).toBeInTheDocument();
+    });
+
+    it("does not render +N badge when tags <= maxVisible", () => {
+      render(
+        <ShowcaseTechStack
+          tags={["React", "TypeScript", "Tailwind CSS", "Next.js", "Supabase", "PostgreSQL"]}
+          maxVisible={6}
+        />,
+      );
+
+      expect(screen.queryByText(/^\+\d+/)).not.toBeInTheDocument();
+    });
+  });
+
+  describe("DetailedTechStack", () => {
+    const sampleTags = [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Supabase",
+      "PostgreSQL 16",
+      "Docker",
+      "Realtime",
+    ];
+
+    it("renders all technologies with their names and logos", () => {
+      render(<DetailedTechStack tags={sampleTags} />);
+
+      // All 7 items should be present with their full names
+      sampleTags.forEach((tag) => {
+        expect(screen.getByText(tag)).toBeInTheDocument();
+      });
+
+      // No +N badge should ever appear in detailed view
+      expect(screen.queryByText(/^\+\d+/)).not.toBeInTheDocument();
+    });
+  });
+});

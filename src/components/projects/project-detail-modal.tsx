@@ -19,6 +19,7 @@ import {
 import { FaGithub } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import type { ProjectItem } from "@/lib/projects-data";
+import { DetailedTechStack } from "./project-tech-icons";
 
 export interface ProjectDetailModalProps {
   readonly project: ProjectItem | null;
@@ -202,7 +203,7 @@ export function ProjectDetailModal({
                     {project.metrics.map((metric) => (
                       <div
                         key={metric.label}
-                        className="p-4 rounded-2xl bg-bg-void/80 border border-edge-subtle"
+                        className="flex flex-col items-center justify-center p-4 rounded-2xl bg-bg-void/80 border border-edge-subtle text-center"
                       >
                         <span className="block font-heading text-2xl font-bold text-foreground mb-1">
                           {metric.value}
@@ -342,16 +343,7 @@ export function ProjectDetailModal({
                   <h4 className="font-mono text-xs uppercase tracking-wider text-muted-foreground mb-3">
                     Technologies & Infrastructure
                   </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-3 py-1 rounded-lg bg-bg-void border border-edge-default text-xs font-mono text-foreground font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  <DetailedTechStack tags={project.tags} />
                 </div>
 
                 {/* Final Actions */}

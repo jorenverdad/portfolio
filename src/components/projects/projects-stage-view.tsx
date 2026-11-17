@@ -34,6 +34,7 @@ import { FaGithub } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ProjectItem } from "@/lib/projects-data";
+import { ShowcaseTechStack } from "./project-tech-icons";
 
 export interface ProjectsStageViewProps {
   readonly projects: ReadonlyArray<ProjectItem>;
@@ -650,17 +651,11 @@ export function ProjectsStageView({
                         </div>
                       )}
 
-                    {/* Clean Tech Badges */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {activeProject.tags.slice(0, 5).map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2.5 py-0.5 rounded-full bg-bg-void/80 text-muted-foreground border border-edge-subtle/80 text-[10px] 2xl:text-[11px] font-mono font-medium"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    {/* Tech Logos HUD with +N Overflow Indicator */}
+                    <ShowcaseTechStack
+                      tags={activeProject.tags}
+                      maxVisible={6}
+                    />
                   </div>
 
                   {/* Actions Bar */}
